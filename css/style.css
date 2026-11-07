@@ -48,7 +48,7 @@ body.w3-light-grey {
   flex: 1;
   display: flex;
   flex-direction: column;
-  background-image: src('WEB/assets/images/beach.jpg'); 
+  background-image: url("../assets/images/beach.jpg"); 
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -64,11 +64,11 @@ body.w3-light-grey {
   line-height: 1.4;
   margin: 0 0 4px;
   word-break: break-word;   
-  color: #ffffff;
+  color: #6b4949;
   font-family: 'Playfair Display', serif;
   font-size: 1.1rem;
   font-weight: 700;
-  text-shadow: 0 1px 6px rgba(0,0,0,0.65), 0 0 2px rgba(0,0,0,0.4);
+  text-shadow: 0 1px 1px rgba(0,0,0,0.65), 0 0 2px rgba(0,0,0,0.4);
 }
 
 /* 類別 · 價格 */
@@ -77,8 +77,8 @@ body.w3-light-grey {
   font-family: 'Lato', sans-serif;
   font-size: 0.82rem;
   letter-spacing: 0.05em;
-  color: #ffffff;
-  text-shadow: 0 1px 4px rgba(0,0,0,0.55);
+  color: #806559;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.55);
 }
 
 /* 說明文字 */
@@ -87,8 +87,8 @@ body.w3-light-grey {
   font-family: 'Lato', sans-serif;
   font-size: 0.92rem;
   line-height: 1.75;
-  color: #ffffff;
-  text-shadow: 0 1px 4px rgba(0,0,0,0.55);
+  color: #806559;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.55);
 }
 
 /* == SVG == */
