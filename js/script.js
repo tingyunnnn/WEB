@@ -16,6 +16,7 @@ function w3_close() {
   const ITEMS_PER_PAGE = 6;
   const grid = document.getElementById('menu-grid');
   const bar  = document.getElementById('pagination-bar');
+  // const buy = document.getElementsByTagName("article");
 
   if (!grid || !bar) return;
   const articles   = Array.from(grid.querySelectorAll('article'));
@@ -73,6 +74,9 @@ function w3_close() {
     return a;
   }
 
+
+
+  
   buildBar();
   showPage(1);
 
@@ -254,4 +258,32 @@ function triggerDolphinJump() {
       overlay.style.display = "none";
     }, 800);
   });
+});
+
+
+const filterBtn = document.querySelectorAll(".filter-button");
+
+filterBtn.forEach(function(button) {
+    button.addEventListener("click", function() {
+        const category = button.dataset.category;
+        const items = document.querySelectorAll(".menu-grid article");
+
+        filterBtn.forEach(function(button) {
+            if (category === button.dataset.category) {
+                button.classList.remove("w3-white");
+                button.classList.add("w3-black");
+            } else {
+                button.classList.remove("w3-black");
+                button.classList.add("w3-white");
+            }
+        });
+
+        items.forEach(function(item) {
+            if (category === "all" || item.dataset.category === category) {
+                item.style.display = "";
+            } else {
+                item.style.display = "none";
+            }
+        });
+    });
 });
