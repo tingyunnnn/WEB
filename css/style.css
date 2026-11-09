@@ -239,8 +239,8 @@ body.w3-light-grey {
 #contact .w3-white.w3-border p:first-child {
   font-size: 0.925rem;
   font-weight: 700;
-  margin: 0 0 8px;
   line-height: 1.4;
+  flex: 1;
 }
 #contact .w3-white.w3-border p:last-child {
   font-size: 0.875rem;
