@@ -396,7 +396,12 @@
   <!-- Demo ordering: client-side only; no real orders or payments are submitted -->
   <dialog id="dish-dialog" class="tb-dialog" aria-labelledby="dish-dialog-title">
     <button type="button" class="tb-close" data-close-dialog="dish-dialog" aria-label="Close">×</button>
-    <img id="dish-dialog-image" class="tb-dish-image" src="" alt="">
+    <div class="tb-dish-photo-wrap">
+      <img id="dish-dialog-image" class="tb-dish-image" src="" alt="">
+      <button type="button" id="enlarge-dish-photo" class="tb-dish-zoom" aria-label="Enlarge food photo" title="Enlarge photo">
+        <i class="fa fa-search-plus" aria-hidden="true"></i>
+      </button>
+    </div>
     <div class="tb-dialog-body">
       <h2 id="dish-dialog-title"></h2>
       <p id="dish-dialog-meta" class="tb-muted"></p>
@@ -450,6 +455,12 @@
     </div>
   </dialog>
   <div id="cart-toast" role="status" aria-live="polite" class="tb-toast" hidden></div>
+
+  <!-- Food photo lightbox: click a dish photo to enlarge it -->
+  <dialog id="image-lightbox" class="tb-image-lightbox" aria-label="Enlarged food photo">
+    <button type="button" id="close-lightbox" class="tb-image-lightbox-close" aria-label="Close enlarged photo">×</button>
+    <img id="lightbox-image" alt="Enlarged food photo">
+  </dialog>
 
   <script src="js/script.js"></script>
 </body>

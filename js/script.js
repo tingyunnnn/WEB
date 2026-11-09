@@ -438,3 +438,31 @@ window.addEventListener('scroll', function () {
     }, 800);
   });
 })();
+// ========== Food photo lightbox (separate from dish ordering) ==========
+(function () {
+  const lightbox = document.getElementById('image-lightbox');
+  const largePhoto = document.getElementById('lightbox-image');
+  const closeButton = document.getElementById('close-lightbox');
+  if (!lightbox || !largePhoto || !closeButton) return;
+
+  function openPhoto(img) {
+    largePhoto.src = img.getAttribute('src');
+    largePhoto.alt = img.alt || 'Enlarged food photo';
+    if (typeof lightbox.showModal === 'function') lightbox.showModal();
+    else lightbox.setAttribute('open', '');
+  }
+  function closePhoto() {
+    if (typeof lightbox.close === 'function') lightbox.close();
+    else lightbox.removeAttribute('open');
+  }
+
+  const zoomButton = document.getElementById('enlarge-dish-photo');
+  const dishPhoto = document.getElementById('dish-dialog-image');
+  if (zoomButton && dishPhoto) {
+    zoomButton.addEventListener('click', () => openPhoto(dishPhoto));
+  }
+  closeButton.addEventListener('click', closePhoto);
+  lightbox.addEventListener('click', event => {
+    if (event.target === lightbox) closePhoto();
+  });
+})();
