@@ -7,11 +7,14 @@ h1 {font-size: 3.3rem; margin: 0.5rem 0rem 0rem 0rem;}
 h4 {font-size: 1.3rem; font-weight: 700; line-height: 1.4;}
 p {font-size: 1rem; line-height: 1.8;}
 
-body.w3-light-grey, #contact {
+body.w3-light-grey {
   background-color: #66B6BD!important;
 }
 #about {
   background-color: #e2edf3;
+}
+#contact{
+  background-color: #66b6bd!important;
 }
 
 /* == Menu Grid == */
@@ -146,7 +149,7 @@ body.w3-light-grey, #contact {
 }
 
 #about > p {
-  font-size: 0.925rem;
+  font-size: 1rem;
   line-height: 1.8;
   color: #333;
   margin-bottom: 10px;
