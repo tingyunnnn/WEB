@@ -113,8 +113,8 @@ Team coordination: implement All/Meals/Desserts filters, maximum six items per p
 
 
 
-            Peanut Rice Dumplings   Desserts · NT$79 (proposed)
-           Soft and chewy glutinous rice dumplings topped with crushed peanut powder and served in a sweet sauce. A cozy Taiwanese dessert.
+            Peanut Tang Yuan Desserts · NT$79 (proposed)
+           Soft and chewy glutinous tang yuan coated with crushed peanut powder and served in a sweet sauce. A cozy Taiwanese dessert.
 
 
 
@@ -227,7 +227,7 @@ Team coordination: implement All/Meals/Desserts filters, maximum six items per p
 
 
               Do you have desserts?
-           Yes! Discover Watermelon Snow Ice, Mango Snow Ice, and Peanut Rice Dumplings.
+           Yes! Discover Watermelon Snow Ice, Mango Snow Ice, and Peanut Tang Yuan.
 
 
               Can I filter dishes or enlarge photos?
