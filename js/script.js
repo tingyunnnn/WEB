@@ -11,75 +11,233 @@ function w3_close() {
   overlay.style.display = "none";
 }
 
-// ========== Menu Pagination ==========
+// ========== Menu Filtering + Pagination + Shopping Cart ==========
 (function () {
   const ITEMS_PER_PAGE = 6;
-  const grid = document.getElementById('menu-grid');
-  const bar  = document.getElementById('pagination-bar');
-  // const buy = document.getElementsByTagName("article");
+  const articles = Array.from(document.querySelectorAll('#menu-grid article'));
+  const bar = document.getElementById('pagination-bar');
+  const filterButtons = document.querySelectorAll('.filter-button');
+  const dialogs = ['dish-dialog', 'cart-dialog', 'review-dialog'];
+  const dishDialog = document.getElementById('dish-dialog');
+  const cartDialog = document.getElementById('cart-dialog');
+  const reviewDialog = document.getElementById('review-dialog');
+  const quantityInput = document.getElementById('dish-quantity');
+  const cartBadge = document.getElementById('cart-badge');
+  const storageKey = 'tidebites_demo_cart_v1';
+  if (!articles.length || !bar || !dishDialog || !cartDialog || !reviewDialog) return;
 
-  if (!grid || !bar) return;
-  const articles   = Array.from(grid.querySelectorAll('article'));
-  const totalPages = Math.ceil(articles.length / ITEMS_PER_PAGE);
-  let   currentPage = 1;
-
-  function showPage(page) {
-    currentPage = page;
-
-    articles.forEach(function (article, index) {
-      const belongsToPage = Math.floor(index / ITEMS_PER_PAGE) + 1;
-      article.style.display = (belongsToPage === page) ? '' : 'none';
-    });
-
-    updateButtons();
-  }
-
-  function updateButtons() {
-    bar.querySelectorAll('a[data-page]').forEach(function (btn) {
-      const isActive = parseInt(btn.dataset.page) === currentPage;
-      btn.classList.toggle('w3-black',       isActive);
-      btn.classList.toggle('w3-white',       !isActive);
-      btn.classList.toggle('w3-hover-black', !isActive);
-    });
-  }
-
-  function buildBar() {
-    bar.innerHTML = '';
-
-    const prev = makeBtn('«', null, function () {
-      if (currentPage > 1) showPage(currentPage - 1);
-    });
-    bar.appendChild(prev);
-
-    for (let i = 1; i <= totalPages; i++) {
-      const btn = makeBtn(i, i, function () {
-        showPage(parseInt(this.dataset.page));
+  // Use the existing article content as the single source of truth for the menu.
+  const menu = articles.map(function (article) {
+    const meta = article.querySelector('.card-meta').textContent;
+    const priceMatch = meta.match(/NT\$\s*(\d+)/i);
+    return {
+      id: article.dataset.id,
+      name: article.querySelector('.card-title').textContent.trim(),
+      category: article.dataset.category,
+      price: priceMatch ? Number(priceMatch[1]) : 0,
+      description: article.querySelector('.card-desc').textContent.trim(),
+      image: article.querySelector('img').getAttribute('src'),
+      alt: article.querySelector('img').alt
+    };
+  });
+  const byId = new Map(menu.map(item => [item.id, item]));
+  let category = 'all';
+  let currentPage = 1;
+  let selectedDishId = null;
+  let cart = {};
+  try {
+    const saved = JSON.parse(localStorage.getItem(storageKey) || '{}');
+    if (saved && typeof saved === 'object' && !Array.isArray(saved)) {
+      Object.entries(saved).forEach(([id, qty]) => {
+        if (byId.has(id) && Number.isInteger(qty) && qty > 0 && qty <= 99) cart[id] = qty;
       });
-      bar.appendChild(btn);
     }
+  } catch (error) { cart = {}; }
 
-    const next = makeBtn('»', null, function () {
-      if (currentPage < totalPages) showPage(currentPage + 1);
+  const money = n => 'NT$' + n.toLocaleString('en-US');
+  const clampQty = value => Math.min(99, Math.max(1, Number.parseInt(value, 10) || 1));
+  const cartTotal = () => Object.entries(cart).reduce((sum, [id, qty]) => sum + byId.get(id).price * qty, 0);
+  const cartQuantity = () => Object.values(cart).reduce((sum, qty) => sum + qty, 0);
+  function saveCart() {
+    try { localStorage.setItem(storageKey, JSON.stringify(cart)); } catch (error) { /* storage may be blocked */ }
+    const count = cartQuantity();
+    cartBadge.textContent = count;
+    cartBadge.hidden = count === 0;
+  }
+  function notify(message) {
+    const toast = document.getElementById('cart-toast');
+    toast.textContent = message;
+    toast.hidden = false;
+    clearTimeout(notify.timeout);
+    notify.timeout = setTimeout(() => { toast.hidden = true; }, 2500);
+  }
+  function openDialog(dialog) {
+    if (typeof dialog.showModal === 'function') dialog.showModal();
+    else dialog.setAttribute('open', '');
+  }
+  function closeDialog(dialog) { dialog.close ? dialog.close() : dialog.removeAttribute('open'); }
+  dialogs.forEach(id => {
+    const dialog = document.getElementById(id);
+    dialog.addEventListener('click', event => { if (event.target === dialog) closeDialog(dialog); });
+  });
+  document.querySelectorAll('[data-close-dialog]').forEach(btn => btn.addEventListener('click', () => closeDialog(document.getElementById(btn.dataset.closeDialog))));
+
+  // Filtering and pagination must share the SAME visible subset.
+  function showMenu() {
+    const filtered = articles.filter(article => category === 'all' || article.dataset.category === category);
+    const totalPages = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
+    currentPage = Math.min(currentPage, totalPages);
+    articles.forEach(article => { article.hidden = true; article.style.display = 'none'; });
+    filtered.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE).forEach(article => {
+      article.hidden = false; article.style.display = '';
     });
-    bar.appendChild(next);
+    bar.replaceChildren();
+    bar.parentElement.style.display = totalPages <= 1 ? 'none' : '';
+    if (totalPages > 1) {
+      addPageButton('«', currentPage - 1, currentPage === 1, false);
+      for (let page = 1; page <= totalPages; page++) addPageButton(String(page), page, false, page === currentPage);
+      addPageButton('»', currentPage + 1, currentPage === totalPages, false);
+    }
   }
-
-  function makeBtn(label, pageNum, onClick) {
-    const a = document.createElement('a');
-    a.href      = '#portfolio';          
-    a.className = 'w3-bar-item w3-button w3-white w3-hover-black';
-    a.textContent = label;
-    if (pageNum !== null) a.dataset.page = pageNum;
-    a.addEventListener('click', onClick);
-    return a;
+  function addPageButton(label, page, disabled, active) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'w3-bar-item w3-button ' + (active ? 'w3-black' : 'w3-white w3-hover-black');
+    button.textContent = label;
+    button.disabled = disabled;
+    if (active) button.setAttribute('aria-current', 'page');
+    button.addEventListener('click', () => {
+      currentPage = page;
+      showMenu();
+      document.getElementById('portfolio').scrollIntoView({behavior:'smooth'});
+    });
+    bar.appendChild(button);
   }
+  filterButtons.forEach(button => button.addEventListener('click', function () {
+    category = button.dataset.category;
+    currentPage = 1;
+    filterButtons.forEach(btn => {
+      btn.classList.toggle('w3-black', btn === button);
+      btn.classList.toggle('w3-white', btn !== button);
+    });
+    showMenu();
+  }));
 
+  function updateDishSubtotal() {
+    const dish = byId.get(selectedDishId);
+    if (!dish) return;
+    const qty = clampQty(quantityInput.value);
+    quantityInput.value = qty;
+    document.getElementById('dish-subtotal').textContent = money(dish.price * qty);
+  }
+  function openDish(id) {
+    const dish = byId.get(id);
+    if (!dish) return;
+    selectedDishId = id;
+    const photo = document.getElementById('dish-dialog-image');
+    photo.src = dish.image;
+    photo.alt = dish.alt;
+    document.getElementById('dish-dialog-title').textContent = dish.name;
+    document.getElementById('dish-dialog-meta').textContent = (dish.category === 'meals' ? 'Meals' : 'Desserts') + ' · ' + money(dish.price);
+    document.getElementById('dish-dialog-desc').textContent = dish.description;
+    quantityInput.value = 1;
+    updateDishSubtotal();
+    openDialog(dishDialog);
+  }
+  articles.forEach(article => {
+    article.addEventListener('click', () => openDish(article.dataset.id));
+    article.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openDish(article.dataset.id); }
+    });
+  });
+  document.getElementById('dish-minus').addEventListener('click', () => { quantityInput.value = Math.max(1, clampQty(quantityInput.value) - 1); updateDishSubtotal(); });
+  document.getElementById('dish-plus').addEventListener('click', () => { quantityInput.value = Math.min(99, clampQty(quantityInput.value) + 1); updateDishSubtotal(); });
+  quantityInput.addEventListener('change', updateDishSubtotal);
+  quantityInput.addEventListener('input', () => { if (quantityInput.value !== '') updateDishSubtotal(); });
+  document.getElementById('add-to-cart').addEventListener('click', () => {
+    if (!selectedDishId) return;
+    const qty = clampQty(quantityInput.value);
+    cart[selectedDishId] = Math.min(99, (cart[selectedDishId] || 0) + qty);
+    saveCart();
+    closeDialog(dishDialog);
+    notify('Added to cart!');
+  });
 
-
-  
-  buildBar();
-  showPage(1);
-
+  function renderCart() {
+    const container = document.getElementById('cart-items');
+    container.replaceChildren();
+    const entries = Object.entries(cart);
+    document.getElementById('cart-checkout').hidden = entries.length === 0;
+    if (entries.length === 0) {
+      const empty = document.createElement('p');
+      empty.className = 'tb-muted';
+      empty.textContent = 'Your cart is empty. Choose a dish to get started!';
+      container.appendChild(empty);
+    }
+    entries.forEach(([id, qty]) => {
+      const item = byId.get(id);
+      const row = document.createElement('div');
+      row.className = 'tb-cart-row';
+      const img = document.createElement('img');
+      img.src = item.image; img.alt = item.alt;
+      const info = document.createElement('div');
+      const name = document.createElement('strong'); name.textContent = item.name;
+      const price = document.createElement('p'); price.textContent = money(item.price) + ' × ' + qty + ' = ' + money(item.price * qty);
+      const controls = document.createElement('div'); controls.className = 'tb-cart-controls';
+      function addControl(label, action, ariaLabel) {
+        const b = document.createElement('button'); b.type = 'button'; b.textContent = label;
+        b.setAttribute('aria-label', ariaLabel); b.addEventListener('click', action); controls.appendChild(b);
+      }
+      addControl('−', () => changeCartQty(id, -1), 'Decrease ' + item.name);
+      const number = document.createElement('span'); number.textContent = String(qty); controls.appendChild(number);
+      addControl('+', () => changeCartQty(id, 1), 'Increase ' + item.name);
+      addControl('Remove', () => { delete cart[id]; saveCart(); renderCart(); }, 'Remove ' + item.name);
+      info.append(name, price, controls); row.append(img, info); container.appendChild(row);
+    });
+    document.getElementById('cart-total').textContent = money(cartTotal());
+  }
+  function changeCartQty(id, delta) {
+    const newQty = cart[id] + delta;
+    if (newQty <= 0) delete cart[id]; else cart[id] = Math.min(99, newQty);
+    saveCart(); renderCart();
+  }
+  document.getElementById('open-cart').addEventListener('click', () => {
+    if (window.innerWidth <= 992) w3_close();
+    renderCart(); openDialog(cartDialog);
+  });
+  document.getElementById('review-order').addEventListener('click', () => {
+    if (cartQuantity() === 0) return;
+    const pickup = document.getElementById('pickup-location');
+    if (!pickup.value) { pickup.reportValidity(); pickup.focus(); return; }
+    const summary = document.getElementById('review-details');
+    summary.replaceChildren();
+    Object.entries(cart).forEach(([id, qty]) => {
+      const line = document.createElement('p');
+      line.textContent = byId.get(id).name + ' × ' + qty + ' — ' + money(qty * byId.get(id).price);
+      summary.appendChild(line);
+    });
+    const note = document.getElementById('cart-note').value.trim();
+    [['Total', money(cartTotal())], ['Pickup', pickup.value], ['Notes', note || '(None)']].forEach(([label, value]) => {
+      const row = document.createElement('p');
+      const strong = document.createElement('strong'); strong.textContent = label + ': ';
+      row.append(strong, document.createTextNode(value)); summary.appendChild(row);
+    });
+    closeDialog(cartDialog); openDialog(reviewDialog);
+  });
+  document.getElementById('back-to-cart').addEventListener('click', () => {
+    closeDialog(reviewDialog); renderCart(); openDialog(cartDialog);
+  });
+  document.getElementById('confirm-demo-order').addEventListener('click', () => {
+    // No backend exists: this is only a simulated confirmation.
+    cart = {};
+    saveCart();
+    document.getElementById('cart-note').value = '';
+    document.getElementById('pickup-location').value = '';
+    closeDialog(reviewDialog);
+    notify('Demo order confirmed. No real order was placed.');
+  });
+  saveCart();
+  showMenu();
 })();
 
 // ========== Click Bubble Animation ==========
@@ -258,32 +416,4 @@ function triggerDolphinJump() {
       overlay.style.display = "none";
     }, 800);
   });
-});
-
-
-const filterBtn = document.querySelectorAll(".filter-button");
-
-filterBtn.forEach(function(button) {
-    button.addEventListener("click", function() {
-        const category = button.dataset.category;
-        const items = document.querySelectorAll(".menu-grid article");
-
-        filterBtn.forEach(function(button) {
-            if (category === button.dataset.category) {
-                button.classList.remove("w3-white");
-                button.classList.add("w3-black");
-            } else {
-                button.classList.remove("w3-black");
-                button.classList.add("w3-white");
-            }
-        });
-
-        items.forEach(function(item) {
-            if (category === "all" || item.dataset.category === category) {
-                item.style.display = "";
-            } else {
-                item.style.display = "none";
-            }
-        });
-    });
 });
