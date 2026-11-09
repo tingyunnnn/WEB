@@ -17,6 +17,11 @@ body.w3-light-grey {
   background-color: #66b6bd!important;
 }
 
+header p{
+  color: #ffffff;
+  font-size:1.6rem;
+}
+
 /* == Menu Grid == */
 .menu-grid {
   display: grid;
@@ -214,7 +219,6 @@ body.w3-light-grey {
 }
 #contact .w3-grid > div {
   padding: 28px 20px;
-  text-align: center;
 }
 #contact .w3-grid > div i {
   display: block;
@@ -735,9 +739,9 @@ button:focus-visible, a:focus-visible { outline: 3px solid #ff9a66; outline-offs
 #portfolio .w3-container { padding-left: clamp(18px,4vw,44px); padding-right: clamp(18px,4vw,44px); }
 #portfolio h1 { color: #fff; text-shadow: 0 3px 15px rgba(0,72,109,.22); line-height: 1.14; }
 #portfolio h1 img { vertical-align: middle; max-width: 28vw; }
-#portfolio h2 { font-family: 'Lato',sans-serif; font-weight: 700; line-height: 1.55; max-width: 680px; }
+#portfolio h2 { font-weight: 700; line-height: 1.55; max-width: 680px; }
 #portfolio .w3-section { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; border: 0 !important; margin-bottom: 10px; }
-#portfolio .filter-button { border-radius: 999px !important; padding: 11px 18px !important; font-weight: 800; letter-spacing: .04em; box-shadow: 0 3px 10px rgba(13,93,129,.08); }
+#portfolio .filter-button { border-radius: 999px !important; padding: 10px 18px !important; font-weight: 800; letter-spacing: .04em; box-shadow: 0 3px 10px rgba(13,93,129,.08); }
 #portfolio .filter-button.w3-black { background: var(--tb-deep) !important; }
 #portfolio .filter-button.w3-white { background: rgba(255,255,255,.52) !important; color: var(--tb-deep) !important; border: 1px solid rgba(255,255,255,.7); }
 #portfolio .filter-button:hover { transform: translateY(-2px); }
@@ -755,7 +759,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid #ff9a66; outline-offs
   padding: 4px 60px 36px; display: flex; justify-content: center;
   align-items: center; box-sizing: border-box;
 }
-.pagination-wrap .w3-bar { display: flex; width: fit-content; max-width: 100%; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.pagination-wrap .w3-bar { display: flex; width: fit-content; max-width: 100%; gap: 2px; justify-content: center; flex-wrap: wrap; }
 .pagination-wrap .w3-bar-item { flex: 0 0 auto; min-width: 42px; height: 42px; border-radius: 12px !important; padding: 9px 12px !important; border: 1px solid rgba(255,255,255,.75); background: rgba(255,255,255,.75) !important; color: var(--tb-deep); font-weight: 800; }
 .pagination-wrap .w3-bar-item.w3-black { background: var(--tb-deep) !important; color: #fff !important; }
 .pagination-wrap .w3-bar-item:disabled { opacity: .4; cursor: not-allowed; }
@@ -765,8 +769,8 @@ button:focus-visible, a:focus-visible { outline: 3px solid #ff9a66; outline-offs
 #about { background: #f1fbff !important; }
 #contact { background: linear-gradient(155deg,#d0f6f1 0%,#e7f7ff 52%,#fff3e9 100%) !important; }
 #about h4, #contact > h4 { color: #12617e; }
-#about .w3-grid > div { border-radius: 18px; box-shadow: 0 7px 21px rgba(25,94,127,.09); }
-#contact .w3-grid:not(.faq-grid) > div { border-radius: 18px; box-shadow: 0 7px 21px rgba(25,94,127,.09); }
+#about .w3-grid > div { box-shadow: 0 7px 21px rgba(25,94,127,.09); }
+#contact .w3-grid:not(.faq-grid) > div { box-shadow: 0 7px 21px rgba(25,94,127,.09); }
 
 /* FAQ: friendly visual cards, fully responsive, adaptive height */
 #contact .faq-heading { text-align: center; max-width: 760px; margin: 10px auto 30px; }
@@ -819,9 +823,9 @@ button:focus-visible, a:focus-visible { outline: 3px solid #ff9a66; outline-offs
 @media (max-width: 800px) {
   .menu-section-wrap .menu-grid { padding: 18px 24px; gap: 18px; }
   .pagination-wrap { padding: 4px 24px 28px; }
-  #contact .faq-grid { grid-template-columns: 1fr !important; gap: 14px !important; }
 }
 @media (max-width: 600px) {
+  #contact .faq-grid { grid-template-columns: 1fr !important; gap: 14px !important; }
   #mySidebar { width: min(300px, 86vw) !important; }
   #mySidebar > .w3-container:first-child { padding: 18px 16px 8px !important; }
   #mySidebar > .w3-bar-block { margin: 4px 12px 0; }
@@ -924,4 +928,131 @@ button:focus-visible, a:focus-visible { outline: 3px solid #ff9a66; outline-offs
 @media (prefers-reduced-motion: reduce) {
   .menu-grid article .menu-dish-image,
   .menu-grid article .w3-container { transition: none !important; }
+}
+
+/* 左右搖晃動畫 */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-3px); }
+}
+
+/* 滑鼠移入時觸發 */
+#about .w3-grid > div:hover,
+#contact .w3-grid:not(.faq-grid) > div:hover {
+    animation: shake 0.5s ease-in-out;
+}
+
+/* ===== FAQ layout + no card movement ===== */
+/* Desktop/tablet: 2 columns x 3 rows */
+/* 電腦版：兩欄 */
+#contact .faq-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    align-items: start !important;
+}
+
+/* FAQ 卡片獨立高度 */
+#contact .faq-grid > .faq-card {
+    align-self: start;
+    height: auto !important;
+    animation: none !important;
+    transition: transform .25s ease, box-shadow .25s ease;
+}
+
+/* 滑鼠移入向上移動 */
+#contact .faq-grid > .faq-card:hover {
+    transform: translateY(-4px) !important;
+}
+
+/* 題目文字靠左 */
+#contact .faq-question p {
+    text-align: left !important;
+}
+
+/* 手機版：單欄 */
+@media (max-width: 600px) {
+    #contact .faq-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+.nav-title,
+header .nav-title {
+    text-align: center;
+    font-weight: 700;
+    font-size: 2.3rem;
+
+    margin: 20px auto 35px;
+    background-color: rgba(255, 255, 255, 0.85);
+    color: #12252d !important;
+    padding: 13px;
+    width: 300px;
+    max-width: 100%;
+    box-sizing: border-box;
+    border: dashed 2px #e3e3e3;
+    border-radius: 50px;
+    box-shadow: 0 4px 18px rgba(0, 100, 160, 0.18);
+}
+
+/* ===== TideBites final spacing, mobile cards, waves and footer ===== */
+/* Keep the existing title styling and filter buttons; adjust only spacing. */
+#portfolio .nav-title {
+    margin-bottom: 8px;
+}
+#portfolio .filter-bar {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+}
+#portfolio .filter-bar > p {
+    margin: 0;
+}
+.menu-section-wrap .menu-grid {
+    padding-top: 12px;
+}
+
+/* Theme colors for the footer; wave fills are set in the HTML SVGs. */
+.tb-footer {
+    background-color: #12516d;
+    color: #f1fbff;
+}
+.tb-footer h3 { color: #ffffff; }
+.tb-footer a { color: #a8e9f4; }
+.tb-footer a:hover { color: #ffffff; }
+.tb-footer .w3-tag {
+    background-color: #23718a !important;
+    color: #ffffff !important;
+}
+.tb-footer-bottom {
+    background-color: #0a3448;
+    color: #d9f2fa;
+}
+.tb-footer-bottom a { color: #a8e9f4; }
+.tb-footer-bottom a:hover { color: #ffffff; }
+
+/* Preserve desktop layout. On narrow phones: 2x2 benefits, 1x3 favorites.
+   !important is needed because their HTML currently has inline grid-template-columns. */
+@media (max-width: 600px) {
+    #about .why-choose-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+    #about .student-favorites-grid {
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+    #about .why-choose-grid > div {
+        min-width: 0;
+    }
+    .menu-section-wrap .menu-grid {
+        padding-top: 10px;
+    }
+}
+
+header #header-title{
+  display:flex;
+  margin-bottom:40px;
+  margin-top:10px;
+
 }
