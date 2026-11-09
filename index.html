@@ -34,6 +34,9 @@
     <a href="#portfolio" onclick="w3_close()" class="w3-bar-item w3-button w3-padding w3-text-teal"><img src="assets/icons/menu.png" alt="Menu" style="width:16px;height:16px;margin-right:8px;vertical-align:middle">MENU</a>
     <a href="#about" onclick="w3_close()" class="w3-bar-item w3-button w3-padding"><img src="assets/icons/information-button.png" alt="About Us" style="width:16px;height:16px;margin-right:8px;vertical-align:middle">ABOUT US</a>
     <a href="#contact" onclick="w3_close()" class="w3-bar-item w3-button w3-padding"><img src="assets/icons/discount.png" alt="Student Discount" style="width:16px;height:16px;margin-right:8px;vertical-align:middle">STUDENT DISCOUNT</a>
+    <button type="button" id="open-cart" class="w3-bar-item w3-button w3-padding cart-nav-btn" aria-label="View shopping cart">
+      <i class="fa fa-shopping-cart" aria-hidden="true"></i> CART <span id="cart-badge" class="cart-badge" hidden>0</span>
+    </button>
   </div>
     <div class="sidebar-seaweed-container">
       <img src="assets/images/seaweed.png" alt="Seaweed" class="w3-seaweed">
@@ -57,16 +60,16 @@
         <p>Comforting meals, cool treats, and a splash of summer for your next study break.</p>
         <div class="w3-section w3-bottombar w3-padding-16">
           <span class="w3-margin-right">Filter:</span>
-          <button class="w3-button w3-black filter-button"  data-category="all">ALL</button>
-          <button class="w3-button w3-white filter-button"  data-category="meals"><img src="assets/icons/lunch.png" alt="Food" style="width:16px;height:16px;margin-right:6px;vertical-align:middle">MEALS</button>
-          <button class="w3-button w3-white w3-hide-small filter-button"  data-category="desserts"><img src="assets/icons/cupcake.png" alt="Dessert" style="width:16px;height:16px;margin-right:6px;vertical-align:middle">DESSERTS</button>
+          <button type="button" class="w3-button w3-black filter-button" data-category="all">ALL</button>
+          <button type="button" class="w3-button w3-white filter-button" data-category="meals"><img src="assets/icons/lunch.png" alt="Food" style="width:16px;height:16px;margin-right:6px;vertical-align:middle">MEALS</button>
+          <button type="button" class="w3-button w3-white w3-hide-small filter-button" data-category="desserts"><img src="assets/icons/cupcake.png" alt="Dessert" style="width:16px;height:16px;margin-right:6px;vertical-align:middle">DESSERTS</button>
         </div>
       </div>
     </header>
 
     <!-- Food items grid -->
     <div class="menu-grid" id="menu-grid">
-      <article data-category="meals">
+      <article data-id="1" data-category="meals" tabindex="0" role="button" aria-label="View dish details">
         <img src="assets/images/thai-basil-pork-rice.jpg" alt="Thai basil minced pork and vegetables served with rice and two fried eggs." class="w3-hover-opacity" style="width:100%">
         <div class="w3-container w3-white">
           <p class="card-title">Thai Basil Pork Rice</p>
@@ -74,7 +77,7 @@
           <p class="card-desc">Savory minced pork with fragrant basil and vegetables, served over fluffy rice and topped with two sunny-side-up eggs. A hearty pick for a busy day.</p>
         </div>
       </article>
-      <article data-category="meals">
+      <article data-id="2" data-category="meals" tabindex="0" role="button" aria-label="View dish details">
         <img src="assets/images/chicken-oyakodon-bowl.jpg" alt="Chicken and egg rice bowl topped with green onions, sesame, and vegetables." class="w3-hover-opacity" style="width:100%">
         <div class="w3-container w3-white">
           <p class="card-title">Chicken Oyakodon Bowl</p>
@@ -82,7 +85,7 @@
           <p class="card-desc">A comforting rice bowl with tender chicken, egg, and sweet onions, finished with a sprinkle of green onions and sesame.</p>
         </div>
       </article>
-      <article data-category="meals">
+      <article data-id="3" data-category="meals" tabindex="0" role="button" aria-label="View dish details">
         <img src="assets/images/taiwanese-fish-ball-noodle-soup.jpg" alt="Taiwanese noodle soup with fish balls, sliced chicken, and green vegetables." class="w3-hover-opacity" style="width:100%">
         <div class="w3-container w3-white">
           <p class="card-title">Taiwanese Fish Ball Noodle Soup</p>
@@ -90,7 +93,7 @@
           <p class="card-desc">Springy fish balls, sliced chicken, noodles, and fresh greens in a light, savory broth. A warm bowl of comfort between classes.</p>
         </div>
       </article>
-      <article data-category="meals">
+      <article data-id="4" data-category="meals" tabindex="0" role="button" aria-label="View dish details">
         <img src="assets/images/roasted-chicken-set-meal.jpg" alt="Roasted chicken leg set with rice, vegetables, and small side dishes." class="w3-hover-opacity" style="width:100%">
         <div class="w3-container w3-white">
           <p class="card-title">Roasted Chicken Set Meal</p>
@@ -98,7 +101,7 @@
           <p class="card-desc">A golden roasted chicken leg served with steamed rice, vegetables, and tasty sides. Everything you need in one satisfying plate.</p>
         </div>
       </article>
-      <article data-category="meals">
+      <article data-id="5" data-category="meals" tabindex="0" role="button" aria-label="View dish details">
         <img src="assets/images/tomato-udon-soup.jpg" alt="Tomato broth udon with sliced meat, egg, green onions, and fish cake." class="w3-hover-opacity" style="width:100%">
         <div class="w3-container w3-white">
           <p class="card-title">Tomato Udon Soup</p>
@@ -106,7 +109,7 @@
           <p class="card-desc">Thick udon noodles in a tangy tomato broth with sliced meat, egg, and green onions. Bright, savory, and wonderfully comforting.</p>
         </div>
       </article>
-      <article data-category="meals">
+      <article data-id="6" data-category="meals" tabindex="0" role="button" aria-label="View dish details">
         <img src="assets/images/beef-and-egg-noodles.jpg" alt="Beef slices and a fried egg served over noodles in a dark bowl." class="w3-hover-opacity" style="width:100%">
         <div class="w3-container w3-white">
           <p class="card-title">Beef and Egg Noodles</p>
@@ -114,7 +117,7 @@
           <p class="card-desc">Juicy beef slices and a sunny-side-up egg over a bowl of noodles. A filling favorite when you need an energy boost.</p>
         </div>
       </article>
-      <article data-category="meals">
+      <article data-id="7" data-category="meals" tabindex="0" role="button" aria-label="View dish details">
         <img src="assets/images/chilled-pork-noodle-bowl.jpg" alt="Chilled noodles topped with pork, edamame, cucumber, lotus root, and corn." class="w3-hover-opacity" style="width:100%">
         <div class="w3-container w3-white">
           <p class="card-title">Chilled Pork Noodle Bowl</p>
@@ -122,7 +125,7 @@
           <p class="card-desc">A colorful bowl of chilled noodles with sliced pork, edamame, cucumber, lotus root, and sweet corn, finished with a savory sauce.</p>
         </div>
       </article>
-      <article data-category="desserts">
+      <article data-id="8" data-category="desserts" tabindex="0" role="button" aria-label="View dish details">
         <img src="assets/images/watermelon-snow-ice.jpg" alt="White shaved milk ice generously topped with red watermelon cubes." class="w3-hover-opacity" style="width:100%">
         <div class="w3-container w3-white">
           <p class="card-title">Watermelon Snow Ice</p>
@@ -130,7 +133,7 @@
           <p class="card-desc">Light, fluffy shaved milk ice topped with juicy watermelon cubes. A refreshing little escape on a sunny afternoon.</p>
         </div>
       </article>
-      <article data-category="desserts">
+      <article data-id="9" data-category="desserts" tabindex="0" role="button" aria-label="View dish details">
         <img src="assets/images/mango-snow-ice.jpg" alt="A bowl of yellow shaved milk ice topped with fresh mango chunks." class="w3-hover-opacity" style="width:100%">
         <div class="w3-container w3-white">
           <p class="card-title">Mango Snow Ice</p>
@@ -138,7 +141,7 @@
           <p class="card-desc">Delicate ribbons of shaved milk ice piled high with sweet mango pieces and a fruity drizzle. Bright, tropical, and irresistible.</p>
         </div>
       </article>
-      <article data-category="desserts">
+      <article data-id="10" data-category="desserts" tabindex="0" role="button" aria-label="View dish details">
         <img src="assets/images/peanut-rice-dumplings.jpg" alt="White glutinous rice dumplings with peanut powder in a dark sweet sauce." class="w3-hover-opacity" style="width:100%">
         <div class="w3-container w3-white">
           <p class="card-title">Peanut Rice Dumplings</p>
@@ -151,12 +154,6 @@
     <!-- Pagination -->
     <div class="pagination-wrap">
       <div class="w3-bar" id="pagination-bar">
-        <a href="#" class="w3-bar-item w3-button w3-hover-black">«</a>
-        <a href="#" class="w3-bar-item w3-black w3-button">1</a>
-        <a href="#" class="w3-bar-item w3-button w3-hover-black">2</a>
-        <a href="#" class="w3-bar-item w3-button w3-hover-black">3</a>
-        <a href="#" class="w3-bar-item w3-button w3-hover-black">4</a>
-        <a href="#" class="w3-bar-item w3-button w3-hover-black">»</a>
       </div>
     </div>
 
@@ -335,6 +332,64 @@
     </div>
 
   </main>
+
+  <!-- Demo ordering: client-side only; no real orders or payments are submitted -->
+  <dialog id="dish-dialog" class="tb-dialog" aria-labelledby="dish-dialog-title">
+    <button type="button" class="tb-close" data-close-dialog="dish-dialog" aria-label="Close">×</button>
+    <img id="dish-dialog-image" class="tb-dish-image" src="" alt="">
+    <div class="tb-dialog-body">
+      <h2 id="dish-dialog-title"></h2>
+      <p id="dish-dialog-meta" class="tb-muted"></p>
+      <p id="dish-dialog-desc"></p>
+      <div class="tb-stepper-row">
+        <label for="dish-quantity">Quantity</label>
+        <div class="tb-stepper">
+          <button type="button" id="dish-minus" aria-label="Decrease quantity">−</button>
+          <input id="dish-quantity" type="number" min="1" max="99" value="1" inputmode="numeric">
+          <button type="button" id="dish-plus" aria-label="Increase quantity">+</button>
+        </div>
+      </div>
+      <div class="tb-total-line"><strong>Subtotal</strong><strong id="dish-subtotal">NT$0</strong></div>
+      <button type="button" id="add-to-cart" class="tb-primary">Add to Cart</button>
+    </div>
+  </dialog>
+
+  <dialog id="cart-dialog" class="tb-dialog tb-cart-dialog" aria-labelledby="cart-title">
+    <button type="button" class="tb-close" data-close-dialog="cart-dialog" aria-label="Close">×</button>
+    <div class="tb-dialog-body">
+      <h2 id="cart-title">Your Cart</h2>
+      <p class="tb-muted">Class project demo — no actual order or payment will be placed.</p>
+      <div id="cart-items" aria-live="polite"></div>
+      <div id="cart-checkout">
+        <label class="tb-field" for="cart-note">Order Notes
+          <textarea id="cart-note" rows="3" maxlength="500" placeholder="e.g., less spicy, no peanuts..."></textarea>
+        </label>
+        <label class="tb-field" for="pickup-location">Pickup Location
+          <select id="pickup-location" required>
+            <option value="">Choose a pickup location</option>
+            <option value="Campus Main Gate (Demo)">Campus Main Gate</option>
+            <option value="Student Center (Demo)">Student Center</option>
+            <option value="Library Entrance (Demo)">Library Entrance</option>
+          </select>
+        </label>
+        <div class="tb-total-line"><strong>Total</strong><strong id="cart-total">NT$0</strong></div>
+        <button type="button" id="review-order" class="tb-primary">Review Order</button>
+      </div>
+      <button type="button" data-close-dialog="cart-dialog" class="tb-secondary">Continue Shopping</button>
+    </div>
+  </dialog>
+
+  <dialog id="review-dialog" class="tb-dialog" aria-labelledby="review-title">
+    <button type="button" class="tb-close" data-close-dialog="review-dialog" aria-label="Close">×</button>
+    <div class="tb-dialog-body">
+      <h2 id="review-title">Order Summary (Demo)</h2>
+      <div id="review-details"></div>
+      <p class="tb-muted">This is only a preview. No order is submitted to a restaurant.</p>
+      <button type="button" id="confirm-demo-order" class="tb-primary">Confirm Demo Order</button>
+      <button type="button" id="back-to-cart" class="tb-secondary">Back to Cart</button>
+    </div>
+  </dialog>
+  <div id="cart-toast" role="status" aria-live="polite" class="tb-toast" hidden></div>
 
   <script src="js/script.js"></script>
 </body>
