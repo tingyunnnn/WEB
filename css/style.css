@@ -1,16 +1,17 @@
 /* ==TideBites — Base Typography== */
 body, p, td, span, label {font-family: 'Lato', sans-serif;}
-h1, h2 {font-family: 'Playfair Display', serif;}
-h3, h4, h5, h6 {font-family: 'Playfair Display', serif; letter-spacing: 0.01em;}
+h1, h2, h4, h5 {font-family: 'Alex Brush', serif;}
+h3 {font-family: 'Playfair Display', serif; letter-spacing: 0.01em;}
 button, a, .w3-bar-item {font-family: 'Raleway', sans-serif;}
+h1 {font-size: 3.3rem; margin: 0.5rem 0rem 0rem 0rem;}
 h4 {font-size: 1.3rem; font-weight: 700; line-height: 1.4;}
 p {font-size: 1rem; line-height: 1.8;}
 
-body.w3-light-grey {
+body.w3-light-grey, #contact {
   background-color: #66B6BD!important;
 }
-#about, #contact {
-  background-color: #ffffff;
+#about {
+  background-color: #e2edf3;
 }
 
 /* == Menu Grid == */
@@ -49,6 +50,7 @@ body.w3-light-grey {
   display: flex;
   flex-direction: column;
   background-image: url("../assets/images/beach.jpg"); 
+  background-image: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url("../assets/images/beach.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -68,17 +70,15 @@ body.w3-light-grey {
   font-family: 'Playfair Display', serif;
   font-size: 1.4rem;
   font-weight: 700;
-  text-shadow: 0 1px 1px rgba(0,0,0,0.65), 0 0 2px rgba(0,0,0,0.4);
 }
 
 /* 類別 · 價格 */
 .menu-grid article .card-meta {
-  margin: 0 0 8px;
+  margin: 0 0 4px;
   font-family: 'Lato', sans-serif;
-  font-size: 0.82rem;
+  font-size: 1rem;
   letter-spacing: 0.05em;
-  color: #806559;
-  text-shadow: 0 1px 1px rgba(0,0,0,0.55);
+  color: #15955c;
 }
 
 /* 說明文字 */
@@ -87,8 +87,8 @@ body.w3-light-grey {
   font-family: 'Lato', sans-serif;
   font-size: 0.92rem;
   line-height: 1.75;
-  color: #806559;
-  text-shadow: 0 1px 1px rgba(0,0,0,0.55);
+  font-weight: 600;
+  color: #38271f;
 }
 
 /* == SVG == */
@@ -104,10 +104,12 @@ body.w3-light-grey {
 
 /* == 分頁列 == */
 .pagination-wrap {
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 24px 0 32px;
+  box-sizing: border-box;
 }
 .pagination-wrap .w3-bar {
   display: inline-flex;
@@ -133,8 +135,12 @@ body.w3-light-grey {
 }
 
 /* ==About TideBites — 段落文字== */
+#about{
+  background-color: #E2EDF3;
+}
+
 #about h4 {
-  font-size: 1.2rem;
+  font-size: 2.3rem;
   font-weight: 700;
   margin-bottom: 10px;
 }
@@ -158,7 +164,7 @@ body.w3-light-grey {
 }
 
 #about .w3-grid > div h5 {
-  font-size: 0.95rem;
+  font-size: 1.3rem;
   font-weight: 700;
   margin: 0 0 10px;
   line-height: 1.4;
@@ -194,7 +200,7 @@ body.w3-light-grey {
 
 /* ==Student Discount 區塊== */
 #contact h4 {
-  font-size: 1.2rem;
+  font-size: 2.3rem;
   font-weight: 700;
   margin-bottom: 8px;
 }
@@ -245,23 +251,17 @@ body.w3-light-grey {
   background: none !important;
 }
 #portfolio .w3-container {
-  padding-top: 20px;
+  padding-top: 0px;
   padding-bottom: 4px;
-}
-#portfolio h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 8px;
-  color: #ffffff;
-  text-shadow: 0 2px 8px rgba(0, 60, 100, 0.3);
 }
 #portfolio > .w3-container > p {
   font-size: 0.95rem;
   line-height: 1.7;
   margin-bottom: 12px;
 }
-#portfolio p {
+#portfolio h2 {
   color: rgba(255,255,255,0.92);
+  font-weight: 700;
 }
 #portfolio .w3-section {
   border-color: rgba(255,255,255,0.35);
@@ -368,7 +368,7 @@ footer a:hover {
   100% {
     transform: rotate(10deg);
   }
-}
+} 
 
 /* ==Footer== */
 footer h3 {
