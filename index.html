@@ -58,7 +58,6 @@
         <h1><img src="assets/images/icon.png" style="margin-right:2rem; width:150px; height:auto;"><b>Catch a Wave of flavor!</b></h1>
         <h2 style="font-size: 1.8rem;">Comforting meals, cool treats, and a splash of summer for your next study break.</h2>
         <div class="w3-section w3-bottombar w3-padding-16">
-          <span class="w3-margin-right">Filter:</span>
           <button type="button" class="w3-button w3-black filter-button" data-category="all">ALL</button>
           <button type="button" class="w3-button w3-white filter-button" data-category="meals"><img src="assets/icons/lunch.png" alt="Food" style="width:16px;height:16px;margin-right:6px;vertical-align:middle">MEALS</button>
           <button type="button" class="w3-button w3-white w3-hide-small filter-button" data-category="desserts"><img src="assets/icons/cupcake.png" alt="Dessert" style="width:16px;height:16px;margin-right:6px;vertical-align:middle">DESSERTS</button>
@@ -141,11 +140,11 @@
         </div>
       </article>
       <article data-id="10" data-category="desserts" tabindex="0" role="button" aria-label="View dish details">
-        <img src="assets/images/peanut-rice-dumplings.jpg" alt="White glutinous rice dumplings with peanut powder in a dark sweet sauce." class="w3-hover-opacity" style="width:100%">
+        <img src="assets/images/peanut-rice-dumplings.jpg" alt="White glutinous tang yuan coated with peanut powder in a dark sweet sauce." class="w3-hover-opacity" style="width:100%">
         <div class="w3-container w3-white">
-          <p class="card-title">Peanut Rice Dumplings</p>
+          <p class="card-title">Peanut Tang Yuan</p>
           <p class="card-meta">Desserts · NT$79 (proposed)</p>
-          <p class="card-desc">Soft and chewy glutinous rice dumplings topped with crushed peanut powder and served in a sweet sauce. A cozy Taiwanese dessert.</p>
+          <p class="card-desc">Soft and chewy glutinous tang yuan topped with crushed peanut powder and served in a sweet sauce. A cozy Taiwanese dessert.</p>
         </div>
       </article>
     </div>
@@ -165,30 +164,35 @@
     <!-- About Us section -->
     <section id="about" class="w3-container w3-padding-large" >
       <h4><b>About TideBites</b></h4>
-      <p>Welcome to TideBites, a virtual restaurant concept made for campus life. From hearty bowls to icy desserts, find a little happiness between classes.</p><p>Inspired by summer waves and carefree beach days, we bring a playful splash of energy to your study break. Pick a comforting meal, discover a cool treat, and Catch a Wave of Flavor!</p>
+      <p>Welcome to TideBites, a virtual restaurant concept made for campus life.<br> From hearty bowls to icy desserts, find a little happiness between classes.<br>Inspired by summer waves and carefree beach days, we bring a playful splash of energy to your study break. Pick a comforting meal, discover a cool treat, and Catch a Wave of Flavor!</p>
       <hr>
 
       <!-- Why Choose Us -->
       <h4>Why Choose Us</h4>
       <div class="w3-grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:16px">
-        <div class="w3-center w3-padding-16 w3-border" style="background-color: #fbcdc5;">
+        <div class="w3-center w3-padding-16 w3-border" style="background-color: #fde1dc; position: relative; overflow: hidden;">
+          <i class="fa fa-leaf w3-xxlarge w3-text-teal"></i>
           <h5><b>Comfort in Every Bite</b></h5>
           <p class="w3-text-grey">Warm rice bowls and flavorful noodles bring familiar favorites to your study day.</p>
+          <img src="assets/images/coral1.png" alt="coral" style="position: absolute; right: 8px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
         </div>
-        <div class="w3-center w3-padding-16 w3-border" style="background-color: #f8e6be;">
+        <div class="w3-center w3-padding-16 w3-border" style="background-color: #fbf0d8; position: relative; overflow: hidden;">
           <i class="fa fa-tag w3-xxlarge w3-text-teal"></i>
           <h5><b>Student-Friendly Picks</b></h5>
           <p class="w3-text-grey">Explore satisfying meals, sweet treats, and proposed deals with student budgets in mind.</p>
+          <img src="assets/images/coral10.png" alt="coral" style="position: absolute; left: 8px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
         </div>
-        <div class="w3-center w3-padding-16 w3-border" style="background-color: #d9eef9;">
+        <div class="w3-center w3-padding-16 w3-border" style="background-color: #d9eef9; position: relative; overflow: hidden;">
           <i class="fa fa-bolt w3-xxlarge w3-text-teal"></i>
           <h5><b>Made for Campus Life</b></h5>
           <p class="w3-text-grey">Browse for lunch between lectures or a little reward after a long study session.</p>
+          <img src="assets/images/coral7.png" alt="coral" style="position: absolute; left: 8px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
         </div>
-        <div class="w3-center w3-padding-16 w3-border" style="background-color: #dcd5e9;">
+        <div class="w3-center w3-padding-16 w3-border" style="background-color: #eae6f2; position: relative; overflow: hidden;">
           <i class="fa fa-heart w3-xxlarge w3-text-teal"></i>
           <h5><b>A Splash of Summer</b></h5>
           <p class="w3-text-grey">A youthful wave-inspired concept brings sunshine, energy, and a little fun to campus food.</p>
+          <img src="assets/images/coral2.png" alt="coral" style="position: absolute; right: 8px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
         </div>
       </div>
       <hr>
@@ -244,29 +248,40 @@
       <!-- FAQ -->
       <h4>Frequently Asked Questions</h4>
       <div class="w3-grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:16px">
-        <div class="w3-white w3-border w3-padding-16">
+        <div class="w3-border w3-padding-16" style="background-color: #f8e2ec; position: relative; overflow: hidden;">
           <p><b><i class="fa fa-question-circle w3-text-teal w3-margin-right"></i>What is TideBites?</b></p>
           <p class="w3-text-grey">A playful, wave-inspired virtual restaurant concept for college students, with comforting meals and refreshing treats.</p>
+          <img src="assets/images/coral4.png" alt="coral" style="position: absolute; left: 16px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
         </div>
-        <div class="w3-white w3-border w3-padding-16">
+        
+        <div class="w3-border w3-padding-16" style="background-color: #eee1ee; position: relative; overflow: hidden;">
           <p><b><i class="fa fa-question-circle w3-text-teal w3-margin-right"></i>Can I visit a physical restaurant?</b></p>
           <p class="w3-text-grey">TideBites is a class-project virtual restaurant concept, with no physical storefront.</p>
+          <img src="assets/images/coral11.png" alt="coral" style="position: absolute; right: 48px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
         </div>
-        <div class="w3-white w3-border w3-padding-16">
+        
+        <div class="w3-border w3-padding-16" style="background-color: #f2f7db; position: relative; overflow: hidden;">
           <p><b><i class="fa fa-question-circle w3-text-teal w3-margin-right"></i>Can I order here?</b></p>
           <p class="w3-text-grey">Not yet. This Phase I website is a menu preview; online orders and payments are not active.</p>
+          <img src="assets/images/coral13.png" alt="coral" style="position: absolute; left: 24px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
         </div>
-        <div class="w3-white w3-border w3-padding-16">
+        
+        <div class="w3-border w3-padding-16" style="background-color: #e7f4fb; position: relative; overflow: hidden;">
           <p><b><i class="fa fa-question-circle w3-text-teal w3-margin-right"></i>How does the student deal work?</b></p>
           <p class="w3-text-grey">We propose a 10% student discount. Eligibility and verification would be finalized before ordering launches.</p>
+          <img src="assets/images/coral3.png" alt="coral" style="position: absolute; right: 50px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
         </div>
-        <div class="w3-white w3-border w3-padding-16">
+        
+        <div class="w3-border w3-padding-16" style="background-color: #ecf7f7; position: relative; overflow: hidden;">
           <p><b><i class="fa fa-question-circle w3-text-teal w3-margin-right"></i>Do you have desserts?</b></p>
-          <p class="w3-text-grey">Yes! Discover Watermelon Snow Ice, Mango Snow Ice, and Peanut Rice Dumplings.</p>
+          <p class="w3-text-grey">Yes! Discover Watermelon Snow Ice, Mango Snow Ice, and Peanut Tang Yuan.</p>
+          <img src="assets/images/coral5.png" alt="coral" style="position: absolute; left: 32px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
         </div>
-        <div class="w3-white w3-border w3-padding-16">
+        
+        <div class="w3-border w3-padding-16" style="background-color: #fdeceb; position: relative; overflow: hidden;">
           <p><b><i class="fa fa-question-circle w3-text-teal w3-margin-right"></i>Can I filter dishes or enlarge photos?</b></p>
           <p class="w3-text-grey">These interactions are planned for a future team update. All ten dishes are currently shown in this preview.</p>
+          <img src="assets/images/coral6.png" alt="coral" style="position: absolute; right: 18px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
         </div>
       </div>
     </section>
