@@ -34,9 +34,6 @@
     <a href="#portfolio" onclick="w3_close()" class="w3-bar-item w3-button w3-padding w3-text-teal"><img src="assets/icons/menu.png" alt="Menu" style="width:16px;height:16px;margin-right:8px;vertical-align:middle">MENU</a>
     <a href="#about" onclick="w3_close()" class="w3-bar-item w3-button w3-padding"><img src="assets/icons/information-button.png" alt="About Us" style="width:16px;height:16px;margin-right:8px;vertical-align:middle">ABOUT US</a>
     <a href="#contact" onclick="w3_close()" class="w3-bar-item w3-button w3-padding"><img src="assets/icons/discount.png" alt="Student Discount" style="width:16px;height:16px;margin-right:8px;vertical-align:middle">STUDENT DISCOUNT</a>
-    <button type="button" id="open-cart" class="w3-bar-item w3-button w3-padding cart-nav-btn" aria-label="View shopping cart">
-      <i class="fa fa-shopping-cart" aria-hidden="true"></i> CART <span id="cart-badge" class="cart-badge" hidden>0</span>
-    </button>
   </div>
     <div class="sidebar-seaweed-container">
       <img src="assets/images/seaweed.png" alt="Seaweed" class="w3-seaweed">
@@ -66,7 +63,8 @@
       </div>
     </header>
 
-    <!-- Food items grid -->
+    <!-- Food items grid + Pagination wrapper -->
+    <div class="menu-section-wrap">
     <div class="menu-grid" id="menu-grid">
       <article data-id="1" data-category="meals" tabindex="0" role="button" aria-label="View dish details">
         <img src="assets/images/thai-basil-pork-rice.jpg" alt="Thai basil minced pork and vegetables served with rice and two fried eggs." class="w3-hover-opacity" style="width:100%">
@@ -155,6 +153,7 @@
       <div class="w3-bar" id="pagination-bar">
       </div>
     </div>
+    </div> <!-- end menu-section-wrap -->
 
     <div class="wave-divider">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
@@ -243,31 +242,68 @@
 
       <!-- FAQ -->
       <h4>Frequently Asked Questions</h4>
-      <div class="w3-grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:16px">
-        <div class="w3-white w3-border w3-padding-16">
-          <p><b><i class="fa fa-question-circle w3-text-teal w3-margin-right"></i>What is TideBites?</b></p>
-          <p class="w3-text-grey">A playful, wave-inspired virtual restaurant concept for college students, with comforting meals and refreshing treats.</p>
+      <div class="faq-grid">
+
+        <div class="faq-card">
+          <div class="faq-question">
+            <span><i class="fa fa-question-circle faq-icon"></i><b>What is TideBites?</b></span>
+            <span class="faq-arrow-wrap"><img src="assets/icons/arrow.jpeg" alt="toggle" class="faq-arrow"></span>
+          </div>
+          <div class="faq-answer">
+            <p>A playful, wave-inspired virtual restaurant concept for college students, with comforting meals and refreshing treats.</p>
+          </div>
         </div>
-        <div class="w3-white w3-border w3-padding-16">
-          <p><b><i class="fa fa-question-circle w3-text-teal w3-margin-right"></i>Can I visit a physical restaurant?</b></p>
-          <p class="w3-text-grey">TideBites is a class-project virtual restaurant concept, with no physical storefront.</p>
+
+        <div class="faq-card">
+          <div class="faq-question">
+            <span><i class="fa fa-question-circle faq-icon"></i><b>Can I visit a physical restaurant?</b></span>
+            <span class="faq-arrow-wrap"><img src="assets/icons/arrow.jpeg" alt="toggle" class="faq-arrow"></span>
+          </div>
+          <div class="faq-answer">
+            <p>TideBites is a class-project virtual restaurant concept, with no physical storefront.</p>
+          </div>
         </div>
-        <div class="w3-white w3-border w3-padding-16">
-          <p><b><i class="fa fa-question-circle w3-text-teal w3-margin-right"></i>Can I order here?</b></p>
-          <p class="w3-text-grey">Not yet. This Phase I website is a menu preview; online orders and payments are not active.</p>
+
+        <div class="faq-card">
+          <div class="faq-question">
+            <span><i class="fa fa-question-circle faq-icon"></i><b>Can I order here?</b></span>
+            <span class="faq-arrow-wrap"><img src="assets/icons/arrow.jpeg" alt="toggle" class="faq-arrow"></span>
+          </div>
+          <div class="faq-answer">
+            <p>Not yet. This Phase I website is a menu preview; online orders and payments are not active.</p>
+          </div>
         </div>
-        <div class="w3-white w3-border w3-padding-16">
-          <p><b><i class="fa fa-question-circle w3-text-teal w3-margin-right"></i>How does the student deal work?</b></p>
-          <p class="w3-text-grey">We propose a 10% student discount. Eligibility and verification would be finalized before ordering launches.</p>
+
+        <div class="faq-card">
+          <div class="faq-question">
+            <span><i class="fa fa-question-circle faq-icon"></i><b>How does the student deal work?</b></span>
+            <span class="faq-arrow-wrap"><img src="assets/icons/arrow.jpeg" alt="toggle" class="faq-arrow"></span>
+          </div>
+          <div class="faq-answer">
+            <p>We propose a 10% student discount. Eligibility and verification would be finalized before ordering launches.</p>
+          </div>
         </div>
-        <div class="w3-white w3-border w3-padding-16">
-          <p><b><i class="fa fa-question-circle w3-text-teal w3-margin-right"></i>Do you have desserts?</b></p>
-          <p class="w3-text-grey">Yes! Discover Watermelon Snow Ice, Mango Snow Ice, and Peanut Rice Dumplings.</p>
+
+        <div class="faq-card">
+          <div class="faq-question">
+            <span><i class="fa fa-question-circle faq-icon"></i><b>Do you have desserts?</b></span>
+            <span class="faq-arrow-wrap"><img src="assets/icons/arrow.jpeg" alt="toggle" class="faq-arrow"></span>
+          </div>
+          <div class="faq-answer">
+            <p>Yes! Discover Watermelon Snow Ice, Mango Snow Ice, and Peanut Rice Dumplings.</p>
+          </div>
         </div>
-        <div class="w3-white w3-border w3-padding-16">
-          <p><b><i class="fa fa-question-circle w3-text-teal w3-margin-right"></i>Can I filter dishes or enlarge photos?</b></p>
-          <p class="w3-text-grey">These interactions are planned for a future team update. All ten dishes are currently shown in this preview.</p>
+
+        <div class="faq-card">
+          <div class="faq-question">
+            <span><i class="fa fa-question-circle faq-icon"></i><b>Can I filter dishes or enlarge photos?</b></span>
+            <span class="faq-arrow-wrap"><img src="assets/icons/arrow.jpeg" alt="toggle" class="faq-arrow"></span>
+          </div>
+          <div class="faq-answer">
+            <p>These interactions are planned for a future team update. All ten dishes are currently shown in this preview.</p>
+          </div>
         </div>
+
       </div>
     </section>
 
@@ -328,6 +364,13 @@
     </div>
 
   </main>
+
+  <!-- Floating Shopping Cart -->
+  <button type="button" id="open-cart" class="floating-cart"
+          aria-label="View shopping cart">
+      <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+      <span id="cart-badge" class="cart-badge" hidden>0</span>
+  </button>
 
   <!-- Demo ordering: client-side only; no real orders or payments are submitted -->
   <dialog id="dish-dialog" class="tb-dialog" aria-labelledby="dish-dialog-title">

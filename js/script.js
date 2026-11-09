@@ -7,9 +7,19 @@ function w3_open() {
 }
 
 function w3_close() {
-  sidebar.style.display = "none";
+  // 只在小螢幕 (≤992px) 才收起 sidebar，桌面版保持 w3.css 的 display:block!important
+  if (window.innerWidth <= 992) {
+    sidebar.style.display = "none";
+  }
   overlay.style.display = "none";
 }
+
+// ========== FAQ 卡片點擊展開 ==========
+document.querySelectorAll('.faq-card').forEach(function (card) {
+  card.addEventListener('click', function () {
+    card.classList.toggle('open');
+  });
+});
 
 // ========== Menu Filtering + Pagination + Shopping Cart ==========
 (function () {
@@ -363,8 +373,10 @@ window.addEventListener('scroll', function () {
   }, 100);
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-  const overlay = document.getElementById("welcome-overlay");
+// ========== Welcome Overlay ==========
+// script 在 </body> 之前，DOM 已解析完畢，直接執行即可，不需 DOMContentLoaded。
+(function () {
+  const welcomeOverlay = document.getElementById("welcome-overlay");
   const typewriterEl = document.getElementById("typewriter-container");
   const hintEl = document.getElementById("welcome-hint");
   const dolphinEl = document.getElementById("welcome-dolphin");
@@ -378,29 +390,28 @@ document.addEventListener("DOMContentLoaded", function () {
       typewriterEl.textContent += sloganText.charAt(charIndex);
       typewriterEl.style.width = ((charIndex + 1) / sloganText.length) * 100 + "%";
       charIndex++;
-      setTimeout(typeWriter, 70); 
-    } 
-    else {
+      setTimeout(typeWriter, 70);
+    } else {
       triggerDolphinJump();
     }
   }
   setTimeout(typeWriter, 400);
 
-function triggerDolphinJump() {
+  function triggerDolphinJump() {
     const iconEl = document.getElementById("welcome-icon");
     const iconRect = iconEl.getBoundingClientRect();
-    
+
     dolphinEl.style.top = (iconRect.top + iconRect.height / 2 - 80) + "px";
     dolphinEl.style.left = (iconRect.left + iconRect.width / 2 - 90) + "px";
     dolphinEl.classList.add("animate-dolphin");
 
     setTimeout(() => {
       hintEl.classList.add("show");
-    }, 0); 
+    }, 0);
   }
-  
+
   let hasEntered = false;
-  overlay.addEventListener("click", function () {
+  welcomeOverlay.addEventListener("click", function () {
     if (hasEntered) return;
     hasEntered = true;
 
@@ -411,9 +422,9 @@ function triggerDolphinJump() {
       });
     }
 
-    overlay.style.opacity = "0";
+    welcomeOverlay.style.opacity = "0";
     setTimeout(() => {
-      overlay.style.display = "none";
+      welcomeOverlay.style.display = "none";
     }, 800);
   });
-});
+})();
