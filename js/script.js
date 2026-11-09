@@ -16,8 +16,18 @@ function w3_close() {
 
 // ========== FAQ 卡片點擊展開 ==========
 document.querySelectorAll('.faq-card').forEach(function (card) {
-  card.addEventListener('click', function () {
-    card.classList.toggle('open');
+  const trigger = card.querySelector('.faq-question');
+  if (!trigger) return;
+  function toggleFaq() {
+    const isOpen = card.classList.toggle('open');
+    trigger.setAttribute('aria-expanded', String(isOpen));
+  }
+  trigger.addEventListener('click', toggleFaq);
+  trigger.addEventListener('keydown', function (event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      toggleFaq();
+    }
   });
 });
 

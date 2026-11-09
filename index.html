@@ -24,9 +24,9 @@
   <audio id="bg-music" src="assets/audio/backgroundmusic.mp3" preload="auto" loop></audio>
 
   <!-- Sidebar navigation -->
-  <nav class="w3-sidebar w3-collapse w3-animate-left" style="z-index:3;width:300px" id="mySidebar">
+  <nav class="w3-sidebar w3-collapse w3-animate-left" style="z-index:3;width:300px" id="mySidebar" aria-label="Main navigation">
   <div class="w3-container w3-padding-16">
-    <button onclick="w3_close()" class="w3-button w3-hide-large w3-right w3-jumbo" title="Close menu">×</button>
+    <button onclick="w3_close()" class="w3-button w3-hide-large sidebar-close" aria-label="Close menu" title="Close menu">×</button>
     <h4><b>TideBites</b></h4>
     <p class="w3-text-grey">Catch a Wave of Flavor!</p>
   </div>
@@ -50,14 +50,14 @@
 
     <!-- Menu section header -->
     <header id="portfolio">
-      <button class="w3-button w3-hide-large w3-xxlarge w3-hover-text-grey" onclick="w3_open()"><i class="fa fa-bars"></i></button>
+      <button class="w3-button w3-hide-large w3-xxlarge w3-hover-text-grey mobile-menu-toggle" aria-label="Open navigation menu" onclick="w3_open()"><i class="fa fa-bars"></i></button>
       <div class="w3-container">
         <h1><img src="assets/images/icon.png" style="margin-right:2rem; width:150px; height:auto;"><b>Catch a Wave of flavor!</b></h1>
         <h2 style="font-size: 1.8rem;">Comforting meals, cool treats, and a splash of summer for your next study break.</h2>
         <div class="w3-section w3-bottombar w3-padding-16">
           <button type="button" class="w3-button w3-black filter-button" data-category="all">ALL</button>
           <button type="button" class="w3-button w3-white filter-button" data-category="meals"><img src="assets/icons/lunch.png" alt="Food" style="width:16px;height:16px;margin-right:6px;vertical-align:middle">MEALS</button>
-          <button type="button" class="w3-button w3-white w3-hide-small filter-button" data-category="desserts"><img src="assets/icons/cupcake.png" alt="Dessert" style="width:16px;height:16px;margin-right:6px;vertical-align:middle">DESSERTS</button>
+          <button type="button" class="w3-button w3-white filter-button" data-category="desserts"><img src="assets/icons/cupcake.png" alt="Dessert" style="width:16px;height:16px;margin-right:6px;vertical-align:middle">DESSERTS</button>
         </div>
       </div>
     </header>
@@ -66,7 +66,7 @@
     <div class="menu-section-wrap">
     <div class="menu-grid" id="menu-grid">
       <article data-id="1" data-category="meals" tabindex="0" role="button" aria-label="View dish details">
-        <img src="assets/images/thai-basil-pork-rice.jpg" alt="Thai basil minced pork and vegetables served with rice and two fried eggs." class="w3-hover-opacity" style="width:100%">
+        <img src="assets/images/thai-basil-pork-rice.jpg" alt="Thai basil minced pork and vegetables served with rice and two fried eggs." class="menu-dish-image" style="width:100%">
         <div class="w3-container w3-white">
           <p class="card-title">Thai Basil Pork Rice</p>
           <p class="card-meta">Meals · NT$129 (proposed)</p>
@@ -74,7 +74,7 @@
         </div>
       </article>
       <article data-id="2" data-category="meals" tabindex="0" role="button" aria-label="View dish details">
-        <img src="assets/images/chicken-oyakodon-bowl.jpg" alt="Chicken and egg rice bowl topped with green onions, sesame, and vegetables." class="w3-hover-opacity" style="width:100%">
+        <img src="assets/images/chicken-oyakodon-bowl.jpg" alt="Chicken and egg rice bowl topped with green onions, sesame, and vegetables." class="menu-dish-image" style="width:100%">
         <div class="w3-container w3-white">
           <p class="card-title">Chicken Oyakodon Bowl</p>
           <p class="card-meta">Meals · NT$139 (proposed)</p>
@@ -82,7 +82,7 @@
         </div>
       </article>
       <article data-id="3" data-category="meals" tabindex="0" role="button" aria-label="View dish details">
-        <img src="assets/images/taiwanese-fish-ball-noodle-soup.jpg" alt="Taiwanese noodle soup with fish balls, sliced chicken, and green vegetables." class="w3-hover-opacity" style="width:100%">
+        <img src="assets/images/taiwanese-fish-ball-noodle-soup.jpg" alt="Taiwanese noodle soup with fish balls, sliced chicken, and green vegetables." class="menu-dish-image" style="width:100%">
         <div class="w3-container w3-white">
           <p class="card-title">Taiwanese Fish Ball Noodle Soup</p>
           <p class="card-meta">Meals · NT$139 (proposed)</p>
@@ -90,7 +90,7 @@
         </div>
       </article>
       <article data-id="4" data-category="meals" tabindex="0" role="button" aria-label="View dish details">
-        <img src="assets/images/roasted-chicken-set-meal.jpg" alt="Roasted chicken leg set with rice, vegetables, and small side dishes." class="w3-hover-opacity" style="width:100%">
+        <img src="assets/images/roasted-chicken-set-meal.jpg" alt="Roasted chicken leg set with rice, vegetables, and small side dishes." class="menu-dish-image" style="width:100%">
         <div class="w3-container w3-white">
           <p class="card-title">Roasted Chicken Set Meal</p>
           <p class="card-meta">Meals · NT$169 (proposed)</p>
@@ -98,7 +98,7 @@
         </div>
       </article>
       <article data-id="5" data-category="meals" tabindex="0" role="button" aria-label="View dish details">
-        <img src="assets/images/tomato-udon-soup.jpg" alt="Tomato broth udon with sliced meat, egg, green onions, and fish cake." class="w3-hover-opacity" style="width:100%">
+        <img src="assets/images/tomato-udon-soup.jpg" alt="Tomato broth udon with sliced meat, egg, green onions, and fish cake." class="menu-dish-image" style="width:100%">
         <div class="w3-container w3-white">
           <p class="card-title">Tomato Udon Soup</p>
           <p class="card-meta">Meals · NT$159 (proposed)</p>
@@ -106,7 +106,7 @@
         </div>
       </article>
       <article data-id="6" data-category="meals" tabindex="0" role="button" aria-label="View dish details">
-        <img src="assets/images/beef-and-egg-noodles.jpg" alt="Beef slices and a fried egg served over noodles in a dark bowl." class="w3-hover-opacity" style="width:100%">
+        <img src="assets/images/beef-and-egg-noodles.jpg" alt="Beef slices and a fried egg served over noodles in a dark bowl." class="menu-dish-image" style="width:100%">
         <div class="w3-container w3-white">
           <p class="card-title">Beef and Egg Noodles</p>
           <p class="card-meta">Meals · NT$179 (proposed)</p>
@@ -114,7 +114,7 @@
         </div>
       </article>
       <article data-id="7" data-category="meals" tabindex="0" role="button" aria-label="View dish details">
-        <img src="assets/images/chilled-pork-noodle-bowl.jpg" alt="Chilled noodles topped with pork, edamame, cucumber, lotus root, and corn." class="w3-hover-opacity" style="width:100%">
+        <img src="assets/images/chilled-pork-noodle-bowl.jpg" alt="Chilled noodles topped with pork, edamame, cucumber, lotus root, and corn." class="menu-dish-image" style="width:100%">
         <div class="w3-container w3-white">
           <p class="card-title">Chilled Pork Noodle Bowl</p>
           <p class="card-meta">Meals · NT$149 (proposed)</p>
@@ -122,7 +122,7 @@
         </div>
       </article>
       <article data-id="8" data-category="desserts" tabindex="0" role="button" aria-label="View dish details">
-        <img src="assets/images/watermelon-snow-ice.jpg" alt="White shaved milk ice generously topped with red watermelon cubes." class="w3-hover-opacity" style="width:100%">
+        <img src="assets/images/watermelon-snow-ice.jpg" alt="White shaved milk ice generously topped with red watermelon cubes." class="menu-dish-image" style="width:100%">
         <div class="w3-container w3-white">
           <p class="card-title">Watermelon Snow Ice</p>
           <p class="card-meta">Desserts · NT$99 (proposed)</p>
@@ -130,7 +130,7 @@
         </div>
       </article>
       <article data-id="9" data-category="desserts" tabindex="0" role="button" aria-label="View dish details">
-        <img src="assets/images/mango-snow-ice.jpg" alt="A bowl of yellow shaved milk ice topped with fresh mango chunks." class="w3-hover-opacity" style="width:100%">
+        <img src="assets/images/mango-snow-ice.jpg" alt="A bowl of yellow shaved milk ice topped with fresh mango chunks." class="menu-dish-image" style="width:100%">
         <div class="w3-container w3-white">
           <p class="card-title">Mango Snow Ice</p>
           <p class="card-meta">Desserts · NT$109 (proposed)</p>
@@ -138,7 +138,7 @@
         </div>
       </article>
       <article data-id="10" data-category="desserts" tabindex="0" role="button" aria-label="View dish details">
-        <img src="assets/images/peanut-rice-dumplings.jpg" alt="White glutinous tang yuan coated with peanut powder in a dark sweet sauce." class="w3-hover-opacity" style="width:100%">
+        <img src="assets/images/peanut-rice-dumplings.jpg" alt="White glutinous tang yuan coated with peanut powder in a dark sweet sauce." class="menu-dish-image" style="width:100%">
         <div class="w3-container w3-white">
           <p class="card-title">Peanut Tang Yuan</p>
           <p class="card-meta">Desserts · NT$79 (proposed)</p>
@@ -245,41 +245,75 @@
       <hr class="w3-opacity w3-margin-top">
 
       <!-- FAQ -->
-      <h4>Frequently Asked Questions</h4>
-      <div class="w3-grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:16px">
-        <div class="w3-border w3-padding-16" style="background-color: #f8e2ec; position: relative; overflow: hidden;">
-          <p><b><i class="fa fa-question-circle w3-text-teal w3-margin-right"></i>What is TideBites?</b></p>
+      <div class="faq-heading">
+        <span class="section-eyebrow"><i class="fa fa-life-ring" aria-hidden="true"></i> HERE TO HELP</span>
+        <h4>Frequently Asked Questions</h4>
+        <p>Curious about TideBites? Tap a card to discover more.</p>
+      </div>
+      <div class="w3-grid faq-grid">
+        <div class="w3-border w3-padding-16 faq-card" style="background-color: #f8e2ec; position: relative; overflow: hidden;">
+          <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+          <p><b>What is TideBites?</b></p>
+            <span class="faq-arrow-wrap" aria-hidden="true"><i class="fa fa-chevron-down"></i></span>
+          </div>
+          <div class="faq-answer">
           <p class="w3-text-grey">A playful, wave-inspired virtual restaurant concept for college students, with comforting meals and refreshing treats.</p>
+          </div>
           <img src="assets/images/coral4.png" alt="coral" style="position: absolute; left: 16px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
         </div>
         
-        <div class="w3-border w3-padding-16" style="background-color: #eee1ee; position: relative; overflow: hidden;">
-          <p><b><i class="fa fa-question-circle w3-text-teal w3-margin-right"></i>Can I visit a physical restaurant?</b></p>
+        <div class="w3-border w3-padding-16 faq-card" style="background-color: #eee1ee; position: relative; overflow: hidden;">
+          <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+          <p><b>Can I visit a physical restaurant?</b></p>
+            <span class="faq-arrow-wrap" aria-hidden="true"><i class="fa fa-chevron-down"></i></span>
+          </div>
+          <div class="faq-answer">
           <p class="w3-text-grey">TideBites is a class-project virtual restaurant concept, with no physical storefront.</p>
+          </div>
           <img src="assets/images/coral11.png" alt="coral" style="position: absolute; right: 48px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
         </div>
         
-        <div class="w3-border w3-padding-16" style="background-color: #f2f7db; position: relative; overflow: hidden;">
-          <p><b><i class="fa fa-question-circle w3-text-teal w3-margin-right"></i>Can I order here?</b></p>
-          <p class="w3-text-grey">Not yet. This Phase I website is a menu preview; online orders and payments are not active.</p>
+        <div class="w3-border w3-padding-16 faq-card" style="background-color: #f2f7db; position: relative; overflow: hidden;">
+          <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+          <p><b>Can I order here?</b></p>
+            <span class="faq-arrow-wrap" aria-hidden="true"><i class="fa fa-chevron-down"></i></span>
+          </div>
+          <div class="faq-answer">
+          <p class="w3-text-grey">You can build a demo order using the cart. No actual order or payment is sent.</p>
+          </div>
           <img src="assets/images/coral13.png" alt="coral" style="position: absolute; left: 24px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
         </div>
         
-        <div class="w3-border w3-padding-16" style="background-color: #e7f4fb; position: relative; overflow: hidden;">
-          <p><b><i class="fa fa-question-circle w3-text-teal w3-margin-right"></i>How does the student deal work?</b></p>
+        <div class="w3-border w3-padding-16 faq-card" style="background-color: #e7f4fb; position: relative; overflow: hidden;">
+          <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+          <p><b>How does the student deal work?</b></p>
+            <span class="faq-arrow-wrap" aria-hidden="true"><i class="fa fa-chevron-down"></i></span>
+          </div>
+          <div class="faq-answer">
           <p class="w3-text-grey">We propose a 10% student discount. Eligibility and verification would be finalized before ordering launches.</p>
+          </div>
           <img src="assets/images/coral3.png" alt="coral" style="position: absolute; right: 50px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
         </div>
         
-        <div class="w3-border w3-padding-16" style="background-color: #ecf7f7; position: relative; overflow: hidden;">
-          <p><b><i class="fa fa-question-circle w3-text-teal w3-margin-right"></i>Do you have desserts?</b></p>
+        <div class="w3-border w3-padding-16 faq-card" style="background-color: #ecf7f7; position: relative; overflow: hidden;">
+          <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+          <p><b>Do you have desserts?</b></p>
+            <span class="faq-arrow-wrap" aria-hidden="true"><i class="fa fa-chevron-down"></i></span>
+          </div>
+          <div class="faq-answer">
           <p class="w3-text-grey">Yes! Discover Watermelon Snow Ice, Mango Snow Ice, and Peanut Tang Yuan.</p>
+          </div>
           <img src="assets/images/coral5.png" alt="coral" style="position: absolute; left: 32px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
         </div>
         
-        <div class="w3-border w3-padding-16" style="background-color: #fdeceb; position: relative; overflow: hidden;">
-          <p><b><i class="fa fa-question-circle w3-text-teal w3-margin-right"></i>Can I filter dishes or enlarge photos?</b></p>
-          <p class="w3-text-grey">These interactions are planned for a future team update. All ten dishes are currently shown in this preview.</p>
+        <div class="w3-border w3-padding-16 faq-card" style="background-color: #fdeceb; position: relative; overflow: hidden;">
+          <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+          <p><b>Can I filter dishes or enlarge photos?</b></p>
+            <span class="faq-arrow-wrap" aria-hidden="true"><i class="fa fa-chevron-down"></i></span>
+          </div>
+          <div class="faq-answer">
+          <p class="w3-text-grey">Yes! Use the filter buttons to browse dishes, and click a dish to view its details.</p>
+          </div>
           <img src="assets/images/coral6.png" alt="coral" style="position: absolute; right: 18px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
         </div>
 
@@ -363,7 +397,7 @@
         <label for="dish-quantity">Quantity</label>
         <div class="tb-stepper">
           <button type="button" id="dish-minus" aria-label="Decrease quantity">−</button>
-          <input id="dish-quantity" type="number" min="1" max="99" value="1" inputmode="numeric">
+          <input id="dish-quantity" aria-label="Quantity" type="number" min="1" max="99" value="1" inputmode="numeric">
           <button type="button" id="dish-plus" aria-label="Increase quantity">+</button>
         </div>
       </div>
