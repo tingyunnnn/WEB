@@ -34,9 +34,6 @@
     <a href="#portfolio" onclick="w3_close()" class="w3-bar-item w3-button w3-padding w3-text-teal"><img src="assets/icons/menu.png" alt="Menu" style="width:16px;height:16px;margin-right:8px;vertical-align:middle">MENU</a>
     <a href="#about" onclick="w3_close()" class="w3-bar-item w3-button w3-padding"><img src="assets/icons/information-button.png" alt="About Us" style="width:16px;height:16px;margin-right:8px;vertical-align:middle">ABOUT US</a>
     <a href="#contact" onclick="w3_close()" class="w3-bar-item w3-button w3-padding"><img src="assets/icons/discount.png" alt="Student Discount" style="width:16px;height:16px;margin-right:8px;vertical-align:middle">STUDENT DISCOUNT</a>
-    <button type="button" id="open-cart" class="w3-bar-item w3-button w3-padding cart-nav-btn" aria-label="View shopping cart">
-      <i class="fa fa-shopping-cart" aria-hidden="true"></i> CART <span id="cart-badge" class="cart-badge" hidden>0</span>
-    </button>
   </div>
     <div class="sidebar-seaweed-container">
       <img src="assets/images/seaweed.png" alt="Seaweed" class="w3-seaweed">
@@ -65,7 +62,8 @@
       </div>
     </header>
 
-    <!-- Food items grid -->
+    <!-- Food items grid + Pagination wrapper -->
+    <div class="menu-section-wrap">
     <div class="menu-grid" id="menu-grid">
       <article data-id="1" data-category="meals" tabindex="0" role="button" aria-label="View dish details">
         <img src="assets/images/thai-basil-pork-rice.jpg" alt="Thai basil minced pork and vegetables served with rice and two fried eggs." class="w3-hover-opacity" style="width:100%">
@@ -154,6 +152,7 @@
       <div class="w3-bar" id="pagination-bar">
       </div>
     </div>
+    </div> <!-- end menu-section-wrap -->
 
     <div class="wave-divider">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
@@ -283,6 +282,7 @@
           <p class="w3-text-grey">These interactions are planned for a future team update. All ten dishes are currently shown in this preview.</p>
           <img src="assets/images/coral6.png" alt="coral" style="position: absolute; right: 18px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
         </div>
+
       </div>
     </section>
 
@@ -343,6 +343,13 @@
     </div>
 
   </main>
+
+  <!-- Floating Shopping Cart -->
+  <button type="button" id="open-cart" class="floating-cart"
+          aria-label="View shopping cart">
+      <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+      <span id="cart-badge" class="cart-badge" hidden>0</span>
+  </button>
 
   <!-- Demo ordering: client-side only; no real orders or payments are submitted -->
   <dialog id="dish-dialog" class="tb-dialog" aria-labelledby="dish-dialog-title">
