@@ -558,6 +558,35 @@ hr {
   display: block !important;
   animation: dolphinJumpArc 1.5s cubic-bezier(0.15, 0.46, 0.55, 0.94) forwards;
 }
+@media screen and (max-width: 390px) {
+  .welcome-dolphin {
+    width: 110px; 
+  }
+
+  @keyframes dolphinJumpArcSmall {
+    0% {
+      transform: translate(110px, 50px) rotate(20deg);
+      opacity: 0;
+    }
+    15% {
+      opacity: 1;
+    }
+    50% {
+      transform: translate(0px, -70px) rotate(-40deg); 
+    }
+    85% {
+      opacity: 1;
+    }
+    100% {
+      transform: translate(-120px, 60px) rotate(-85deg); 
+      opacity: 0;
+    }
+  }
+
+  .animate-dolphin {
+    animation: dolphinJumpArcSmall 1.5s cubic-bezier(0.15, 0.46, 0.55, 0.94) forwards;
+  }
+}
 
 @keyframes fishFloat {
   0% {
@@ -575,16 +604,25 @@ hr {
 }
 .floating-pufferfish {
   position: absolute;        
-  top: 20px;                 
-  right: 60px;               
-  width: 140px;
+  top: 1800px;                 
+  right: 80px;               
+  width: 160px;
   height: auto;
   cursor: pointer;
   animation: fishFloat 4s ease-in-out infinite;
   transition: transform 0.2s ease;
+  z-index: 10;
 }
 .floating-pufferfish:hover {
   transform: scale(1.1)!important;
+}
+
+@media screen and (max-width: 390px) {
+  .floating-pufferfish {
+    top: 3220px;          
+    right: 30px;         
+    width: 105px;         
+  }
 }
 
 @keyframes lightGlow {
@@ -606,8 +644,8 @@ hr {
 
 .submarine-container {
   position: absolute;
-  top: 2900px;
-  right: 170px;
+  top: 2880px;
+  right: 110px;
   transform: translateY(-50%);
   width: 150px; 
   height: auto;
@@ -651,6 +689,20 @@ hr {
   opacity: 1;
   animation: lightGlow 2s ease-in-out infinite alternate;
 }
+@media screen and (max-width: 390px) {
+  .submarine-container {
+    top: 5050px;          
+    right: 30px;         
+    width: 105px;   
+    transform: translateY(-50%);     
+  }
+  .submarine-container::before{       
+    top: 3%;      
+    right: 88%;   
+    width: 130px;   
+    height: 90px;
+  }
+}
 
 @keyframes octopusFloat {
   0% { transform: translateY(-50%) translate(0, 0) rotate(0deg); }
@@ -661,7 +713,7 @@ hr {
 
 .octopus-container {
   position: absolute;
-  right: 200px;
+  right: 400px;
   top: 0%;
   transform: translateY(-50%);
   cursor: pointer;
@@ -691,6 +743,18 @@ hr {
 .dynamic-ink.fade-in {
   opacity: 1;
   transform: scale(1);
+}
+@media screen and (max-width: 390px) {
+  .octopus-container {
+    right: 20px; 
+  }
+  .octopus-img {
+    width: 70px;
+  }
+  .dynamic-ink {
+  width: 40px;           
+  z-index: 15;
+  }
 }
 
 @keyframes swimLeftToRight {
@@ -762,6 +826,17 @@ hr {
   z-index: 11;
   animation: blink 0.8s infinite alternate ease-in-out;
 }
+@media screen and (max-width: 390px) {
+  .treasure-wrapper {
+    top: 575px;          
+    left: 20px;              
+  }
+  #treasureImg {
+  width: 90px; 
+  height: auto;
+  }
+}
+
 #crabImg {
   position: absolute;
   bottom: 0px;
@@ -771,6 +846,11 @@ hr {
   z-index: 5;
   pointer-events: none;
   transition: left linear;
+}
+@media screen and (max-width: 390px) {
+  #crabImg {
+    width: 60px;              
+  }
 }
 
 .section-fish-layer {
