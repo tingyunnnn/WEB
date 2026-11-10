@@ -225,7 +225,7 @@ header p{
   margin-bottom: 12px;
 }
 #contact .w3-grid > div h4 {
-  font-size: 1rem;
+  font-size: 1.5rem;
   font-weight: 700;
   margin: 0 0 10px;
   line-height: 1.4;
@@ -1196,4 +1196,130 @@ header #header-title{
 }
 @media (prefers-reduced-motion: reduce) {
   .wave-divider svg { animation: none; }
+}
+
+
+/* ===== Colorful TideBites Sidebar ===== */
+
+#mySidebar .w3-bar-block .w3-bar-item {
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,.6);
+    font-weight: 700;
+    transition: transform .25s ease,
+                box-shadow .25s ease,
+                filter .25s ease;
+}
+
+/* Blue shades */
+#mySidebar .w3-bar-item:nth-child(1) {
+    background: #d1edf9 !important;
+    color: #12516d !important;
+}
+
+#mySidebar .w3-bar-item:nth-child(2) {
+    background: #bce9fa !important;
+    color: #12516d !important;
+}
+
+#mySidebar .w3-bar-item:nth-child(3) {
+    background: #89d1ed !important;
+    color: #12516d !important;
+}
+
+#mySidebar .w3-bar-item:nth-child(4) {
+    background: #4fa8cf !important;
+    color: #083a56 !important;
+}
+
+/* Hover */
+#mySidebar .w3-bar-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 6px 16px rgba(0,80,110,.16);
+    filter: brightness(1.06);
+}
+
+
+/* ===== Student Discount Purple Cards ===== */
+
+/* Only the three discount cards */
+#contact > .w3-grid.w3-margin-top > div {
+    border: 1px solid rgba(255,255,255,.65);
+    box-shadow: 0 8px 24px rgba(80,55,140,.15);
+    color: white !important;
+}
+
+/* Light purple */
+#contact > .w3-grid.w3-margin-top > div:nth-child(1) {
+    background: #beb0ed !important;
+}
+
+/* Medium purple */
+#contact > .w3-grid.w3-margin-top > div:nth-child(2) {
+    background: #a08de0 !important;
+}
+
+/* Deep purple */
+#contact > .w3-grid.w3-margin-top > div:nth-child(3) {
+    background: #7864b9 !important;
+}
+
+/* Ensure text contrast */
+#contact > .w3-grid.w3-margin-top > div h4,
+#contact > .w3-grid.w3-margin-top > div p,
+#contact > .w3-grid.w3-margin-top > div i {
+    color: #ffffff !important;
+    text-shadow: 0 1px 3px rgba(30,15,65,.22);
+}
+
+
+/* ===== Double-layer Ocean Wave ===== */
+
+.wave-before-contact {
+    position: relative;
+    height: 80px;
+    overflow: hidden;
+    line-height: 0;
+    background: transparent;
+}
+
+/* Both waves */
+.wave-before-contact svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 200%;
+    height: 80px;
+    max-width: none;
+}
+
+/* Back wave: softer and slower */
+.wave-before-contact .wave-back {
+    fill: #d9f4fc;
+    opacity: .65;
+    animation: waveMove 12s linear infinite;
+}
+
+/* Front wave: About Us background color */
+.wave-before-contact .wave-front {
+    fill: #f1fbff;
+    animation: waveMove 8s linear infinite;
+}
+
+/* Seamless horizontal movement */
+@keyframes waveMove {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .wave-before-contact svg {
+        animation: none;
+    }
 }
