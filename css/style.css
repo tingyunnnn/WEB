@@ -2007,8 +2007,8 @@ header #header-title{
         height: 55px;
     }
 
-    #contact .submarine-container {
-        top: -190px;
+    #contact > .discount-decor-anchor >.submarine-container {
+        bottom: 30px;
         right: 3%;
         width: 115px;
         height: 115px;
