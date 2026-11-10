@@ -611,8 +611,13 @@ document.getElementById('treasureImg').addEventListener('click', function() {
     spark.style.width = `${size}px`;
     spark.style.height = 'auto';
 
-    const offsetX = Math.floor(Math.random() * 240) - 80;
-    const offsetY = Math.floor(Math.random() * 180) - 80;
+    const offsetX = isSmallScreen 
+      ? Math.floor(Math.random() * 140) - 20   
+      : Math.floor(Math.random() * 240) - 80;  
+
+    const offsetY = isSmallScreen 
+      ? Math.floor(Math.random() * 100) - 30    
+      : Math.floor(Math.random() * 180) - 80;  
 
     spark.style.left = `${offsetX}px`;
     spark.style.top = `${offsetY}px`;

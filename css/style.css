@@ -572,13 +572,13 @@ hr {
       opacity: 1;
     }
     50% {
-      transform: translate(0px, -70px) rotate(-40deg); /* 垂直高度減半 */
+      transform: translate(0px, -70px) rotate(-40deg); 
     }
     85% {
       opacity: 1;
     }
     100% {
-      transform: translate(-120px, 60px) rotate(-85deg); /* 水平位移減半 */
+      transform: translate(-120px, 60px) rotate(-85deg); 
       opacity: 0;
     }
   }
@@ -604,9 +604,9 @@ hr {
 }
 .floating-pufferfish {
   position: absolute;        
-  top: 20px;                 
-  right: 60px;               
-  width: 140px;
+  top: 1800px;                 
+  right: 80px;               
+  width: 160px;
   height: auto;
   cursor: pointer;
   animation: fishFloat 4s ease-in-out infinite;
@@ -644,8 +644,8 @@ hr {
 
 .submarine-container {
   position: absolute;
-  top: 2350px;
-  right: 170px;
+  top: 2880px;
+  right: 110px;
   transform: translateY(-50%);
   width: 150px; 
   height: auto;
@@ -828,7 +828,7 @@ hr {
 }
 @media screen and (max-width: 390px) {
   .treasure-wrapper {
-    top: 600px;          
+    top: 575px;          
     left: 20px;              
   }
   #treasureImg {
