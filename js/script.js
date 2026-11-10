@@ -1,18 +1,20 @@
-const sidebar = document.getElementById("mySidebar");
-const overlay = document.getElementById("myOverlay");
+const sidebar = document.getElementById('mySidebar');
+const overlay = document.getElementById('myOverlay');
+const mobileMenuButton = document.querySelector('#portfolio > button');
 
 function w3_open() {
-  sidebar.style.display = "block";
-  overlay.style.display = "block";
+  sidebar.classList.add('is-open');
+  overlay.classList.add('is-open');
+  if (mobileMenuButton) mobileMenuButton.setAttribute('aria-expanded', 'true');
 }
-
 function w3_close() {
-  // 只在小螢幕 (≤992px) 才收起 sidebar，桌面版保持 w3.css 的 display:block!important
-  if (window.innerWidth <= 992) {
-    sidebar.style.display = "none";
-  }
-  overlay.style.display = "none";
+  sidebar.classList.remove('is-open');
+  overlay.classList.remove('is-open');
+  if (mobileMenuButton) mobileMenuButton.setAttribute('aria-expanded', 'false');
 }
+// Start closed on phones/tablets; resize must not reopen the menu by accident.
+w3_close();
+window.addEventListener('resize', () => { if (window.innerWidth > 992) w3_close(); });
 
 // ========== FAQ 卡片點擊展開 ==========
 document.querySelectorAll('.faq-card').forEach(function (card) {
@@ -303,15 +305,8 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
   }
 
   // 滑鼠點擊
-  document.addEventListener('click', function (e) {
-    spawnBubbles(e.clientX, e.clientY);
-  });
-
-  // 手機觸控
-  document.addEventListener('touchstart', function (e) {
-    Array.from(e.touches).forEach(function (t) {
-      spawnBubbles(t.clientX, t.clientY);
-    });
+  document.addEventListener('pointerdown', function (e) {
+    if (e.isPrimary) spawnBubbles(e.clientX, e.clientY);
   }, { passive: true });
 
 })();
@@ -392,13 +387,20 @@ window.addEventListener('scroll', function () {
   const dolphinEl = document.getElementById("welcome-dolphin");
   const bgMusic = document.getElementById("bg-music");
 
+  // A repeated visit in the same tab should not replay the full entrance.
+  try {
+    if (sessionStorage.getItem('tidebites_welcome_seen') === '1') {
+      welcomeOverlay.style.display = 'none';
+      return;
+    }
+  } catch (_) { /* private browsing can restrict storage */ }
+
   const sloganText = "Catch a Wave of Flavor!";
   let charIndex = 0;
 
   function typeWriter() {
     if (charIndex < sloganText.length) {
       typewriterEl.textContent += sloganText.charAt(charIndex);
-      typewriterEl.style.width = ((charIndex + 1) / sloganText.length) * 100 + "%";
       charIndex++;
       setTimeout(typeWriter, 70);
     } else {
@@ -424,6 +426,7 @@ window.addEventListener('scroll', function () {
   welcomeOverlay.addEventListener("click", function () {
     if (hasEntered) return;
     hasEntered = true;
+    try { sessionStorage.setItem('tidebites_welcome_seen', '1'); } catch (_) {}
 
     if (bgMusic) {
       bgMusic.volume = 0.5;
