@@ -553,7 +553,12 @@ document.getElementById('treasureImg').addEventListener('click', function() {
     spark.src = 'assets/images/spark.png';
     spark.className = 'spark-img';
 
-    const size = Math.floor(Math.random() * 26) + 20;
+    const isSmallScreen = window.innerWidth <= 390;
+
+    const size = isSmallScreen 
+      ? Math.floor(Math.random() * 13) + 10   
+      : Math.floor(Math.random() * 26) + 20;  
+
     spark.style.width = `${size}px`;
     spark.style.height = 'auto';
 
