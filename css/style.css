@@ -799,8 +799,6 @@ button:focus-visible, a:focus-visible { outline: 3px solid #ff9a66; outline-offs
 #contact .faq-card.open .faq-arrow-wrap { background:#087da6; color:white; }
 #contact .faq-answer { padding: 0 20px; margin: 0; opacity:0; max-height:0; transition: max-height .3s ease,opacity .25s ease,padding .3s ease; }
 #contact .faq-card.open .faq-answer { opacity:1; max-height: 300px; padding: 4px 20px 24px; }
-#contact .faq-answer p { color:#4d6773 !important; font-size:.93rem !important; line-height:1.75 !important; padding-right: 55px; }
-#contact .faq-card > img { opacity:.35 !important; width:65px !important; }
 #contact .faq-answer p { color:#4d6773 !important; font-size:.93rem !important; line-height:1.75 !important; padding-right: 55px; text-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);}
 #contact .faq-card > img { opacity:.2 !important; width:65px !important; }
 
@@ -986,16 +984,13 @@ header .nav-title {
     font-weight: 700;
     font-size: 2.3rem;
 
-    margin: 20px auto 35px;
     margin: 30px auto 20px;
     background-color: rgba(255, 255, 255, 0.85);
     color: #12252d !important;
-    padding: 13px;
     padding: 4px;
     width: 300px;
     max-width: 100%;
     box-sizing: border-box;
-    border: dashed 2px #e3e3e3;
 
     border-radius: 50px;
     box-shadow: 0 4px 18px rgba(0, 100, 160, 0.18);
