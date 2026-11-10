@@ -1842,3 +1842,31 @@ header #header-title{
 
 }
 
+
+
+/* ===== FAQ 海中生物圖層修正 ===== */
+
+/* FAQ 卡片作為定位基準 */
+#contact .faq-card {
+    position: relative;
+    isolation: isolate;
+}
+
+/* 海中生物圖片永遠位於卡片內容最上層 */
+#contact .faq-card > img {
+    position: absolute;
+    z-index: 20 !important;
+    pointer-events: none;
+}
+
+/* FAQ 問題與箭頭位於圖片下方 */
+#contact .faq-question {
+    position: relative;
+    z-index: 2;
+}
+
+/* FAQ 答案位於圖片下方 */
+#contact .faq-answer {
+    position: relative;
+    z-index: 2;
+}
