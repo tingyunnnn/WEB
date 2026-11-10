@@ -801,6 +801,8 @@ button:focus-visible, a:focus-visible { outline: 3px solid #ff9a66; outline-offs
 #contact .faq-card.open .faq-answer { opacity:1; max-height: 300px; padding: 4px 20px 24px; }
 #contact .faq-answer p { color:#4d6773 !important; font-size:.93rem !important; line-height:1.75 !important; padding-right: 55px; }
 #contact .faq-card > img { opacity:.35 !important; width:65px !important; }
+#contact .faq-answer p { color:#4d6773 !important; font-size:.93rem !important; line-height:1.75 !important; padding-right: 55px; text-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);}
+#contact .faq-card > img { opacity:.2 !important; width:65px !important; }
 
 /* Dialog controls: center X visually within its round button */
 .tb-dialog { border: 1px solid rgba(255,255,255,.7); border-radius: 22px; overflow: auto; }
@@ -989,6 +991,7 @@ header .nav-title {
     background-color: rgba(255, 255, 255, 0.85);
     color: #12252d !important;
     padding: 13px;
+    padding: 4px;
     width: 300px;
     max-width: 100%;
     box-sizing: border-box;
@@ -1052,9 +1055,150 @@ header .nav-title {
     }
 }
 
+/* ===== Food photo enlargement (Lightbox) ===== */
+.tb-image-lightbox {
+    box-sizing: border-box;
+    width: max-content;
+    max-width: 96vw;
+    max-height: 94vh;
+    padding: 12px;
+    border: none;
+    border-radius: 15px;
+    background: #ffffff;
+    overflow: visible;
+    box-shadow: 0 18px 60px rgba(0, 30, 50, .28);
+}
+.tb-image-lightbox::backdrop { background: rgba(0, 16, 30, .84); }
+.tb-image-lightbox img {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: calc(96vw - 24px);
+    max-height: calc(94vh - 24px);
+    object-fit: contain;
+    border-radius: 7px;
+}
+.tb-image-lightbox-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 50%;
+    font: 28px/1 Arial, sans-serif;
+    background: rgba(255,255,255,.95);
+    color: #174c6b;
+    box-shadow: 0 2px 12px rgba(0,0,0,.2);
+    cursor: pointer;
+}
+@media (max-width: 600px) {
+    .tb-image-lightbox { padding: 8px; }
+    .tb-image-lightbox img {
+        max-width: calc(96vw - 16px);
+        max-height: calc(94vh - 16px);
+    }
+}
+
+/* Zoom control appears only inside the ordering dialog, not on menu cards. */
+.tb-dish-photo-wrap { position: relative; }
+.tb-dish-zoom {
+    position: absolute;
+    right: 14px;
+    bottom: 14px;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255,255,255,.96);
+    color: #174c6b;
+    font-size: 20px;
+    cursor: zoom-in;
+    box-shadow: 0 2px 12px rgba(0,0,0,.2);
+}
+.tb-dish-zoom:focus-visible { outline: 3px solid #034c7c; outline-offset: 3px; }
+
 header #header-title{
   display:flex;
   margin-bottom:40px;
   margin-top:10px;
 
+}
+
+
+/* 波浪容器 */
+.wave-divider {
+    position: relative;
+    overflow: hidden;
+    line-height: 0;
+}
+
+/* SVG 持續左右移動 */
+.wave-divider svg {
+    display: block;
+    width: 200%;
+    height: 80px;
+    max-width: none;
+    animation: waveMove 8s linear infinite;
+}
+
+/* 波浪動畫 */
+@keyframes waveMove {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+/* 尊重減少動態效果的系統設定 */
+@media (prefers-reduced-motion: reduce) {
+    .wave-divider svg {
+        animation: none;
+    }
+}
+
+
+/* ===== Seamless ocean waves + shared Student Discount gradient ===== */
+/* Same gradient covers the upper transition, #contact and footer transition. */
+.contact-background {
+  background: linear-gradient(155deg, #d0f6f1 0%, #e7f7ff 52%, #fff3e9 100%);
+}
+/* Override original section gradient; otherwise it restarts below the wave. */
+.contact-background #contact {
+  background: transparent !important;
+}
+.wave-divider {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  line-height: 0;
+  height: 80px;
+}
+.wave-divider svg {
+  display: block;
+  width: 200%;
+  height: 80px;
+  max-width: none;
+  animation: waveMove 20s linear infinite;
+}
+/* The first transition reveals the common gradient below the curved upper fill. */
+.wave-before-contact { background: transparent !important; }
+.wave-before-footer { background: transparent !important; }
+@keyframes waveMove {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wave-divider svg { animation: none; }
 }
