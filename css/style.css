@@ -1095,7 +1095,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid #ff9a66; outline-offs
 #about, #contact { padding: 44px clamp(20px, 4vw, 48px) !important; }
 #about { background: #f1fbff !important; }
 #contact { background: linear-gradient(155deg,#d0f6f1 0%,#e7f7ff 52%,#fff3e9 100%) !important; }
-#about h4, #contact > h4 { color: #12617e; }
+#about h4, #contact > h4, #question > h4{ color: #12617e; }
 #about .w3-grid > div { box-shadow: 0 7px 21px rgba(25,94,127,.09); }
 #contact .w3-grid:not(.faq-grid) > div { box-shadow: 0 7px 21px rgba(25,94,127,.09); }
 
@@ -1159,7 +1159,6 @@ button:focus-visible, a:focus-visible { outline: 3px solid #ff9a66; outline-offs
   #mySidebar .sidebar-close { width: 42px; height: 42px; }
   #portfolio h1 { font-size: 2.5rem; }
   #portfolio h1 img { width: 88px !important; margin-right: 12px !important; }
-  #portfolio h2 { font-size: 1.1rem !important; }
   #portfolio .w3-section { gap: 7px; }
   #portfolio .filter-button { padding: 9px 12px !important; font-size: .82rem; }
   .menu-section-wrap .menu-grid { grid-template-columns: 1fr; padding: 16px; gap: 17px; }
@@ -1813,3 +1812,32 @@ header #header-title{
     font-size: 10px !important;
   }
 }
+
+#question{
+  padding-top:20px;
+}
+
+
+/* ===== Mobile Menu Title Fix ===== */
+@media (max-width: 600px) {
+
+    #portfolio .nav-title {
+        display: block;
+        width: 85%;
+        max-width: 300px;
+        min-width: 0;
+
+        margin: 20px auto 15px;
+        padding: 8px 16px;
+
+        font-size: 2rem !important;
+        line-height: 1.4;
+        text-align: center;
+        white-space: nowrap;
+
+        box-sizing: border-box;
+        flex-shrink: 0;
+    }
+
+}
+

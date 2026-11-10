@@ -119,6 +119,55 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
   });
   document.querySelectorAll('[data-close-dialog]').forEach(btn => btn.addEventListener('click', () => closeDialog(document.getElementById(btn.dataset.closeDialog))));
 
+
+
+  // ===== 餐點圖片放大功能 =====
+  const zoomButton = document.getElementById("enlarge-dish-photo");
+  const lightbox = document.getElementById("image-lightbox");
+  const lightboxImage = document.getElementById("lightbox-image");
+  const closeZoomButton = document.getElementById("close-lightbox");
+
+  if (zoomButton && lightbox && lightboxImage && closeZoomButton) {
+
+    zoomButton.addEventListener("click", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+
+      const originalImage = document.getElementById("dish-dialog-image");
+
+      if (!originalImage || !originalImage.src) return;
+
+      lightboxImage.src = originalImage.currentSrc || originalImage.src;
+      lightboxImage.alt = originalImage.alt;
+
+      if (!lightbox.open) {
+        lightbox.showModal();
+      }
+    });
+
+    // 點擊 X 關閉放大圖片
+    closeZoomButton.addEventListener("click", function () {
+      lightbox.close();
+    });
+
+    // 點擊圖片外側關閉
+    lightbox.addEventListener("click", function (event) {
+      if (event.target === lightbox) {
+        const rect = lightboxImage.getBoundingClientRect();
+
+        const clickedInside =
+          event.clientX >= rect.left &&
+          event.clientX <= rect.right &&
+          event.clientY >= rect.top &&
+          event.clientY <= rect.bottom;
+
+        if (!clickedInside) {
+          lightbox.close();
+        }
+      }
+    });
+  }
+
   // Filtering and pagination must share the SAME visible subset.
   function showMenu() {
     const filtered = articles.filter(article => category === 'all' || article.dataset.category === category);
