@@ -583,6 +583,9 @@ hr {
   animation: fishFloat 4s ease-in-out infinite;
   transition: transform 0.2s ease;
 }
+.floating-pufferfish:hover {
+  transform: scale(1.1)!important;
+}
 
 @keyframes lightGlow {
   0% {
@@ -620,6 +623,9 @@ hr {
   display: block;
   position: relative; 
   z-index: 2;
+}
+.submarine-container:hover .submarine-img {
+  transform: scale(1.1);
 }
 .submarine-container::before {
   content: "";
@@ -748,7 +754,7 @@ hr {
   transition: transform 0.2s ease;
 }
 #treasureImg:hover {
-  transform: scale(1.05); 
+  transform: scale(1.1); 
 }
 .spark-img {
   position: absolute;
