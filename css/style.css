@@ -445,11 +445,6 @@ hr {
     inset 2px 2px 5px rgba(255, 255, 255, 0.65),
     0 0 8px rgba(120, 190, 255, 0.20);
 }
-.click-bubble.use-image {
-  background: url('assets/images/bubble.webp') center / cover no-repeat;
-  border: none;
-  box-shadow: none;
-}
 
 @keyframes bubbleSway {
   from { transform: translateX(0px); }
@@ -2074,7 +2069,7 @@ header #header-title{
 
     /* 珠寶盒保持 Footer 左下角 */
     .tb-footer {
-        padding-bottom: 5x !important;
+        padding-bottom: 5px !important;
     }
 
     .tb-footer .treasure-wrapper {
@@ -2139,7 +2134,7 @@ header #header-title{
 
     /* 珠寶盒保持 Footer 左下角 */
     .tb-footer {
-        padding-bottom: 5x !important;
+        padding-bottom: 5px !important;
     }
 
     .tb-footer .treasure-wrapper {
@@ -2217,3 +2212,17 @@ header #header-title{
         font-size: 21px;
     }
 }
+
+/* Local checkout completion: reuse the existing dialog and ocean palette. */
+.tb-complete-banner {
+  padding: 24px 44px 16px;
+  text-align: center;
+  color: #12516d;
+  background: linear-gradient(160deg, #d9eef9, #f1fbff);
+  border-bottom: 4px solid #79cbd3;
+}
+.tb-complete-banner img { display: block; margin: auto; object-fit: contain; }
+.tb-complete-banner p { margin: 8px 0 0; font-weight: 700; }
+#complete-details, #review-details { overflow-wrap: anywhere; }
+#cart-dialog .tb-total-line { gap: 12px; }
+#cart-dialog .tb-total-line > :last-child { flex-shrink: 0; }
