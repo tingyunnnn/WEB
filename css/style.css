@@ -12,9 +12,11 @@ body.w3-light-grey {
 }
 #about {
   background-color: #e2edf3;
+  position: relative;
 }
 #contact{
   background-color: #66b6bd!important;
+  position: relative
 }
 
 /* == Menu Grid == */
@@ -537,11 +539,137 @@ hr {
     opacity: 0;
   }
 }
-
 .animate-dolphin {
   display: block !important;
   animation: dolphinJumpArc 1.5s cubic-bezier(0.15, 0.46, 0.55, 0.94) forwards;
 }
+
+@keyframes fishFloat {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  33% {
+    transform: translate(-4px, -6px) rotate(-3deg);
+  }
+  66% {
+    transform: translate(3px, -3px) rotate(2deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+.floating-pufferfish {
+  position: absolute;        
+  top: 20px;                 
+  right: 60px;               
+  width: 140px;
+  height: auto;
+  cursor: pointer;
+  animation: fishFloat 4s ease-in-out infinite;
+  transition: transform 0.2s ease;
+}
+
+@keyframes lightGlow {
+  0% {
+    opacity: 0.85;
+    transform: scaleY(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleY(1.05);
+  }
+}
+@keyframes submarineFloat {
+  0% { transform: translateY(-50%) translate(0, 0) rotate(0deg); }
+  33% { transform: translateY(-50%) translate(-5px, -6px) rotate(-2deg); }
+  66% { transform: translateY(-50%) translate(4px, -3px) rotate(2deg); }
+  100% { transform: translateY(-50%) translate(0, 0) rotate(0deg); }
+}
+
+.submarine-container {
+  position: absolute;
+  top: 10px;
+  right: 170px;
+  transform: translateY(-50%);
+  width: 150px; 
+  height: auto;
+  cursor: pointer;
+  animation: submarineFloat 4.5s ease-in-out infinite;
+  display: inline-block;
+}
+.submarine-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  position: relative;
+  z-index: 2; 
+}
+.submarine-container::before {
+  content: "";
+  position: absolute;
+  top: 7%;      
+  right: 73%;     
+  transform: translateY(-50%);
+  width: 170px;  
+  height: 120px; 
+  background: 
+    radial-gradient(ellipse at right center, rgba(255, 255, 220, 1) 0%, rgba(255, 230, 100, 0.9) 35%, rgba(255, 200, 50, 0) 80%),
+    conic-gradient(from 245deg at 100% 50%, rgba(255, 255, 200, 0.9) 0deg, rgba(255, 215, 0, 0.7) 30deg, transparent 45deg);
+
+  clip-path: polygon(100% 40%, 100% 60%, 0% 100%, 0% 0%);
+  transform-origin: right center;
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out;
+  pointer-events: none;
+  z-index: 1;
+  filter: blur(1px) drop-shadow(-2px 0px 8px rgba(255, 240, 150, 0.9));
+}
+.submarine-container.light-on::before {
+  opacity: 1;
+  animation: lightGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes octopusFloat {
+  0% { transform: translateY(-50%) translate(0, 0) rotate(0deg); }
+  33% { transform: translateY(-50%) translate(-3px, -5px) rotate(-3deg); }
+  66% { transform: translateY(-50%) translate(3px, -2px) rotate(2deg); }
+  100% { transform: translateY(-50%) translate(0, 0) rotate(0deg); }
+}
+
+.octopus-container {
+  position: absolute;
+  right: 250px;
+  top: 0%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  display: inline-block;
+  z-index: 10;
+  animation: octopusFloat 4s ease-in-out infinite;
+}
+.octopus-img {
+  width: 95px;
+  height: auto;
+  display: block;
+  transition: transform 0.2s ease;
+}
+.octopus-container:hover .octopus-img {
+  transform: scale(1.1);
+}
+.dynamic-ink {
+  position: absolute;
+  width: 80px;          
+  height: auto;
+  pointer-events: none;  
+  z-index: 15;
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.dynamic-ink.fade-in {
+  opacity: 1;
+  transform: scale(1);
+}
+
 /* ===== TideBites Frontend Ordering Demo ===== */
 .menu-grid article { cursor:pointer; }
 .menu-grid article:focus-visible, .filter-button:focus-visible, .tb-dialog button:focus-visible {outline:3px solid #034c7c;outline-offset:3px;}

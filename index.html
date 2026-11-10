@@ -160,14 +160,23 @@
           d="M0,45 C200,80 400,10 600,45 C800,80 1000,10 1200,45 C1300,62 1370,30 1440,45 L1440,80 L0,80 Z"/>
       </svg>
     </div>
+
     <!-- About Us section -->
     <section id="about" class="w3-container w3-padding-large" >
       <h4><b>About TideBites</b></h4>
+      <img id="pufferfish" src="assets/images/pufferfish1.png" alt="Pufferfish" class="floating-pufferfish" onclick="togglePufferfish()">
       <p>Welcome to TideBites, a virtual restaurant concept made for campus life.<br> From hearty bowls to icy desserts, find a little happiness between classes.<br>Inspired by summer waves and carefree beach days, we bring a playful splash of energy to your study break. Pick a comforting meal, discover a cool treat, and Catch a Wave of Flavor!</p>
       <hr>
 
       <!-- Why Choose Us -->
+      <div style="position: relative; display: inline-block; width: 100%;">
       <h4>Why Choose Us</h4>
+        <div class="octopus-container" onclick="triggerInkImage(this)">
+          <div class="octopus-container" onclick="spawnRandomInk(event)">
+          <img src="assets/images/octopus.png" alt="Octopus" class="octopus-img">
+        </div>
+      </div>
+
       <div class="w3-grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:16px">
         <div class="w3-center w3-padding-16 w3-border" style="background-color: #fde1dc; position: relative; overflow: hidden;">
           <i class="fa fa-leaf w3-xxlarge w3-text-teal"></i>
@@ -221,6 +230,9 @@
     <!-- Student Discount section -->
     <section class="w3-container w3-padding-large w3-white" id="contact">
       <h4><b>Student Discount</b></h4>
+      <div class="submarine-container floating-submarine" onclick="toggleSubmarineLight(this)">
+        <img src="assets/images/submarine1.png" alt="Submarine" class="submarine-img">
+      </div>
       <p class="w3-text-grey">Make your next study break a tasty one. Explore our proposed student offer; this class-project menu does not accept orders or verify student status.</p>
 
       <!-- Discount Info Cards -->

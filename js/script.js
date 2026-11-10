@@ -373,7 +373,7 @@ window.addEventListener('scroll', function () {
   }, 100);
 });
 
-// ========== Welcome Overlay ==========
+// ========== Welcome Overlay ==========//
 // script 在 </body> 之前，DOM 已解析完畢，直接執行即可，不需 DOMContentLoaded。
 (function () {
   const welcomeOverlay = document.getElementById("welcome-overlay");
@@ -428,3 +428,47 @@ window.addEventListener('scroll', function () {
     }, 800);
   });
 })();
+
+// ========== Pufferfish ==========//
+function togglePufferfish() {
+  const img = document.getElementById('pufferfish');
+  if (img.src.includes('pufferfish1.png')) {
+    img.src = 'assets/images/pufferfish2.png';
+  } else {
+    img.src = 'assets/images/pufferfish1.png';
+  }
+}
+
+// ========== Submarine ==========//
+function toggleSubmarineLight(container) {
+  container.classList.toggle('light-on');
+}
+
+// ========== Octopus ==========//
+function spawnRandomInk(event) {
+  const container = event.currentTarget;
+  const ink = document.createElement('img');
+  ink.src = 'assets/images/ink.png';
+  ink.alt = 'Ink';
+  ink.className = 'dynamic-ink';
+  const randomX = (Math.random() - 0.5) * 140;
+  const randomY = (Math.random() - 0.5) * 120;
+  const randomRotate = Math.floor(Math.random() * 360);
+  ink.style.left = `calc(50% + ${randomX}px)`;
+  ink.style.top = `calc(50% + ${randomY}px)`;
+  ink.style.transform = `translate(-50%, -50%) rotate(${randomRotate}deg) scale(0.6)`;
+  container.appendChild(ink);
+  requestAnimationFrame(() => {
+    ink.classList.add('fade-in');
+    ink.style.transform = `translate(-50%, -50%) rotate(${randomRotate}deg) scale(1)`;
+  });
+  setTimeout(() => {
+    ink.classList.remove('fade-in');
+    ink.style.transform = `translate(-50%, -50%) rotate(${randomRotate}deg) scale(0.6)`;
+    setTimeout(() => {
+      if (ink.parentNode) {
+        ink.parentNode.removeChild(ink);
+      }
+    }, 300);
+  }, 3000);
+}
