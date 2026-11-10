@@ -621,7 +621,7 @@ hr {
   .floating-pufferfish {
     top: 645%;          
     right: 10%;         
-    width: 30%;         
+    width: 20%;         
   }
 }
 
@@ -693,7 +693,7 @@ hr {
   .submarine-container {
     top: 1020%;          
     right: 10%;         
-    width: 27%;   
+    width: 20%;   
     transform: translateY(-50%);     
   }
   .submarine-container::before{       
@@ -750,10 +750,10 @@ hr {
     top: -1%;
   }
   .octopus-img {
-    width: 50%;
+    width: 40%;
   }
   .dynamic-ink {
-  width: 35%;           
+  width: 28%;           
   z-index: 15;
   }
 }
@@ -833,7 +833,7 @@ hr {
     left: 5%;              
   }
   #treasureImg {
-  width: 25%; 
+  width: 17%; 
   height: auto;
   }
 }
@@ -850,7 +850,7 @@ hr {
 }
 @media screen and (max-width: 390px) {
   #crabImg {
-    width: 15%;              
+    width: 13%;              
   }
 }
 
