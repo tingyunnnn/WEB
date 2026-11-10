@@ -1869,3 +1869,221 @@ header #header-title{
     position: relative;
     z-index: 2;
 }
+
+
+/* ==========================================
+   TideBites Interactive Images
+   Desktop / Tablet / Mobile
+   ========================================== */
+
+/* ===== 共同設定 ===== */
+
+.why-choose-block {
+    position: relative;
+    width: 100%;
+}
+
+.why-choose-heading {
+    position: relative;
+    width: 100%;
+    min-height: 120px;
+}
+
+.discount-decor-anchor {
+    position: relative;
+    width: 100%;
+    height: 0;
+}
+
+/* ===== Desktop: 993px 以上 ===== */
+
+/* 河豚 */
+#about .floating-pufferfish {
+    position: absolute;
+    top: auto;
+    right: 4%;
+    bottom: 500px;
+    left: auto;
+
+    width: 140px;
+    height: 140px;
+    object-fit: contain;
+
+    z-index: 10;
+    cursor: pointer;
+    animation: fishFloat 4s ease-in-out infinite;
+}
+
+/* 章魚 */
+#about .why-choose-heading .octopus-container {
+    position: absolute;
+    top: 25px;
+    right: 29%;
+    bottom: auto;
+    left: auto;
+
+    width: 95px;
+    height: 95px;
+
+    z-index: 11;
+    cursor: pointer;
+    animation: octopusFloat 4s ease-in-out infinite;
+}
+
+#about .octopus-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* 潛水艇 */
+#contact .submarine-container {
+    position: absolute;
+    top: -145px;
+    right: 4%;
+    bottom: auto;
+    left: auto;
+
+    width: 145px;
+    height: 145px;
+
+    z-index: 10;
+    cursor: pointer;
+    animation: submarineFloat 4.5s ease-in-out infinite;
+}
+
+#contact .submarine-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* 珠寶盒 */
+.tb-footer .treasure-wrapper {
+    position: absolute;
+    top: auto;
+    right: auto;
+    bottom: -65px;
+    left: 70px;
+
+    width: 140px;
+    height: 140px;
+    z-index: 10;
+}
+
+.tb-footer #treasureImg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    cursor: pointer;
+}
+
+/* ===== Tablet: 601px - 992px ===== */
+
+@media (min-width: 601px) and (max-width: 992px) {
+
+    .why-choose-heading {
+        min-height: 110px;
+    }
+
+    #about .floating-pufferfish {
+        top: -400px;
+        right: 2%;
+        width: 110px;
+        height: 110px;
+    }
+
+    #about .octopus-container {
+        top: 25px;
+        right: 30%;
+        width: 80px;
+        height: 80px;
+    }
+
+    .discount-decor-anchor {
+        height: 55px;
+    }
+
+    #contact .submarine-container {
+        top: -190px;
+        right: 3%;
+        width: 115px;
+        height: 115px;
+    }
+
+    .tb-footer .treasure-wrapper {
+        right: 35px;
+        bottom: -60px;
+        width: 110px;
+        height: 110px;
+    }
+}
+
+/* ===== Mobile: 600px 以下 ===== */
+
+@media (max-width: 600px) {
+
+    /* 預留空間，避免生物壓到標題 */
+    .why-choose-heading {
+        min-height: 170px;
+    }
+
+    .why-choose-heading h4 {
+        margin-top: 0;
+    }
+
+    /* 河豚移到標題區右下 */
+    #about .floating-pufferfish {
+        top: auto;
+        right: 3%;
+        bottom: 740px;
+        left: auto;
+
+        width: 95px;
+        height: 95px;
+    }
+
+    /* 章魚與河豚分開 */
+    #about .octopus-container {
+        top: 20px;
+        right: 40%;
+        bottom: auto;
+        left: auto;
+
+        width: 70px;
+        height: 70px;
+    }
+
+    /* 潛水艇保留獨立空間 */
+    .discount-decor-anchor {
+        height: 100px;
+    }
+
+    #contact .submarine-container {
+        top: -200px;
+        right: 1%;
+        bottom: auto;
+        left: auto;
+
+        width: 95px;
+        height: 95px;
+    }
+
+    /* 珠寶盒保持 Footer 左下角 */
+    .tb-footer {
+        padding-bottom: 5x !important;
+    }
+
+    .tb-footer .treasure-wrapper {
+        top: auto;
+        right: auto;
+        bottom: -65px;
+        left: 15px;
+
+        width: 90px;
+        height: 90px;
+    }
+}
