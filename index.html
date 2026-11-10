@@ -51,7 +51,9 @@
 
     <!-- Menu section header -->
     <header id="portfolio">
-      <button class="w3-button w3-hide-large w3-xxlarge w3-hover-text-grey" onclick="w3_open()"><i class="fa fa-bars"></i></button>
+      <button type="button" id="mobile-menu-button" class="w3-button w3-hide-large" onclick="w3_open()" aria-label="Open navigation menu" title="Open Menu">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+      </button>
       <div class="w3-container">
         <div id="header-title">
           <img src="assets/images/icon.png" style="margin-right:2rem; width:150px; height:auto;">
@@ -173,6 +175,9 @@
     <section id="about" class="w3-container w3-padding-large" >
       <div id="fishContainer" class="fish-background-layer"></div>
       <h2 class="nav-title">About Us</h2>
+      <!-- 河豚 -->
+      <img id="pufferfish" src="assets/images/pufferfish1.png" alt="Pufferfish" class="floating-pufferfish" onclick="togglePufferfish()">
+
       <h4><b>About TideBites</b></h4>
       <p>Welcome to TideBites, a virtual restaurant concept made for campus life.<br> From hearty bowls to icy desserts, find a little happiness between classes.<br>Inspired by summer waves and carefree beach days, we bring a playful splash of energy to your study break. Pick a comforting meal, discover a cool treat, and Catch a Wave of Flavor!</p>
       <hr>
@@ -180,9 +185,7 @@
       <!-- Why Choose Us -->
       <div style="position: relative; display: inline-block; width: 100%;">
       <h4>Why Choose Us</h4>
-      <!-- 河豚 -->
-        <img id="pufferfish" src="assets/images/pufferfish1.png" alt="Pufferfish" class="floating-pufferfish" onclick="togglePufferfish()">
-
+      
         <!-- 章魚 -->
         <div class="octopus-container"
              onclick="spawnRandomInk(event)">
