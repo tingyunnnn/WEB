@@ -51,7 +51,9 @@
 
     <!-- Menu section header -->
     <header id="portfolio">
-      <button class="w3-button w3-hide-large w3-xxlarge w3-hover-text-grey" onclick="w3_open()"><i class="fa fa-bars"></i></button>
+      <button type="button" id="mobile-menu-button" class="w3-button w3-hide-large" onclick="w3_open()" aria-label="Open navigation menu" title="Open Menu">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+      </button>
       <div class="w3-container">
         <div id="header-title">
           <img src="assets/images/icon.png" style="margin-right:2rem; width:150px; height:auto;">
@@ -169,11 +171,13 @@
       </svg>
     </div>
 
-    <img id="pufferfish" src="assets/images/pufferfish1.png" alt="Pufferfish" class="floating-pufferfish" onclick="togglePufferfish()">
     <!-- About Us section -->
     <section id="about" class="w3-container w3-padding-large" >
       <div id="fishContainer" class="fish-background-layer"></div>
       <h2 class="nav-title">About Us</h2>
+      <!-- 河豚 -->
+      <img id="pufferfish" src="assets/images/pufferfish1.png" alt="Pufferfish" class="floating-pufferfish" onclick="togglePufferfish()">
+
       <h4><b>About TideBites</b></h4>
       <p>Welcome to TideBites, a virtual restaurant concept made for campus life.<br> From hearty bowls to icy desserts, find a little happiness between classes.<br>Inspired by summer waves and carefree beach days, we bring a playful splash of energy to your study break. Pick a comforting meal, discover a cool treat, and Catch a Wave of Flavor!</p>
       <hr>
@@ -181,34 +185,42 @@
       <!-- Why Choose Us -->
       <div style="position: relative; display: inline-block; width: 100%;">
       <h4>Why Choose Us</h4>
+      
+        <!-- 章魚 -->
+        <div class="octopus-container"
+             onclick="spawnRandomInk(event)">
+            <img src="assets/images/octopus.png" alt="Octopus" class="octopus-img">
+        </div>
+
         <div class="octopus-container" onclick="spawnRandomInk(event)">
           <img src="assets/images/octopus.png" alt="Octopus" class="octopus-img">
         </div>
 
-      <div class="w3-grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:16px">
-        <div class="w3-center w3-padding-16 w3-border" style="background-color: #fde1dc; position: relative; overflow: hidden;">
-          <i class="fa fa-leaf w3-xxlarge w3-text-teal"></i>
-          <h5><b>Comfort in Every Bite</b></h5>
-          <p class="w3-text-grey">Warm rice bowls and flavorful noodles bring familiar favorites to your study day.</p>
-          <img src="assets/images/coral1.png" alt="coral" style="position: absolute; right: 8px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
-        </div>
-        <div class="w3-center w3-padding-16 w3-border" style="background-color: #fbf0d8; position: relative; overflow: hidden;">
-          <i class="fa fa-tag w3-xxlarge w3-text-teal"></i>
-          <h5><b>Student-Friendly Picks</b></h5>
-          <p class="w3-text-grey">Explore satisfying meals, sweet treats, and proposed deals with student budgets in mind.</p>
-          <img src="assets/images/coral10.png" alt="coral" style="position: absolute; left: 8px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
-        </div>
-        <div class="w3-center w3-padding-16 w3-border" style="background-color: #d9eef9; position: relative; overflow: hidden;">
-          <i class="fa fa-bolt w3-xxlarge w3-text-teal"></i>
-          <h5><b>Made for Campus Life</b></h5>
-          <p class="w3-text-grey">Browse for lunch between lectures or a little reward after a long study session.</p>
-          <img src="assets/images/coral7.png" alt="coral" style="position: absolute; left: 8px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
-        </div>
-        <div class="w3-center w3-padding-16 w3-border" style="background-color: #eae6f2; position: relative; overflow: hidden;">
-          <i class="fa fa-heart w3-xxlarge w3-text-teal"></i>
-          <h5><b>A Splash of Summer</b></h5>
-          <p class="w3-text-grey">A youthful wave-inspired concept brings sunshine, energy, and a little fun to campus food.</p>
-          <img src="assets/images/coral2.png" alt="coral" style="position: absolute; right: 8px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
+        <div class="w3-grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:16px">
+          <div class="w3-center w3-padding-16 w3-border" style="background-color: #fde1dc; position: relative; overflow: hidden;">
+            <i class="fa fa-leaf w3-xxlarge w3-text-teal"></i>
+            <h5><b>Comfort in Every Bite</b></h5>
+            <p class="w3-text-grey">Warm rice bowls and flavorful noodles bring familiar favorites to your study day.</p>
+            <img src="assets/images/coral1.png" alt="coral" style="position: absolute; right: 8px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
+          </div>
+          <div class="w3-center w3-padding-16 w3-border" style="background-color: #fbf0d8; position: relative; overflow: hidden;">
+            <i class="fa fa-tag w3-xxlarge w3-text-teal"></i>
+            <h5><b>Student-Friendly Picks</b></h5>
+            <p class="w3-text-grey">Explore satisfying meals, sweet treats, and proposed deals with student budgets in mind.</p>
+            <img src="assets/images/coral10.png" alt="coral" style="position: absolute; left: 8px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
+          </div>
+          <div class="w3-center w3-padding-16 w3-border" style="background-color: #d9eef9; position: relative; overflow: hidden;">
+            <i class="fa fa-bolt w3-xxlarge w3-text-teal"></i>
+            <h5><b>Made for Campus Life</b></h5>
+            <p class="w3-text-grey">Browse for lunch between lectures or a little reward after a long study session.</p>
+            <img src="assets/images/coral7.png" alt="coral" style="position: absolute; left: 8px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
+          </div>
+          <div class="w3-center w3-padding-16 w3-border" style="background-color: #eae6f2; position: relative; overflow: hidden;">
+            <i class="fa fa-heart w3-xxlarge w3-text-teal"></i>
+            <h5><b>A Splash of Summer</b></h5>
+            <p class="w3-text-grey">A youthful wave-inspired concept brings sunshine, energy, and a little fun to campus food.</p>
+            <img src="assets/images/coral2.png" alt="coral" style="position: absolute; right: 8px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
+          </div>
         </div>
       </div>
       <hr>
@@ -236,9 +248,7 @@
       </svg>
     </div>
     
-    <div class="submarine-container floating-submarine" onclick="toggleSubmarineLight(this)">
-        <img src="assets/images/submarine1.png" alt="Submarine" class="submarine-img">
-    </div>
+    
 
     <!-- Student Discount section -->
     <section class="w3-container w3-padding-large w3-white" id="contact">
@@ -246,6 +256,15 @@
       <h2 class="nav-title">Student Discount</h2>
       <h4><b>For Student</b></h4>
       <p class="w3-text-grey">Make your next study break a tasty one. Explore our proposed student offer; this class-project menu does not accept orders or verify student status.</p>
+
+      
+      <div class="discount-decor-anchor">
+        <!-- 潛水艇專用定位區 -->
+          <div class="submarine-container floating-submarine"
+              onclick="toggleSubmarineLight(this)">
+              <img src="assets/images/submarine1.png" alt="Submarine" class="submarine-img">
+          </div>
+      </div>
 
       <!-- Discount Info Cards -->
       <div class="w3-grid w3-margin-top" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">

@@ -1156,7 +1156,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid #ff9a66; outline-offs
   #mySidebar { width: min(300px, 86vw) !important; }
   #mySidebar > .w3-container:first-child { padding: 18px 16px 8px !important; }
   #mySidebar > .w3-bar-block { margin: 4px 12px 0; }
-  #mySidebar .sidebar-close { width: 42px; height: 42px; }
+  #mySidebar .sidebar-close { width: 50px; height: 50px; }
   #portfolio h1 { font-size: 2.5rem; }
   #portfolio h1 img { width: 88px !important; margin-right: 12px !important; }
   #portfolio .w3-section { gap: 7px; }
@@ -1746,13 +1746,13 @@ header #header-title{
   #mySidebar { display: none; }
   #mySidebar.is-open { display: flex !important; }
 }
-@media (max-width: 600px) {
+@media (max-width: 660px) {
   .welcome-overlay { min-height: 100dvh; height: 100dvh; overflow-y: auto; }
   .welcome-content { width: 100%; max-width: 100%; box-sizing: border-box; padding: 20px 18px; transform: none; }
   .welcome-icon { width: min(45vw, 180px); max-height: 28dvh; }
   .typewriter-text { box-sizing: border-box; width: 100% !important; max-width: 100%; min-height: 0; font-size: clamp(1.35rem, 6vw, 2.3rem); line-height: 1.3; white-space: normal; overflow-wrap: break-word; overflow: visible; }
   .welcome-hint { font-size: 1.05rem; margin-top: 18px; }
-  #portfolio #header-title { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; margin: 8px 0 20px; }
+  #portfolio #header-title { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; margin: 0px 0px 20px 0px; }
   #portfolio #header-title > img { width: min(34vw, 120px) !important; max-width: 100%; height: auto; margin: 0 !important; flex: 0 0 auto; }
   #portfolio #header-title > div { min-width: 0; width: 100%; }
   #portfolio #header-title h1 { font-size: clamp(1.75rem, 7vw, 2.5rem); line-height: 1.2; overflow-wrap: break-word; }
@@ -1900,9 +1900,9 @@ header #header-title{
 /* 河豚 */
 #about .floating-pufferfish {
     position: absolute;
-    top: auto;
+    top: 40px;
     right: 4%;
-    bottom: 500px;
+    bottom: auto;
     left: auto;
 
     width: 140px;
@@ -1915,7 +1915,7 @@ header #header-title{
 }
 
 /* 章魚 */
-#about .why-choose-heading .octopus-container {
+#about .octopus-container {
     position: absolute;
     top: 25px;
     right: 29%;
@@ -1965,7 +1965,7 @@ header #header-title{
     position: absolute;
     top: auto;
     right: auto;
-    bottom: -65px;
+    bottom: -60px;
     left: 70px;
 
     width: 140px;
@@ -1990,7 +1990,7 @@ header #header-title{
     }
 
     #about .floating-pufferfish {
-        top: -400px;
+        top: 0px;
         right: 2%;
         width: 110px;
         height: 110px;
@@ -2007,8 +2007,8 @@ header #header-title{
         height: 55px;
     }
 
-    #contact .submarine-container {
-        top: -190px;
+    #contact > .discount-decor-anchor >.submarine-container {
+        bottom: 30px;
         right: 3%;
         width: 115px;
         height: 115px;
@@ -2022,9 +2022,9 @@ header #header-title{
     }
 }
 
-/* ===== Mobile: 600px 以下 ===== */
+/* ===== Mobile: 480px - 600px 以下 ===== */
 
-@media (max-width: 600px) {
+@media (min-width: 480px) and (max-width: 600px) {
 
     /* 預留空間，避免生物壓到標題 */
     .why-choose-heading {
@@ -2037,9 +2037,9 @@ header #header-title{
 
     /* 河豚移到標題區右下 */
     #about .floating-pufferfish {
-        top: auto;
+        top: 30px;
         right: 3%;
-        bottom: 740px;
+        bottom: auto;
         left: auto;
 
         width: 95px;
@@ -2049,7 +2049,7 @@ header #header-title{
     /* 章魚與河豚分開 */
     #about .octopus-container {
         top: 20px;
-        right: 40%;
+        right: 20%;
         bottom: auto;
         left: auto;
 
@@ -2085,5 +2085,135 @@ header #header-title{
 
         width: 90px;
         height: 90px;
+    }
+}
+/* ===== Mobile: 480px 以下 ===== */
+
+@media (max-width: 480px) {
+
+    /* 預留空間，避免生物壓到標題 */
+    .why-choose-heading {
+        min-height: 170px;
+    }
+
+    .why-choose-heading h4 {
+        margin-top: 0;
+    }
+
+    /* 河豚移到標題區右下 */
+    #about .floating-pufferfish {
+        top: 120px;
+        right: 3%;
+        bottom: auto;
+        left: auto;
+
+        width: 85px;
+        height: 85px;
+    }
+
+    /* 章魚與河豚分開 */
+    #about .octopus-container {
+        top: 20px;
+        right: 10%;
+        bottom: auto;
+        left: auto;
+
+        width: 70px;
+        height: 70px;
+    }
+
+    /* 潛水艇保留獨立空間 */
+    .discount-decor-anchor {
+        height: 40px;
+    }
+
+    #contact .submarine-container {
+        top: 5px;
+        right: 0;
+        bottom: auto;
+        left: auto;
+
+        width: 85px;
+        height: 85px;
+    }
+
+    /* 珠寶盒保持 Footer 左下角 */
+    .tb-footer {
+        padding-bottom: 5x !important;
+    }
+
+    .tb-footer .treasure-wrapper {
+        top: auto;
+        right: auto;
+        bottom: -65px;
+        left: 15px;
+
+        width: 90px;
+        height: 90px;
+    }
+}
+
+
+/* ===== Floating Hamburger Menu ===== */
+
+/* 桌面版：隱藏三條線 */
+#mobile-menu-button {
+    display: none !important;
+}
+
+/* 平板、手機版：固定於畫面左上角 */
+@media (max-width: 992px) {
+
+    #mobile-menu-button {
+        display: flex !important;
+        position: fixed;
+
+        top: 16px;
+        left: 16px;
+
+        width: 48px;
+        height: 48px;
+
+        padding: 0;
+        align-items: center;
+        justify-content: center;
+
+        font-size: 24px;
+        color: #12516d;
+        background: rgba(255, 255, 255, 0.92);
+        border-radius: 12px;
+
+        box-shadow: 0 4px 16px rgba(0, 60, 90, 0.18);
+
+        z-index: 1000;
+        cursor: pointer;
+    }
+
+    #mobile-menu-button:hover {
+        background: #ffffff;
+    }
+
+    /* Sidebar 開啟時，三條線在側欄下方 */
+    #mySidebar {
+        z-index: 1100 !important;
+    }
+
+    /* Sidebar 遮罩 */
+    #myOverlay {
+        z-index: 1050 !important;
+    }
+}
+
+/* 小手機稍微縮小 */
+@media (max-width: 480px) {
+
+    #mobile-menu-button {
+        top: 12px;
+        left: 12px;
+
+        width: 42px;
+        height: 42px;
+
+        font-size: 21px;
     }
 }
