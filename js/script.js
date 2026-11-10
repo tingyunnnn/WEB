@@ -54,10 +54,11 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
   const articles = Array.from(document.querySelectorAll('#menu-grid article'));
   const bar = document.getElementById('pagination-bar');
   const filterButtons = document.querySelectorAll('.filter-button');
-  const dialogs = ['dish-dialog', 'cart-dialog', 'review-dialog'];
+  const dialogs = ['dish-dialog', 'cart-dialog', 'review-dialog', 'complete-dialog'];
   const dishDialog = document.getElementById('dish-dialog');
   const cartDialog = document.getElementById('cart-dialog');
   const reviewDialog = document.getElementById('review-dialog');
+  const completeDialog = document.getElementById('complete-dialog');
   const quantityInput = document.getElementById('dish-quantity');
   const cartBadge = document.getElementById('cart-badge');
   const storageKey = 'tidebites_demo_cart_v1';
@@ -93,7 +94,12 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
 
   const money = n => 'NT$' + n.toLocaleString('en-US');
   const clampQty = value => Math.min(99, Math.max(1, Number.parseInt(value, 10) || 1));
-  const cartTotal = () => Object.entries(cart).reduce((sum, [id, qty]) => sum + byId.get(id).price * qty, 0);
+  const cartSubtotal = () => Object.entries(cart).reduce((sum, [id, qty]) => sum + byId.get(id).price * qty, 0);
+  function cartAmounts() {
+    const subtotal = cartSubtotal();
+    const discount = Math.round(subtotal * 0.1);
+    return { subtotal, discount, total: subtotal - discount };
+  }
   const cartQuantity = () => Object.values(cart).reduce((sum, qty) => sum + qty, 0);
   function saveCart() {
     try { localStorage.setItem(storageKey, JSON.stringify(cart)); } catch (error) { /* storage may be blocked */ }
@@ -280,7 +286,10 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
       addControl('Remove', () => { delete cart[id]; saveCart(); renderCart(); }, 'Remove ' + item.name);
       info.append(name, price, controls); row.append(img, info); container.appendChild(row);
     });
-    document.getElementById('cart-total').textContent = money(cartTotal());
+    const amounts = cartAmounts();
+    document.getElementById('cart-subtotal').textContent = money(amounts.subtotal);
+    document.getElementById('cart-discount').textContent = (amounts.discount ? '-' : '') + money(amounts.discount);
+    document.getElementById('cart-total').textContent = money(amounts.total);
   }
   function changeCartQty(id, delta) {
     const newQty = cart[id] + delta;
@@ -303,7 +312,8 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
       summary.appendChild(line);
     });
     const note = document.getElementById('cart-note').value.trim();
-    [['Total', money(cartTotal())], ['Pickup', pickup.value], ['Notes', note || '(None)']].forEach(([label, value]) => {
+    const amounts = cartAmounts();
+    [['Subtotal', money(amounts.subtotal)], ['Campus Discount (10%)', '-' + money(amounts.discount)], ['Total', money(amounts.total)], ['Campus Pickup Location', pickup.value], ['Notes', note || '(None)']].forEach(([label, value]) => {
       const row = document.createElement('p');
       const strong = document.createElement('strong'); strong.textContent = label + ': ';
       row.append(strong, document.createTextNode(value)); summary.appendChild(row);
@@ -313,14 +323,21 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
   document.getElementById('back-to-cart').addEventListener('click', () => {
     closeDialog(reviewDialog); renderCart(); openDialog(cartDialog);
   });
-  document.getElementById('confirm-demo-order').addEventListener('click', () => {
-    // No backend exists: this is only a simulated confirmation.
+  document.getElementById('place-order').addEventListener('click', () => {
+    if (!reviewDialog.open || cartQuantity() === 0) return;
+    // Keep a text-only snapshot before clearing the confirmed local cart.
+    const summary = document.getElementById('review-details');
+    document.getElementById('complete-details').replaceChildren(
+      ...Array.from(summary.children, row => row.cloneNode(true))
+    );
+    closeDialog(reviewDialog);
+    openDialog(completeDialog);
+    // No network request, payment, or real order is created.
     cart = {};
     saveCart();
     document.getElementById('cart-note').value = '';
     document.getElementById('pickup-location').value = '';
-    closeDialog(reviewDialog);
-    notify('Order confirmed!');
+    renderCart();
   });
   saveCart();
   showMenu();

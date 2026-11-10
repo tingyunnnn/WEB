@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>TideBites | Campus Food Delivery</title>
   <meta name="description" content="Catch a Wave of Flavor! Explore comforting meals and cool treats for your next campus study break.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,7 +22,7 @@
     </div>
     <img src="assets/images/dolphin.png" alt="Dolphin" id="welcome-dolphin" class="welcome-dolphin">
   </div>
-  <audio id="bg-music" src="assets/audio/backgroundmusic.mp3" preload="auto" loop></audio>
+  <audio id="bg-music" src="assets/audio/backgroundmusic.mp3" preload="none" loop></audio>
 
   <!-- Sidebar navigation -->
   <nav class="w3-sidebar w3-collapse w3-animate-left" style="z-index:3;width:300px" id="mySidebar">
@@ -34,7 +35,7 @@
     <a href="#portfolio" onclick="w3_close()" class="w3-bar-item w3-button w3-padding w3-text-teal"><img src="assets/icons/menu.png" alt="Menu" style="width:16px;height:16px;margin-right:8px;vertical-align:middle">MENU</a>
     <a href="#about" onclick="w3_close()" class="w3-bar-item w3-button w3-padding"><img src="assets/icons/information-button.png" alt="About Us" style="width:16px;height:16px;margin-right:8px;vertical-align:middle">ABOUT US</a>
     <a href="#contact" onclick="w3_close()" class="w3-bar-item w3-button w3-padding"><img src="assets/icons/discount.png" alt="Student Discount" style="width:16px;height:16px;margin-right:8px;vertical-align:middle">STUDENT DISCOUNT</a>
-    <a href="#question" onclick="w3_close()" class="w3-bar-item w3-button w3-padding"><img src="assets/icons/question.png" alt="Student Discount" style="width:16px;height:16px;margin-right:8px;vertical-align:middle">FAQ</a>
+    <a href="#question" onclick="w3_close()" class="w3-bar-item w3-button w3-padding"><img src="assets/icons/question.png" alt="FAQ" style="width:16px;height:16px;margin-right:8px;vertical-align:middle">FAQ</a>
   </div>
     <div class="sidebar-seaweed-container">
       <img src="assets/images/seaweed.png" alt="Seaweed" class="w3-seaweed">
@@ -58,7 +59,7 @@
         <div id="header-title">
           <img src="assets/images/icon.png" style="margin-right:2rem; width:150px; height:auto;">
           <div>
-             <h1><b>Catch a Wave of flavor!</b></h1>
+             <h1><b>Catch a Wave of Flavor!</b></h1>
               <h1 style="font-size: 2rem;">Comforting meals, cool treats, and a splash of summer for your next study break.</h1>
           </div>
         </div>
@@ -67,7 +68,7 @@
           <p>Filter:</p>
           <button type="button" class="w3-button w3-black filter-button" data-category="all">ALL</button>
           <button type="button" class="w3-button w3-white filter-button" data-category="meals"><img src="assets/icons/lunch.png" alt="Food" style="width:16px;height:16px;margin-right:6px;vertical-align:middle">MEALS</button>
-          <button type="button" class="w3-button w3-white w3-hide-small filter-button" data-category="desserts"><img src="assets/icons/cupcake.png" alt="Dessert" style="width:16px;height:16px;margin-right:6px;vertical-align:middle">DESSERTS</button>
+          <button type="button" class="w3-button w3-white filter-button" data-category="desserts"><img src="assets/icons/cupcake.png" alt="Dessert" style="width:16px;height:16px;margin-right:6px;vertical-align:middle">DESSERTS</button>
         </div>
       </div>
     </header>
@@ -79,7 +80,7 @@
         <img src="assets/images/thai-basil-pork-rice.jpg" alt="Thai basil minced pork and vegetables served with rice and two fried eggs." class="w3-hover-opacity" style="width:100%">
         <div class="w3-container w3-white">
           <p class="card-title">Thai Basil Pork Rice</p>
-          <p class="card-meta">Meals · NT$129 (proposed)</p>
+          <p class="card-meta">Meals · NT$129</p>
           <p class="card-desc">Savory minced pork with fragrant basil and vegetables, served over fluffy rice and topped with two sunny-side-up eggs. A hearty pick for a busy day.</p>
         </div>
       </article>
@@ -87,7 +88,7 @@
         <img src="assets/images/chicken-oyakodon-bowl.jpg" alt="Chicken and egg rice bowl topped with green onions, sesame, and vegetables." class="w3-hover-opacity" style="width:100%">
         <div class="w3-container w3-white">
           <p class="card-title">Chicken Oyakodon Bowl</p>
-          <p class="card-meta">Meals · NT$139 (proposed)</p>
+          <p class="card-meta">Meals · NT$139</p>
           <p class="card-desc">A comforting rice bowl with tender chicken, egg, and sweet onions, finished with a sprinkle of green onions and sesame.</p>
         </div>
       </article>
@@ -95,7 +96,7 @@
         <img src="assets/images/taiwanese-fish-ball-noodle-soup.jpg" alt="Taiwanese noodle soup with fish balls, sliced chicken, and green vegetables." class="w3-hover-opacity" style="width:100%">
         <div class="w3-container w3-white">
           <p class="card-title">Taiwanese Fish Ball Noodle Soup</p>
-          <p class="card-meta">Meals · NT$139 (proposed)</p>
+          <p class="card-meta">Meals · NT$139</p>
           <p class="card-desc">Springy fish balls, sliced chicken, noodles, and fresh greens in a light, savory broth. A warm bowl of comfort between classes.</p>
         </div>
       </article>
@@ -103,7 +104,7 @@
         <img src="assets/images/roasted-chicken-set-meal.jpg" alt="Roasted chicken leg set with rice, vegetables, and small side dishes." class="w3-hover-opacity" style="width:100%">
         <div class="w3-container w3-white">
           <p class="card-title">Roasted Chicken Set Meal</p>
-          <p class="card-meta">Meals · NT$169 (proposed)</p>
+          <p class="card-meta">Meals · NT$169</p>
           <p class="card-desc">A golden roasted chicken leg served with steamed rice, vegetables, and tasty sides. Everything you need in one satisfying plate.</p>
         </div>
       </article>
@@ -111,7 +112,7 @@
         <img src="assets/images/tomato-udon-soup.jpg" alt="Tomato broth udon with sliced meat, egg, green onions, and fish cake." class="w3-hover-opacity" style="width:100%">
         <div class="w3-container w3-white">
           <p class="card-title">Tomato Udon Soup</p>
-          <p class="card-meta">Meals · NT$159 (proposed)</p>
+          <p class="card-meta">Meals · NT$159</p>
           <p class="card-desc">Thick udon noodles in a tangy tomato broth with sliced meat, egg, and green onions. Bright, savory, and wonderfully comforting.</p>
         </div>
       </article>
@@ -119,7 +120,7 @@
         <img src="assets/images/beef-and-egg-noodles.jpg" alt="Beef slices and a fried egg served over noodles in a dark bowl." class="w3-hover-opacity" style="width:100%">
         <div class="w3-container w3-white">
           <p class="card-title">Beef and Egg Noodles</p>
-          <p class="card-meta">Meals · NT$179 (proposed)</p>
+          <p class="card-meta">Meals · NT$179</p>
           <p class="card-desc">Juicy beef slices and a sunny-side-up egg over a bowl of noodles. A filling favorite when you need an energy boost.</p>
         </div>
       </article>
@@ -127,7 +128,7 @@
         <img src="assets/images/chilled-pork-noodle-bowl.jpg" alt="Chilled noodles topped with pork, edamame, cucumber, lotus root, and corn." class="w3-hover-opacity" style="width:100%">
         <div class="w3-container w3-white">
           <p class="card-title">Chilled Pork Noodle Bowl</p>
-          <p class="card-meta">Meals · NT$149 (proposed)</p>
+          <p class="card-meta">Meals · NT$149</p>
           <p class="card-desc">A colorful bowl of chilled noodles with sliced pork, edamame, cucumber, lotus root, and sweet corn, finished with a savory sauce.</p>
         </div>
       </article>
@@ -135,7 +136,7 @@
         <img src="assets/images/watermelon-snow-ice.jpg" alt="White shaved milk ice generously topped with red watermelon cubes." class="w3-hover-opacity" style="width:100%">
         <div class="w3-container w3-white">
           <p class="card-title">Watermelon Snow Ice</p>
-          <p class="card-meta">Desserts · NT$99 (proposed)</p>
+          <p class="card-meta">Desserts · NT$99</p>
           <p class="card-desc">Light, fluffy shaved milk ice topped with juicy watermelon cubes. A refreshing little escape on a sunny afternoon.</p>
         </div>
       </article>
@@ -143,7 +144,7 @@
         <img src="assets/images/mango-snow-ice.jpg" alt="A bowl of yellow shaved milk ice topped with fresh mango chunks." class="w3-hover-opacity" style="width:100%">
         <div class="w3-container w3-white">
           <p class="card-title">Mango Snow Ice</p>
-          <p class="card-meta">Desserts · NT$109 (proposed)</p>
+          <p class="card-meta">Desserts · NT$109</p>
           <p class="card-desc">Delicate ribbons of shaved milk ice piled high with sweet mango pieces and a fruity drizzle. Bright, tropical, and irresistible.</p>
         </div>
       </article>
@@ -151,7 +152,7 @@
         <img src="assets/images/peanut-rice-dumplings.jpg" alt="White glutinous tang yuan coated with peanut powder in a dark sweet sauce." class="w3-hover-opacity" style="width:100%">
         <div class="w3-container w3-white">
           <p class="card-title">Peanut Tang Yuan</p>
-          <p class="card-meta">Desserts · NT$79 (proposed)</p>
+          <p class="card-meta">Desserts · NT$79</p>
           <p class="card-desc">Soft and chewy glutinous tang yuan topped with crushed peanut powder and served in a sweet sauce. A cozy Taiwanese dessert.</p>
         </div>
       </article>
@@ -179,7 +180,7 @@
       <img id="pufferfish" src="assets/images/pufferfish1.png" alt="Pufferfish" class="floating-pufferfish" onclick="togglePufferfish()">
 
       <h4><b>About TideBites</b></h4>
-      <p>Welcome to TideBites, a virtual restaurant concept made for campus life.<br> From hearty bowls to icy desserts, find a little happiness between classes.<br>Inspired by summer waves and carefree beach days, we bring a playful splash of energy to your study break. Pick a comforting meal, discover a cool treat, and Catch a Wave of Flavor!</p>
+      <p>Welcome to TideBites, an online restaurant for campus life.<br> From hearty bowls to icy desserts, find a little happiness between classes.<br>Inspired by summer waves and carefree beach days, we bring a playful splash of energy to your study break. Pick a comforting meal, discover a cool treat, and Catch a Wave of Flavor!</p>
       <hr>
 
       <!-- Why Choose Us -->
@@ -206,7 +207,7 @@
           <div class="w3-center w3-padding-16 w3-border" style="background-color: #fbf0d8; position: relative; overflow: hidden;">
             <i class="fa fa-tag w3-xxlarge w3-text-teal"></i>
             <h5><b>Student-Friendly Picks</b></h5>
-            <p class="w3-text-grey">Explore satisfying meals, sweet treats, and proposed deals with student budgets in mind.</p>
+            <p class="w3-text-grey">Find your next study-break favorite among our satisfying meals and sweet treats.</p>
             <img src="assets/images/coral10.png" alt="coral" style="position: absolute; left: 8px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
           </div>
           <div class="w3-center w3-padding-16 w3-border" style="background-color: #d9eef9; position: relative; overflow: hidden;">
@@ -218,7 +219,7 @@
           <div class="w3-center w3-padding-16 w3-border" style="background-color: #eae6f2; position: relative; overflow: hidden;">
             <i class="fa fa-heart w3-xxlarge w3-text-teal"></i>
             <h5><b>A Splash of Summer</b></h5>
-            <p class="w3-text-grey">A youthful wave-inspired concept brings sunshine, energy, and a little fun to campus food.</p>
+            <p class="w3-text-grey">Our playful, wave-inspired style brings sunshine, energy, and a little fun to campus food.</p>
             <img src="assets/images/coral2.png" alt="coral" style="position: absolute; right: 8px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
           </div>
         </div>
@@ -254,8 +255,8 @@
     <section class="w3-container w3-padding-large w3-white" id="contact">
       <div id="contactFishContainer" class="section-fish-layer"></div>
       <h2 class="nav-title">Student Discount</h2>
-      <h4><b>For Student</b></h4>
-      <p class="w3-text-grey">Make your next study break a tasty one. Explore our proposed student offer; this class-project menu does not accept orders or verify student status.</p>
+      <h4><b>Student Perks</b></h4>
+      <p class="w3-text-grey">Make your next study break a tasty one with comforting meals and refreshing desserts.</p>
 
       
       <div class="discount-decor-anchor">
@@ -270,18 +271,18 @@
       <div class="w3-grid w3-margin-top" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">
         <div class="w3-center w3-padding-24 w3-teal w3-text-white">
           <i class="fa fa-percent w3-xxlarge"></i>
-          <h4><b>10% Student Discount</b></h4>
-          <p>A proposed 10% discount on eligible menu items, subject to future student verification.</p>
+          <h4><b>10% Campus Discount</b></h4>
+          <p>Enjoy 10% off every campus order. No student ID or promo code needed!</p>
         </div>
         <div class="w3-center w3-padding-24 w3-dark-grey w3-text-white">
           <i class="fa fa-id-card-o w3-xxlarge"></i>
           <h4><b>How It Works</b></h4>
-          <p>Student verification belongs to a future ordering experience. For now, enjoy exploring the menu.</p>
+          <p>Your 10% campus discount is applied automatically to the food subtotal. Just choose your campus pickup location.</p>
         </div>
         <div class="w3-center w3-padding-24 w3-teal w3-text-white">
           <i class="fa fa-calendar-check-o w3-xxlarge"></i>
           <h4><b>Meals and Treats</b></h4>
-          <p>The proposed offer covers both meals and desserts, so you can find your own favorite.</p>
+          <p>All meals and desserts qualify, from rice bowls and noodles to snow ice and tang yuan.</p>
         </div>
       </div>
 
@@ -298,7 +299,7 @@
                 <span class="faq-arrow-wrap" aria-hidden="true"><i class="fa fa-chevron-down"></i></span>
               </div>
               <div class="faq-answer">
-              <p class="w3-text-grey">A playful, wave-inspired virtual restaurant concept for college students, with comforting meals and refreshing treats.</p>
+              <p class="w3-text-grey">An online restaurant for campus life, with comforting meals, refreshing treats, and a playful splash of summer.</p>
               </div>
               <img src="assets/images/coral4.png" alt="coral" style="position: absolute; left: 12px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
             </div>
@@ -309,7 +310,7 @@
             <span class="faq-arrow-wrap" aria-hidden="true"><i class="fa fa-chevron-down"></i></span>
           </div>
           <div class="faq-answer">
-          <p class="w3-text-grey">TideBites is a class-project virtual restaurant concept, with no physical storefront.</p>
+          <p class="w3-text-grey">TideBites is online-only and has no physical storefront.</p>
           </div>
           <img src="assets/images/coral11.png" alt="coral" style="position: absolute; left: 8px; bottom: 2px; width: 55px; opacity: 0.5; pointer-events: none;">
         </div>
@@ -320,7 +321,7 @@
             <span class="faq-arrow-wrap" aria-hidden="true"><i class="fa fa-chevron-down"></i></span>
           </div>
           <div class="faq-answer">
-          <p class="w3-text-grey">Not yet. This Phase I website is a menu preview; online orders and payments are not active.</p>
+          <p class="w3-text-grey">You can browse dishes, build a cart, and review your selections. This website does not submit orders or process payments.</p>
           </div>
           <img src="assets/images/coral13.png" alt="coral" style="position: absolute; left: 12px; bottom: -2px; width: 55px; opacity: 0.5; pointer-events: none;">
         </div>
@@ -331,7 +332,7 @@
             <span class="faq-arrow-wrap" aria-hidden="true"><i class="fa fa-chevron-down"></i></span>
           </div>
           <div class="faq-answer">
-          <p class="w3-text-grey">We propose a 10% student discount. Eligibility and verification would be finalized before ordering launches.</p>
+          <p class="w3-text-grey">Every campus order automatically gets 10% off all meals and desserts. No student ID, account, or promo code is needed. The discount is calculated on the full food subtotal and rounded to the nearest NT dollar.</p>
           </div>
           <img src="assets/images/coral3.png" alt="coral" style="position: absolute; left: 10px; bottom: 2px; width: 55px; opacity: 0.5; pointer-events: none;">
         </div>
@@ -353,7 +354,7 @@
             <span class="faq-arrow-wrap" aria-hidden="true"><i class="fa fa-chevron-down"></i></span>
           </div>
           <div class="faq-answer">
-          <p class="w3-text-grey">Yes! Use the filter buttons to browse dishes, and click a dish to view its details.</p>
+          <p class="w3-text-grey">Yes! Choose ALL, MEALS, or DESSERTS and browse up to six dishes per page. Open a dish for details, then select the magnifying glass to enlarge its photo.</p>
           </div>
           <img src="assets/images/coral6.png" alt="coral" style="position: absolute; left: 10px; bottom: -5px; width: 55px; opacity: 0.5; pointer-events: none;">
         </div>
@@ -377,7 +378,8 @@
         <img src="assets/images/treasure.png" alt="Treasure" id="treasureImg">
       </div>
       <div class="w3-container">
-        <h3>DELIVERY HOURS (CONCEPT)</h3>
+        <h3>DELIVERY HOURS</h3>
+        <p>Online ordering is unavailable. No delivery is booked through this website.</p>
         <table class="w3-table">
           <tr>
             <td><i class="fa fa-clock-o w3-margin-right"></i>Monday – Friday</td>
@@ -395,26 +397,26 @@
       </div>
 
       <div class="w3-container">
-        <h3>EXPLORE</h3><p><a href="#portfolio">Our Menu</a></p><p><a href="#about">About TideBites</a></p><p><a href="#contact">Student Deals</a></p>
+        <h3>EXPLORE</h3><p><a href="#portfolio">Our Menu</a></p><p><a href="#about">About TideBites</a></p><p><a href="#contact">Student Perks</a></p>
       </div>
 
       <div class="w3-container">
         <h3>POPULAR TAGS</h3>
         <p>
           <span class="w3-tag w3-black w3-margin-bottom">Food</span>
-          <span class="w3-tag w3-grey w3-small w3-margin-bottom">Dessert</span>
-          <span class="w3-tag w3-grey w3-small w3-margin-bottom">Drinks</span>
-          <span class="w3-tag w3-grey w3-small w3-margin-bottom">Student Deal</span>
-          <span class="w3-tag w3-grey w3-small w3-margin-bottom">Daily Special</span>
-          <span class="w3-tag w3-grey w3-small w3-margin-bottom">Fresh</span>
-          <span class="w3-tag w3-grey w3-small w3-margin-bottom">Healthy</span>
-          <span class="w3-tag w3-grey w3-small w3-margin-bottom">Affordable</span>
-          <span class="w3-tag w3-grey w3-small w3-margin-bottom">Takeaway</span>
+          <span class="w3-tag w3-grey w3-small w3-margin-bottom">Desserts</span>
+          <span class="w3-tag w3-grey w3-small w3-margin-bottom">Rice Bowls</span>
+          <span class="w3-tag w3-grey w3-small w3-margin-bottom">Noodles</span>
+          <span class="w3-tag w3-grey w3-small w3-margin-bottom">Snow Ice</span>
+          <span class="w3-tag w3-grey w3-small w3-margin-bottom">Tang Yuan</span>
+          <span class="w3-tag w3-grey w3-small w3-margin-bottom">Comfort Food</span>
+          <span class="w3-tag w3-grey w3-small w3-margin-bottom">Student Deals</span>
           <span class="w3-tag w3-grey w3-small w3-margin-bottom">Lunch</span>
           <span class="w3-tag w3-grey w3-small w3-margin-bottom">Dinner</span>
-          <span class="w3-tag w3-grey w3-small w3-margin-bottom">Campus</span>
-          <span class="w3-tag w3-grey w3-small w3-margin-bottom">Virtual Restaurant</span>
-          <span class="w3-tag w3-grey w3-small w3-margin-bottom">New Menu</span>
+          <span class="w3-tag w3-grey w3-small w3-margin-bottom">Campus Life</span>
+          <span class="w3-tag w3-grey w3-small w3-margin-bottom">Takeaway</span>
+          <span class="w3-tag w3-grey w3-small w3-margin-bottom">Sweet Treats</span>
+          <span class="w3-tag w3-grey w3-small w3-margin-bottom">Ocean Vibes</span>
         </p>
       </div>
     </footer>
@@ -432,7 +434,7 @@
       <span id="cart-badge" class="cart-badge" hidden>0</span>
   </button>
 
-  <!-- Demo ordering: client-side only; no real orders or payments are submitted -->
+  <!-- Client-side cart and summary; no orders or payments are submitted -->
   <dialog id="dish-dialog" class="tb-dialog" aria-labelledby="dish-dialog-title">
     <button type="button" class="tb-close" data-close-dialog="dish-dialog" aria-label="Close">×</button>
     <div class="tb-dish-photo-wrap">
@@ -462,19 +464,23 @@
     <button type="button" class="tb-close" data-close-dialog="cart-dialog" aria-label="Close">×</button>
     <div class="tb-dialog-body">
       <h2 id="cart-title">Your Cart</h2>
+      <p class="tb-muted">Enjoy an automatic 10% campus discount on all meals and desserts.</p>
       <div id="cart-items" aria-live="polite"></div>
       <div id="cart-checkout">
         <label class="tb-field" for="cart-note">Order Notes
           <textarea id="cart-note" rows="3" maxlength="500" placeholder="e.g., less spicy, no peanuts..."></textarea>
         </label>
-        <label class="tb-field" for="pickup-location">Pickup Location
+        <label class="tb-field" for="pickup-location">Campus Pickup Location
           <select id="pickup-location" required>
-            <option value="">Choose a pickup location</option>
-            <option value="Campus Main Gate (Demo)">Campus Main Gate</option>
-            <option value="Student Center (Demo)">Student Center</option>
-            <option value="Library Entrance (Demo)">Library Entrance</option>
+            <option value="">Choose a campus pickup location</option>
+            <option value="Campus Main Gate">Campus Main Gate</option>
+            <option value="Student Center">Student Center</option>
+            <option value="Library Entrance">Library Entrance</option>
           </select>
         </label>
+        <p class="tb-muted">Choose where you would meet your campus delivery.</p>
+        <div class="tb-total-line"><span>Subtotal</span><span id="cart-subtotal">NT$0</span></div>
+        <div class="tb-total-line"><span>Campus Discount (10%)</span><span id="cart-discount">NT$0</span></div>
         <div class="tb-total-line"><strong>Total</strong><strong id="cart-total">NT$0</strong></div>
         <button type="button" id="review-order" class="tb-primary">Review Order</button>
       </div>
@@ -485,10 +491,25 @@
   <dialog id="review-dialog" class="tb-dialog" aria-labelledby="review-title">
     <button type="button" class="tb-close" data-close-dialog="review-dialog" aria-label="Close">×</button>
     <div class="tb-dialog-body">
-      <h2 id="review-title">Order Summary (Demo)</h2>
+      <h2 id="review-title">Order Summary</h2>
+      <p id="checkout-notice" class="tb-muted">This is a simulated checkout. No real order will be sent and no payment will be processed.</p>
       <div id="review-details"></div>
-      <button type="button" id="confirm-demo-order" class="tb-primary">Confirm Demo Order</button>
+      <button type="button" id="place-order" class="tb-primary" aria-describedby="checkout-notice">Place Order</button>
       <button type="button" id="back-to-cart" class="tb-secondary">Back to Cart</button>
+    </div>
+  </dialog>
+  <dialog id="complete-dialog" class="tb-dialog tb-complete-dialog" aria-labelledby="complete-title" aria-describedby="complete-notice">
+    <button type="button" class="tb-close" data-close-dialog="complete-dialog" aria-label="Close">&times;</button>
+    <div class="tb-complete-banner">
+      <img src="assets/images/dolphin.png" alt="" width="100" height="100">
+      <p>Catch a Wave of Flavor!</p>
+    </div>
+    <div class="tb-dialog-body">
+      <h2 id="complete-title">Thanks for riding the wave!</h2>
+      <p id="complete-notice">Your simulated order is complete. Nothing has been sent to a restaurant, no delivery is booked, and no payment has been taken.</p>
+      <h3>Your Selections</h3>
+      <div id="complete-details"></div>
+      <button type="button" data-close-dialog="complete-dialog" class="tb-primary">Continue Shopping</button>
     </div>
   </dialog>
   <div id="cart-toast" role="status" aria-live="polite" class="tb-toast" hidden></div>
