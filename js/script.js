@@ -2,19 +2,36 @@ const sidebar = document.getElementById("mySidebar");
 const overlay = document.getElementById("myOverlay");
 
 function w3_open() {
-  sidebar.style.display = "block";
-  overlay.style.display = "block";
+  sidebar.classList.add("is-open");
+  if (window.innerWidth <= 992) {
+    sidebar.style.display = "flex";
+    overlay.style.display = "block";
+  }
 }
 
 function w3_close() {
   // 只在小螢幕 (≤992px) 才收起 sidebar，桌面版保持 w3.css 的 display:block!important
   if (window.innerWidth <= 992) {
+    sidebar.classList.remove("is-open");
     sidebar.style.display = "none";
   }
   overlay.style.display = "none";
 }
 
-// ========== FAQ 卡片點擊展開 ==========
+// Ensure the mobile menu starts closed, including after browser history restoration.
+if (window.innerWidth <= 992) w3_close();
+window.addEventListener("pageshow", () => { if (window.innerWidth <= 992) w3_close(); });
+window.addEventListener("resize", () => {
+  if (window.innerWidth > 992) {
+    sidebar.classList.remove("is-open");
+    sidebar.style.removeProperty("display");
+    overlay.style.display = "none";
+  } else if (!sidebar.classList.contains("is-open")) {
+    w3_close();
+  }
+});
+
+// ========== FAQ 卡片點擊展開 ========= 
 document.querySelectorAll('.faq-card').forEach(function (card) {
   const trigger = card.querySelector('.faq-question');
   if (!trigger) return;
@@ -398,7 +415,8 @@ window.addEventListener('scroll', function () {
   function typeWriter() {
     if (charIndex < sloganText.length) {
       typewriterEl.textContent += sloganText.charAt(charIndex);
-      typewriterEl.style.width = ((charIndex + 1) / sloganText.length) * 100 + "%";
+      // The text is already revealed character by character; avoid clipping its container.
+      typewriterEl.style.width = "auto";
       charIndex++;
       setTimeout(typeWriter, 70);
     } else {
@@ -522,7 +540,7 @@ function spawnBackgroundFish() {
   });
 }
 
-setInterval(spawnBackgroundFish, 2500);
+setInterval(() => { if (!document.hidden) spawnBackgroundFish(); }, 4000);
 spawnBackgroundFish();
 spawnBackgroundFish();
 
@@ -623,8 +641,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function scheduleNextFish() {
-    spawnFish();
-    const nextTime = Math.random() * 2500 + 1000; 
+    if (!document.hidden) spawnFish();
+    const nextTime = Math.random() * 2500 + 2500; 
     setTimeout(scheduleNextFish, nextTime);
   }
 
