@@ -26,14 +26,15 @@
   <!-- Sidebar navigation -->
   <nav class="w3-sidebar w3-collapse w3-animate-left" style="z-index:3;width:300px" id="mySidebar">
   <div class="w3-container w3-padding-16">
-    <button onclick="w3_close()" class="w3-button w3-hide-large w3-right w3-jumbo" title="Close menu">×</button>
-    <h4><b>TideBites</b></h4>
+    <button onclick="w3_close()" class="w3-button w3-hide-large w3-right w3-jumbo sidebar-close" title="Close menu">×</button>
+    <h4><b style="font-size: 2rem;">TideBites</b></h4>
     <p class="w3-text-grey">Catch a Wave of Flavor!</p>
   </div>
   <div class="w3-bar-block">
     <a href="#portfolio" onclick="w3_close()" class="w3-bar-item w3-button w3-padding w3-text-teal"><img src="assets/icons/menu.png" alt="Menu" style="width:16px;height:16px;margin-right:8px;vertical-align:middle">MENU</a>
     <a href="#about" onclick="w3_close()" class="w3-bar-item w3-button w3-padding"><img src="assets/icons/information-button.png" alt="About Us" style="width:16px;height:16px;margin-right:8px;vertical-align:middle">ABOUT US</a>
     <a href="#contact" onclick="w3_close()" class="w3-bar-item w3-button w3-padding"><img src="assets/icons/discount.png" alt="Student Discount" style="width:16px;height:16px;margin-right:8px;vertical-align:middle">STUDENT DISCOUNT</a>
+    <a href="#question" onclick="w3_close()" class="w3-bar-item w3-button w3-padding"><img src="assets/icons/question.png" alt="Student Discount" style="width:16px;height:16px;margin-right:8px;vertical-align:middle">FAQ</a>
   </div>
     <div class="sidebar-seaweed-container">
       <img src="assets/images/seaweed.png" alt="Seaweed" class="w3-seaweed">
@@ -48,13 +49,21 @@
   <!-- Page content -->
   <main class="w3-main" style="margin-left:300px">
 
+    
     <!-- Menu section header -->
     <header id="portfolio">
       <button class="w3-button w3-hide-large w3-xxlarge w3-hover-text-grey" onclick="w3_open()"><i class="fa fa-bars"></i></button>
       <div class="w3-container">
-        <h1><img src="assets/images/icon.png" style="margin-right:2rem; width:150px; height:auto;"><b>Catch a Wave of flavor!</b></h1>
-        <h2 style="font-size: 1.8rem;">Comforting meals, cool treats, and a splash of summer for your next study break.</h2>
-        <div class="w3-section w3-bottombar w3-padding-16">
+        <div id="header-title">
+          <img src="assets/images/icon.png" style="margin-right:2rem; width:150px; height:auto;">
+          <div>
+             <h1><b>Catch a Wave of flavor!</b></h1>
+              <h1 style="font-size: 2rem;">Comforting meals, cool treats, and a splash of summer for your next study break.</h1>
+          </div>
+        </div>
+        <h2 class="nav-title">Menu</h2>
+        <div class="w3-section w3-bottombar w3-padding-16 filter-bar">
+          <p>Filter:</p>
           <button type="button" class="w3-button w3-black filter-button" data-category="all">ALL</button>
           <button type="button" class="w3-button w3-white filter-button" data-category="meals"><img src="assets/icons/lunch.png" alt="Food" style="width:16px;height:16px;margin-right:6px;vertical-align:middle">MEALS</button>
           <button type="button" class="w3-button w3-white w3-hide-small filter-button" data-category="desserts"><img src="assets/icons/cupcake.png" alt="Dessert" style="width:16px;height:16px;margin-right:6px;vertical-align:middle">DESSERTS</button>
@@ -154,15 +163,16 @@
     </div>
     </div> <!-- end menu-section-wrap -->
 
-    <div class="wave-divider">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
-        <path fill="#e2edf3"
-          d="M0,45 C200,80 400,10 600,45 C800,80 1000,10 1200,45 C1300,62 1370,30 1440,45 L1440,80 L0,80 Z"/>
+    <div class="wave-divider wave-before-about">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2880 80" preserveAspectRatio="none" aria-hidden="true">
+        <path fill="#f1fbff" d="M0,40 C120,10 240,10 360,40 C480,70 600,70 720,40 C840,10 960,10 1080,40 C1200,70 1320,70 1440,40 L1440,80 L0,80 Z"/>
+        <path fill="#f1fbff" transform="translate(1440 0)" d="M0,40 C120,10 240,10 360,40 C480,70 600,70 720,40 C840,10 960,10 1080,40 C1200,70 1320,70 1440,40 L1440,80 L0,80 Z"/>
       </svg>
     </div>
 
     <!-- About Us section -->
     <section id="about" class="w3-container w3-padding-large" >
+      <h2 class="nav-title">About Us</h2>
       <h4><b>About TideBites</b></h4>
       <img id="pufferfish" src="assets/images/pufferfish1.png" alt="Pufferfish" class="floating-pufferfish" onclick="togglePufferfish()">
       <p>Welcome to TideBites, a virtual restaurant concept made for campus life.<br> From hearty bowls to icy desserts, find a little happiness between classes.<br>Inspired by summer waves and carefree beach days, we bring a playful splash of energy to your study break. Pick a comforting meal, discover a cool treat, and Catch a Wave of Flavor!</p>
@@ -207,25 +217,27 @@
 
       <!-- Student Favorites -->
       <h4>Student Favorites</h4>
-      <div class="w3-grid" style="grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-bottom:16px">
-        <div class="w3-white w3-border w3-padding-16">
+      <div class="w3-grid student-favorites-grid" style="grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-bottom:16px">
+        <div class="w3-white w3-padding-16">
           <p><b>Lunch Between Lectures</b></p><p>Thai Basil Pork Rice is a hearty pick to keep your afternoon rolling.</p>
         </div>
-        <div class="w3-white w3-border w3-padding-16">
+        <div class="w3-white w3-padding-16">
           <p><b>A Sweet Study Break</b></p><p>Cool down with Mango Snow Ice or Watermelon Snow Ice after class.</p>
         </div>
-        <div class="w3-white w3-border w3-padding-16">
+        <div class="w3-white w3-padding-16">
           <p><b>A Cozy Bowl for Any Day</b></p><p>Take a comforting pause with Taiwanese Fish Ball Noodle Soup.</p>
         </div>
       </div>
     </section>
 
-    <div class="wave-divider" style="background:#e2edf3;">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 60" preserveAspectRatio="none">
-        <path fill="#66b6bd"
-          d="M0,30 C240,60 480,0 720,30 C960,60 1200,0 1440,30 L1440,60 L0,60 Z"/>
+    <div class="contact-background">
+    <div class="wave-divider wave-before-contact">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2880 80" preserveAspectRatio="none" aria-hidden="true">
+        <path fill="#f1fbff" d="M0,40 C120,10 240,10 360,40 C480,70 600,70 720,40 C840,10 960,10 1080,40 C1200,70 1320,70 1440,40 L1440,0 L0,0 Z"/>
+        <path fill="#f1fbff" transform="translate(1440 0)" d="M0,40 C120,10 240,10 360,40 C480,70 600,70 720,40 C840,10 960,10 1080,40 C1200,70 1320,70 1440,40 L1440,0 L0,0 Z"/>
       </svg>
     </div>
+    
 
     <!-- Student Discount section -->
     <section class="w3-container w3-padding-large w3-white" id="contact">
@@ -257,56 +269,90 @@
       <hr class="w3-opacity w3-margin-top">
 
       <!-- FAQ -->
-      <h4>Frequently Asked Questions</h4>
-      <div class="w3-grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:16px">
-        <div class="w3-border w3-padding-16" style="background-color: #f8e2ec; position: relative; overflow: hidden;">
-          <p><b><i class="fa fa-question-circle w3-text-teal w3-margin-right"></i>What is TideBites?</b></p>
-          <p class="w3-text-grey">A playful, wave-inspired virtual restaurant concept for college students, with comforting meals and refreshing treats.</p>
-          <img src="assets/images/coral4.png" alt="coral" style="position: absolute; left: 16px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
-        </div>
-        
-        <div class="w3-border w3-padding-16" style="background-color: #eee1ee; position: relative; overflow: hidden;">
-          <p><b><i class="fa fa-question-circle w3-text-teal w3-margin-right"></i>Can I visit a physical restaurant?</b></p>
+       <section id="question">
+          <h2 class="nav-title">FAQ</h2>
+          <h4 >Frequently Asked Questions</h4>
+          <div class="w3-grid faq-grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:16px">
+            <div class="w3-border w3-padding-16 faq-card" style="background-color: #f8e2ec; position: relative; overflow: hidden;">
+              <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+              <p><b>What is TideBites?</b></p>
+                <span class="faq-arrow-wrap" aria-hidden="true"><i class="fa fa-chevron-down"></i></span>
+              </div>
+              <div class="faq-answer">
+              <p class="w3-text-grey">A playful, wave-inspired virtual restaurant concept for college students, with comforting meals and refreshing treats.</p>
+              </div>
+              <img src="assets/images/coral4.png" alt="coral" style="position: absolute; left: 12px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
+            </div>
+
+        <div class="w3-border w3-padding-16 faq-card" style="background-color: #eee1ee; position: relative; overflow: hidden;">
+          <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+          <p><b>Can I visit a physical restaurant?</b></p>
+            <span class="faq-arrow-wrap" aria-hidden="true"><i class="fa fa-chevron-down"></i></span>
+          </div>
+          <div class="faq-answer">
           <p class="w3-text-grey">TideBites is a class-project virtual restaurant concept, with no physical storefront.</p>
-          <img src="assets/images/coral11.png" alt="coral" style="position: absolute; right: 48px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
+          </div>
+          <img src="assets/images/coral11.png" alt="coral" style="position: absolute; left: 8px; bottom: 2px; width: 55px; opacity: 0.5; pointer-events: none;">
         </div>
         
-        <div class="w3-border w3-padding-16" style="background-color: #f2f7db; position: relative; overflow: hidden;">
-          <p><b><i class="fa fa-question-circle w3-text-teal w3-margin-right"></i>Can I order here?</b></p>
+        <div class="w3-border w3-padding-16 faq-card" style="background-color: #f2f7db; position: relative; overflow: hidden;">
+          <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+          <p><b>Can I order here?</b></p>
+            <span class="faq-arrow-wrap" aria-hidden="true"><i class="fa fa-chevron-down"></i></span>
+          </div>
+          <div class="faq-answer">
           <p class="w3-text-grey">Not yet. This Phase I website is a menu preview; online orders and payments are not active.</p>
-          <img src="assets/images/coral13.png" alt="coral" style="position: absolute; left: 24px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
+          </div>
+          <img src="assets/images/coral13.png" alt="coral" style="position: absolute; left: 12px; bottom: -2px; width: 55px; opacity: 0.5; pointer-events: none;">
         </div>
         
-        <div class="w3-border w3-padding-16" style="background-color: #e7f4fb; position: relative; overflow: hidden;">
-          <p><b><i class="fa fa-question-circle w3-text-teal w3-margin-right"></i>How does the student deal work?</b></p>
+        <div class="w3-border w3-padding-16 faq-card" style="background-color: #e7f4fb; position: relative; overflow: hidden;">
+          <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+          <p><b>How does the student deal work?</b></p>
+            <span class="faq-arrow-wrap" aria-hidden="true"><i class="fa fa-chevron-down"></i></span>
+          </div>
+          <div class="faq-answer">
           <p class="w3-text-grey">We propose a 10% student discount. Eligibility and verification would be finalized before ordering launches.</p>
-          <img src="assets/images/coral3.png" alt="coral" style="position: absolute; right: 50px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
+          </div>
+          <img src="assets/images/coral3.png" alt="coral" style="position: absolute; left: 10px; bottom: 2px; width: 55px; opacity: 0.5; pointer-events: none;">
         </div>
         
-        <div class="w3-border w3-padding-16" style="background-color: #ecf7f7; position: relative; overflow: hidden;">
-          <p><b><i class="fa fa-question-circle w3-text-teal w3-margin-right"></i>Do you have desserts?</b></p>
+        <div class="w3-border w3-padding-16 faq-card" style="background-color: #ecf7f7; position: relative; overflow: hidden;">
+          <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+          <p><b>Do you have desserts?</b></p>
+            <span class="faq-arrow-wrap" aria-hidden="true"><i class="fa fa-chevron-down"></i></span>
+          </div>
+          <div class="faq-answer">
           <p class="w3-text-grey">Yes! Discover Watermelon Snow Ice, Mango Snow Ice, and Peanut Tang Yuan.</p>
-          <img src="assets/images/coral5.png" alt="coral" style="position: absolute; left: 32px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
+          </div>
+          <img src="assets/images/coral5.png" alt="coral" style="position: absolute; left: 12px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
         </div>
         
-        <div class="w3-border w3-padding-16" style="background-color: #fdeceb; position: relative; overflow: hidden;">
-          <p><b><i class="fa fa-question-circle w3-text-teal w3-margin-right"></i>Can I filter dishes or enlarge photos?</b></p>
-          <p class="w3-text-grey">These interactions are planned for a future team update. All ten dishes are currently shown in this preview.</p>
-          <img src="assets/images/coral6.png" alt="coral" style="position: absolute; right: 18px; bottom: 4px; width: 55px; opacity: 0.5; pointer-events: none;">
+        <div class="w3-border w3-padding-16 faq-card" style="background-color: #fdeceb; position: relative; overflow: hidden;">
+          <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+          <p><b>Can I filter dishes or enlarge photos?</b></p>
+            <span class="faq-arrow-wrap" aria-hidden="true"><i class="fa fa-chevron-down"></i></span>
+          </div>
+          <div class="faq-answer">
+          <p class="w3-text-grey">Yes! Use the filter buttons to browse dishes, and click a dish to view its details.</p>
+          </div>
+          <img src="assets/images/coral6.png" alt="coral" style="position: absolute; left: 10px; bottom: -5px; width: 55px; opacity: 0.5; pointer-events: none;">
         </div>
 
       </div>
-    </section>
+       </section> <!-- end FAQ #question -->
+    </section> <!-- end Student Discount #contact -->
 
-    <div class="wave-divider">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
-        <path fill="#616161"
-          d="M0,35 C180,0 360,70 540,35 C720,0 900,70 1080,35 C1260,0 1370,55 1440,35 L1440,80 L0,80 Z"/>
+    <div class="wave-divider wave-before-footer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2880 80" preserveAspectRatio="none" aria-hidden="true">
+        <path fill="#12516d" d="M0,40 C120,10 240,10 360,40 C480,70 600,70 720,40 C840,10 960,10 1080,40 C1200,70 1320,70 1440,40 L1440,80 L0,80 Z"/>
+        <path fill="#12516d" transform="translate(1440 0)" d="M0,40 C120,10 240,10 360,40 C480,70 600,70 720,40 C840,10 960,10 1080,40 C1200,70 1320,70 1440,40 L1440,80 L0,80 Z"/>
       </svg>
     </div>
+    </div> <!-- end contact-background -->
 
     <!-- Footer -->
-    <footer class="w3-grid w3-padding-32 w3-dark-grey" style="grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:32px">
+    <footer class="w3-grid w3-padding-32 tb-footer" style="grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:32px">
       <div class="w3-container">
         <h3>DELIVERY HOURS (CONCEPT)</h3>
         <table class="w3-table">
@@ -350,7 +396,7 @@
       </div>
     </footer>
 
-    <div class="w3-black w3-center w3-padding-24">
+    <div class="w3-center w3-padding-24 tb-footer-bottom">
       Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-opacity">w3.css</a>
     </div>
 
@@ -366,7 +412,12 @@
   <!-- Demo ordering: client-side only; no real orders or payments are submitted -->
   <dialog id="dish-dialog" class="tb-dialog" aria-labelledby="dish-dialog-title">
     <button type="button" class="tb-close" data-close-dialog="dish-dialog" aria-label="Close">×</button>
-    <img id="dish-dialog-image" class="tb-dish-image" src="" alt="">
+    <div class="tb-dish-photo-wrap">
+      <img id="dish-dialog-image" class="tb-dish-image" src="" alt="">
+      <button type="button" id="enlarge-dish-photo" class="tb-dish-zoom" aria-label="Enlarge food photo" title="Enlarge photo">
+        <i class="fa fa-search-plus" aria-hidden="true"></i>
+      </button>
+    </div>
     <div class="tb-dialog-body">
       <h2 id="dish-dialog-title"></h2>
       <p id="dish-dialog-meta" class="tb-muted"></p>
@@ -375,7 +426,7 @@
         <label for="dish-quantity">Quantity</label>
         <div class="tb-stepper">
           <button type="button" id="dish-minus" aria-label="Decrease quantity">−</button>
-          <input id="dish-quantity" type="number" min="1" max="99" value="1" inputmode="numeric">
+          <input id="dish-quantity" aria-label="Quantity" type="number" min="1" max="99" value="1" inputmode="numeric">
           <button type="button" id="dish-plus" aria-label="Increase quantity">+</button>
         </div>
       </div>
@@ -420,6 +471,12 @@
     </div>
   </dialog>
   <div id="cart-toast" role="status" aria-live="polite" class="tb-toast" hidden></div>
+
+  <!-- Food photo lightbox: click a dish photo to enlarge it -->
+  <dialog id="image-lightbox" class="tb-image-lightbox" aria-label="Enlarged food photo">
+    <button type="button" id="close-lightbox" class="tb-image-lightbox-close" aria-label="Close enlarged photo">×</button>
+    <img id="lightbox-image" alt="Enlarged food photo">
+  </dialog>
 
   <script src="js/script.js"></script>
 </body>
