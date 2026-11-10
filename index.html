@@ -48,6 +48,7 @@
 
   <!-- Page content -->
   <main class="w3-main" style="margin-left:300px">
+
     
     <!-- Menu section header -->
     <header id="portfolio">
@@ -168,26 +169,16 @@
         <path fill="#f1fbff" transform="translate(1440 0)" d="M0,40 C120,10 240,10 360,40 C480,70 600,70 720,40 C840,10 960,10 1080,40 C1200,70 1320,70 1440,40 L1440,80 L0,80 Z"/>
       </svg>
     </div>
-
     <!-- About Us section -->
     <section id="about" class="w3-container w3-padding-large" >
-      <div id="fishContainer" class="fish-background-layer"></div>
       <h2 class="nav-title">About Us</h2>
       <h4><b>About TideBites</b></h4>
-      <img id="pufferfish" src="assets/images/pufferfish1.png" alt="Pufferfish" class="floating-pufferfish" onclick="togglePufferfish()">
       <p>Welcome to TideBites, a virtual restaurant concept made for campus life.<br> From hearty bowls to icy desserts, find a little happiness between classes.<br>Inspired by summer waves and carefree beach days, we bring a playful splash of energy to your study break. Pick a comforting meal, discover a cool treat, and Catch a Wave of Flavor!</p>
       <hr>
 
       <!-- Why Choose Us -->
-      <div style="position: relative; display: inline-block; width: 100%;">
       <h4>Why Choose Us</h4>
-        <div class="octopus-container" onclick="triggerInkImage(this)">
-          <div class="octopus-container" onclick="spawnRandomInk(event)">
-          <img src="assets/images/octopus.png" alt="Octopus" class="octopus-img">
-        </div>
-      </div>
-
-      <div class="w3-grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:16px">
+      <div class="w3-grid why-choose-grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:16px">
         <div class="w3-center w3-padding-16 w3-border" style="background-color: #fde1dc; position: relative; overflow: hidden;">
           <i class="fa fa-leaf w3-xxlarge w3-text-teal"></i>
           <h5><b>Comfort in Every Bite</b></h5>
@@ -238,14 +229,11 @@
       </svg>
     </div>
     
-    <div class="submarine-container floating-submarine" onclick="toggleSubmarineLight(this)">
-        <img src="assets/images/submarine1.png" alt="Submarine" class="submarine-img">
-    </div>
 
     <!-- Student Discount section -->
     <section class="w3-container w3-padding-large w3-white" id="contact">
-      <div id="contactFishContainer" class="section-fish-layer"></div>
-      <h4><b>Student Discount</b></h4>
+      <h2 class="nav-title">Student Discount</h2>
+      <h4><b>For Student</b></h4>
       <p class="w3-text-grey">Make your next study break a tasty one. Explore our proposed student offer; this class-project menu does not accept orders or verify student status.</p>
 
       <!-- Discount Info Cards -->
@@ -354,10 +342,6 @@
 
     <!-- Footer -->
     <footer class="w3-grid w3-padding-32 tb-footer" style="grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:32px">
-      <img src="assets/images/crab.png" alt="Crab" id="crabImg">
-      <div class="treasure-wrapper" id="treasureWrapper">
-        <img src="assets/images/treasure.png" alt="Treasure" id="treasureImg">
-      </div>
       <div class="w3-container">
         <h3>DELIVERY HOURS (CONCEPT)</h3>
         <table class="w3-table">
@@ -444,6 +428,7 @@
     <button type="button" class="tb-close" data-close-dialog="cart-dialog" aria-label="Close">×</button>
     <div class="tb-dialog-body">
       <h2 id="cart-title">Your Cart</h2>
+      <p class="tb-muted">Class project demo — no actual order or payment will be placed.</p>
       <div id="cart-items" aria-live="polite"></div>
       <div id="cart-checkout">
         <label class="tb-field" for="cart-note">Order Notes
@@ -469,6 +454,7 @@
     <div class="tb-dialog-body">
       <h2 id="review-title">Order Summary (Demo)</h2>
       <div id="review-details"></div>
+      <p class="tb-muted">This is only a preview. No order is submitted to a restaurant.</p>
       <button type="button" id="confirm-demo-order" class="tb-primary">Confirm Demo Order</button>
       <button type="button" id="back-to-cart" class="tb-secondary">Back to Cart</button>
     </div>
