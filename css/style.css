@@ -13,15 +13,26 @@ body.w3-light-grey {
 #about {
   background-color: #e2edf3;
   position: relative;
+  overflow: hidden;
 }
+
 #contact{
   background-color: #66b6bd!important;
-  position: relative
+  position: relative;
+  overflow: hidden;
 }
 
 header p{
   color: #ffffff;
   font-size:1.6rem;
+}
+
+.tb-footer {
+  position: relative;
+}
+.wave-divider {
+  position: relative;
+  z-index: 5; 
 }
 
 /* == Menu Grid == */
@@ -572,6 +583,9 @@ hr {
   animation: fishFloat 4s ease-in-out infinite;
   transition: transform 0.2s ease;
 }
+.floating-pufferfish:hover {
+  transform: scale(1.1)!important;
+}
 
 @keyframes lightGlow {
   0% {
@@ -592,7 +606,7 @@ hr {
 
 .submarine-container {
   position: absolute;
-  top: 10px;
+  top: 2900px;
   right: 170px;
   transform: translateY(-50%);
   width: 150px; 
@@ -600,13 +614,18 @@ hr {
   cursor: pointer;
   animation: submarineFloat 4.5s ease-in-out infinite;
   display: inline-block;
+  z-index: 10; 
+  pointer-events: auto;
 }
 .submarine-img {
   width: 100%;
   height: auto;
   display: block;
-  position: relative;
-  z-index: 2; 
+  position: relative; 
+  z-index: 2;
+}
+.submarine-container:hover .submarine-img {
+  transform: scale(1.1);
 }
 .submarine-container::before {
   content: "";
@@ -642,7 +661,7 @@ hr {
 
 .octopus-container {
   position: absolute;
-  right: 250px;
+  right: 200px;
   top: 0%;
   transform: translateY(-50%);
   cursor: pointer;
@@ -672,6 +691,106 @@ hr {
 .dynamic-ink.fade-in {
   opacity: 1;
   transform: scale(1);
+}
+
+@keyframes swimLeftToRight {
+  0% {
+    transform: translateX(-120px);
+  }
+  100% {
+    transform: translateX(calc(100vw + 120px));
+  }
+}
+
+@keyframes swimRightToLeft {
+  0% {
+    transform: translateX(calc(100vw + 120px)) scaleX(-1);
+  }
+  100% {
+    transform: translateX(-120px) scaleX(-1);
+  }
+}
+.fish-background-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none; 
+  z-index: 1;
+}
+.bg-swimming-fish {
+  position: absolute;
+  width: 50px; 
+  height: auto;
+  opacity: 0.7; 
+  will-change: transform;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0.2;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+.treasure-wrapper {
+  position: absolute;
+  left: 60px;
+  bottom: -50px;
+  z-index: 10;
+  display: inline-block;
+}
+#treasureImg {
+  width: 140px; 
+  height: auto;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.2s ease;
+}
+#treasureImg:hover {
+  transform: scale(1.1); 
+}
+.spark-img {
+  position: absolute;
+  pointer-events: none;
+  z-index: 11;
+  animation: blink 0.8s infinite alternate ease-in-out;
+}
+#crabImg {
+  position: absolute;
+  bottom: 0px;
+  left: 50px;
+  width: 70px;
+  height: auto;
+  z-index: 5;
+  pointer-events: none;
+  transition: left linear;
+}
+
+.section-fish-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1; 
+}
+.background-swimming-fish {
+  position: absolute;
+  height: auto;
+  opacity: 0.7;
+  transition: transform linear;
+}
+.fish-flip {
+  transform: scaleX(-1);
 }
 
 /* ===== TideBites Frontend Ordering Demo ===== */

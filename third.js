@@ -254,7 +254,7 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
     document.getElementById('cart-note').value = '';
     document.getElementById('pickup-location').value = '';
     closeDialog(reviewDialog);
-    notify('Demo order confirmed. No real order was placed.');
+    notify('Order confirmed!');
   });
   saveCart();
   showMenu();
