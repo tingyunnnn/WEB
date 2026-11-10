@@ -378,7 +378,7 @@ window.addEventListener('scroll', function () {
   }, 100);
 });
 
-// ========== Welcome Overlay ==========
+// ========== Welcome Overlay ==========//
 // script 在 </body> 之前，DOM 已解析完畢，直接執行即可，不需 DOMContentLoaded。
 (function () {
   const welcomeOverlay = document.getElementById("welcome-overlay");
@@ -441,31 +441,47 @@ window.addEventListener('scroll', function () {
     }, 800);
   });
 })();
-// ========== Food photo lightbox (separate from dish ordering) ==========
-(function () {
-  const lightbox = document.getElementById('image-lightbox');
-  const largePhoto = document.getElementById('lightbox-image');
-  const closeButton = document.getElementById('close-lightbox');
-  if (!lightbox || !largePhoto || !closeButton) return;
 
-  function openPhoto(img) {
-    largePhoto.src = img.getAttribute('src');
-    largePhoto.alt = img.alt || 'Enlarged food photo';
-    if (typeof lightbox.showModal === 'function') lightbox.showModal();
-    else lightbox.setAttribute('open', '');
+// ========== Pufferfish ==========//
+function togglePufferfish() {
+  const img = document.getElementById('pufferfish');
+  if (img.src.includes('pufferfish1.png')) {
+    img.src = 'assets/images/pufferfish2.png';
+  } else {
+    img.src = 'assets/images/pufferfish1.png';
   }
-  function closePhoto() {
-    if (typeof lightbox.close === 'function') lightbox.close();
-    else lightbox.removeAttribute('open');
-  }
+}
 
-  const zoomButton = document.getElementById('enlarge-dish-photo');
-  const dishPhoto = document.getElementById('dish-dialog-image');
-  if (zoomButton && dishPhoto) {
-    zoomButton.addEventListener('click', () => openPhoto(dishPhoto));
-  }
-  closeButton.addEventListener('click', closePhoto);
-  lightbox.addEventListener('click', event => {
-    if (event.target === lightbox) closePhoto();
+// ========== Submarine ==========//
+function toggleSubmarineLight(container) {
+  container.classList.toggle('light-on');
+}
+
+// ========== Octopus ==========//
+function spawnRandomInk(event) {
+  const container = event.currentTarget;
+  const ink = document.createElement('img');
+  ink.src = 'assets/images/ink.png';
+  ink.alt = 'Ink';
+  ink.className = 'dynamic-ink';
+  const randomX = (Math.random() - 0.5) * 140;
+  const randomY = (Math.random() - 0.5) * 120;
+  const randomRotate = Math.floor(Math.random() * 360);
+  ink.style.left = `calc(50% + ${randomX}px)`;
+  ink.style.top = `calc(50% + ${randomY}px)`;
+  ink.style.transform = `translate(-50%, -50%) rotate(${randomRotate}deg) scale(0.6)`;
+  container.appendChild(ink);
+  requestAnimationFrame(() => {
+    ink.classList.add('fade-in');
+    ink.style.transform = `translate(-50%, -50%) rotate(${randomRotate}deg) scale(1)`;
   });
-})();
+  setTimeout(() => {
+    ink.classList.remove('fade-in');
+    ink.style.transform = `translate(-50%, -50%) rotate(${randomRotate}deg) scale(0.6)`;
+    setTimeout(() => {
+      if (ink.parentNode) {
+        ink.parentNode.removeChild(ink);
+      }
+    }, 300);
+  }, 3000);
+}
