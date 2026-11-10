@@ -254,7 +254,7 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
     document.getElementById('cart-note').value = '';
     document.getElementById('pickup-location').value = '';
     closeDialog(reviewDialog);
-    notify('Demo order confirmed. No real order was placed.');
+    notify('Order confirmed!');
   });
   saveCart();
   showMenu();
@@ -482,3 +482,151 @@ function spawnRandomInk(event) {
     }, 300);
   }, 3000);
 }
+
+// ========== Fish-About ==========//
+const fishLeftToRight = ['fish1.png', 'fish2.png', 'fish4.png'];
+const fishRightToLeft = ['fish3.png', 'fish5.png', 'fish6.png'];
+
+function spawnBackgroundFish() {
+  const container = document.getElementById('fishContainer');
+  if (!container) return;
+  const fish = document.createElement('img');
+  fish.className = 'bg-swimming-fish';
+  const isLeftToRight = Math.random() < 0.5;
+  let fishList, animationName;
+
+  if (isLeftToRight) {
+    fishList = fishLeftToRight;
+    animationName = 'swimLeftToRight';
+  } else {
+    fishList = fishRightToLeft;
+    animationName = 'swimRightToLeft';
+  }
+  const randomFile = fishList[Math.floor(Math.random() * fishList.length)];
+  fish.src = `assets/images/${randomFile}`;
+  fish.alt = 'Swimming Fish';
+
+  const randomTop = Math.random() * 85 + 5;
+  fish.style.top = `${randomTop}%`;
+
+  const randomWidth = Math.floor(Math.random() * 35) + 40;
+  fish.style.width = `${randomWidth}px`;
+
+  const randomDuration = Math.random() * 8 + 8;
+  fish.style.animation = `${animationName} ${randomDuration}s linear forwards`;
+
+  container.appendChild(fish);
+
+  fish.addEventListener('animationend', () => {
+    fish.remove();
+  });
+}
+
+setInterval(spawnBackgroundFish, 2500);
+spawnBackgroundFish();
+spawnBackgroundFish();
+
+// ========== Treasure ==========//
+document.getElementById('treasureImg').addEventListener('click', function() {
+  const wrapper = document.getElementById('treasureWrapper');  
+
+  for (let i = 0; i < 5; i++) {
+    const spark = document.createElement('img');
+    spark.src = 'assets/images/spark.png';
+    spark.className = 'spark-img';
+
+    const size = Math.floor(Math.random() * 26) + 20;
+    spark.style.width = `${size}px`;
+    spark.style.height = 'auto';
+
+    const offsetX = Math.floor(Math.random() * 240) - 80;
+    const offsetY = Math.floor(Math.random() * 180) - 80;
+
+    spark.style.left = `${offsetX}px`;
+    spark.style.top = `${offsetY}px`;
+
+    spark.style.animationDuration = `${0.3 + Math.random() * 0.5}s`;
+
+    wrapper.appendChild(spark);
+
+    setTimeout(() => {
+      spark.remove();
+    }, 5000);
+  }
+});
+
+// ========== Crab ==========//
+const crab = document.getElementById('crabImg');
+const footer = document.querySelector('.tb-footer');
+
+function moveCrab() {
+  const footerWidth = footer.clientWidth;
+  const crabWidth = crab.clientWidth;
+  
+  const minX = 10;
+  const maxX = footerWidth - crabWidth - 10;
+  const targetX = Math.floor(Math.random() * (maxX - minX + 1)) + minX;
+
+  const duration = (Math.random() * 3 + 2).toFixed(2);
+  crab.style.transitionDuration = `${duration}s`;
+  crab.style.left = `${targetX}px`;
+
+  const pauseTime = (Math.random() * 1 + 1) * 1000;
+  setTimeout(moveCrab, duration * 1000 + pauseTime);
+}
+moveCrab();
+
+// ========== Fish-Disocunt&FAQ ==========//
+document.addEventListener("DOMContentLoaded", function () {
+  const container = document.getElementById("contactFishContainer");
+  if (!container) return;
+
+  const leftToRightFish = ["assets/images/fish8.png", "assets/images/fish11.png"];
+  const rightToLeftFish = ["assets/images/fish7.png", "assets/images/fish10.png", "assets/images/fish12.png"];
+
+  function spawnFish() {
+    const isLeftToRight = Math.random() < 0.5;
+    const fishSrcs = isLeftToRight ? leftToRightFish : rightToLeftFish;
+    
+    const chosenSrc = fishSrcs[Math.floor(Math.random() * fishSrcs.length)];
+
+    const fish = document.createElement("img");
+    fish.src = chosenSrc;
+    fish.className = "background-swimming-fish";
+    if (!isLeftToRight) {
+      fish.classList.add("fish-flip");
+    }
+
+    const randomWidth = Math.floor(Math.random() * 25) + 35; 
+    fish.style.width = `${randomWidth}px`;
+
+    const containerHeight = container.clientHeight || 400;
+    const randomTop = Math.floor(Math.random() * (containerHeight - 80));
+    fish.style.top = `${randomTop}px`;
+
+    const containerWidth = container.clientWidth || window.innerWidth;
+    const startX = isLeftToRight ? -120 : containerWidth + 120;
+    const endX = isLeftToRight ? containerWidth + 120 : -120;
+
+    fish.style.left = `${startX}px`;
+    container.appendChild(fish);
+
+    const duration = (Math.random() * 6 + 6).toFixed(2);
+    fish.style.transition = `left ${duration}s linear`;
+
+    void fish.offsetWidth;
+    fish.style.left = `${endX}px`;
+
+    setTimeout(() => {
+      fish.remove();
+    }, duration * 1000);
+  }
+
+  function scheduleNextFish() {
+    spawnFish();
+    const nextTime = Math.random() * 2500 + 1000; 
+    setTimeout(scheduleNextFish, nextTime);
+  }
+
+  setTimeout(scheduleNextFish, 1000);
+});
