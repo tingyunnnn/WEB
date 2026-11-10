@@ -1323,3 +1323,35 @@ header #header-title{
         animation: none;
     }
 }
+
+
+
+/* ===== Student Favorites Peach Cards ===== */
+
+#about .student-favorites-grid > div {
+    border: 1px solid rgba(197, 230, 207, 0.75);
+    box-shadow: 0 7px 20px rgba(160,90,60,.12);
+    transition: transform .25s ease,
+                box-shadow .25s ease;
+}
+
+/* 第一張：淺綠色 */
+#about .student-favorites-grid > div:nth-child(1) {
+    background-color: #E2F0E5 !important;
+}
+
+/* 第二張：柔和珊瑚橘 */
+#about .student-favorites-grid > div:nth-child(2) {
+    background-color: #C5E2D0 !important;
+}
+
+/* 第三張：暖蜜桃橘 */
+#about .student-favorites-grid > div:nth-child(3) {
+    background-color: #A4CFB8 !important;
+}
+
+/* 標題與文字 */
+#about .student-favorites-grid > div p {
+    color: #0b291b !important;
+}
+
