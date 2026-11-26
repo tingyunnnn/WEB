@@ -1,3 +1,8 @@
 .DS_Store
 Thumbs.db
 Desktop.ini
+
+# Defense in depth: real settings belong outside the web/document root.
+/config/database.local.php
+/.env
+/.env.*
