@@ -1,0 +1,9 @@
+Options -Indexes -MultiViews
+DirectoryIndex index.html index.php
+RewriteEngine On
+RewriteRule (^|/)\. - [R=404,L]
+RewriteRule ^(?:database|config|docs|tests|scripts|admin/includes)(?:/|$) - [R=404,L,NC]
+RewriteRule ^(?:router\.php|start\.(?:bat|ps1)|README\.md|AGENTS\.md)$ - [R=404,L,NC]
+<FilesMatch "\.(sql|ps1|bat|md|json|log|ini|env|bak)$">
+    Require all denied
+</FilesMatch>
