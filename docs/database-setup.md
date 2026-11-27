@@ -2,7 +2,7 @@
 
 ## 範圍與前提
 
-PHP 8.4、MySQL 8.4 LTS。網站連線需 PDO、pdo_mysql；測試比對原 HTML 需 PHP DOM；PR 2 後續使用 fileinfo、mbstring、session。
+PHP 8.4、MySQL 8.4 LTS。網站連線需 PDO、pdo_mysql；資料庫測試的 UTF-8 DOM 檢查需 PHP DOM，種子比對則使用獨立 fixture `database/seed-fixture.php`；PR 2 後續使用 fileinfo、mbstring、session。
 不需要 Composer、框架、Docker 或 Workbench。既有 Phase 0 環境不用重裝或重跑。
 完整候選欄位與權限見 [database-contract.md](database-contract.md)，測試紀錄見 [database-testing.md](database-testing.md)。
 
@@ -148,7 +148,7 @@ macOS／Linux 操作範例本次沒有在那些作業系統上實測。
 | Database connection unavailable | 核對外部設定、app 帳號／密碼、MySQL 服務；一般 HTTP 回應不顯示底層錯誤 |
 | Database／Account／config already exists | 停止安裝，確認來源與用途；工具不覆蓋、不重設 |
 | Access denied for schema changes | app 帳號故意沒有 DDL 權限；結構變更由 A 以管理工具執行 |
-| 測試 seed 比對失敗 | 比對 HTML 與 SQL；正式新增餐點須由 A/C 協調更新 seed，不能改測試來掩蓋差異 |
+| 測試 seed 比對失敗 | 比對 `database/seed-fixture.php` 與 `database/tidebites.sql`；正式新增餐點（如擴充至 20 道）須由 A/C 依核定規格獨立更新 SQL seed 與 fixture，不能從 SQL 或資料庫反向生成預期值來掩蓋差異 |
 | 修改 SQL 後舊表沒變 | bootstrap 不是 migration；需另外規劃遷移，不能刪除正式資料 |
 
 ## 交給 C／D 的教授驗收資訊

@@ -24,7 +24,7 @@ MySQL84 服務確認 Running／自動啟動；原服務、3306 資料及個人 r
 | SQL 可直接匯入 | 原生 MySQL 8.4.9 client 讀取 SQL 原檔，成功建立四表與 10 筆餐點 | 通過 |
 | SQL PDO 匯入 | CLI 逐 statement 執行同一 SQL，沒有多 statements PDO 執行權限 | 通過 |
 | 表／主鍵／外鍵 | information_schema 確認四表、4 個 PK、2 個 FK、InnoDB／utf8mb4_0900_ai_ci | 通過 |
-| HTML UTF-8 解析與 Seed 保真 | 以明確 UTF-8 宣告的 DOMDocument 解析原 index.html 並驗證中文／emoji，逐欄比對 id/name/description/price/category/image_path/image_alt/sort_order | 通過 |
+| HTML UTF-8 解析與 Seed 保真 | 以獨立 fixture `database/seed-fixture.php`（自 Phase I `75cbb4c:index.html` 提取，與動態前端解耦）逐欄比對 id/name/description/price/category/image_path/image_alt/sort_order，並保留 UTF-8 DOMDocument 解析檢查 | 通過 |
 | Seed 數量／圖片 | 10 筆，meals 7／desserts 3；10 個原餐點圖片路徑均存在 | 通過 |
 | 查詢順序／下架 | 各分類按 sort_order,id 與原 HTML 順序一致；is_active=0 不出現在有效菜單 | 通過 |
 | 重複初始化與清空邊界 | 重複匯入不重複；編輯與部分刪除（刪 id=10 後剩 9 筆）均保留；全部清空為 0 筆時重跑 bootstrap 會重新填入 10 筆（符合文件與 SQL 註解規格） | 通過 |
@@ -59,7 +59,8 @@ MySQL84 服務確認 Running／自動啟動；原服務、3306 資料及個人 r
 
 - 第一輪 HTTP 測試原先假設所有不存在的外部設定路徑一定回 404；實際 PHP 內建 server 會將部分未知路徑回退至 `index.html`（200）。已調整測試以驗證 200 回應逐字等於首頁且不含測試密文字串；實際內部 PHP 檔皆回 404。
 - PR 1 審查修正：已修復 `database/manage.php` 在路徑驗證前先行 `mkdir` 的問題、`database/manage.ps1` 的 `-ConfigPath` 相對路徑解析問題、`docs/database-setup.md` 的個人路徑範例、`tb_provision()` 的 NUL byte 驗證、`tidebites_connect()` 的空白 `root` 檢查，並補足 UTF-8 DOMDocument 解析與 `admins`/`orders`/`order_items` 的 `UPDATE`/`DELETE` 權限拒絕測試。
-- 備註：`database/`、`config/`、`docs/` 中不含密碼的非 PHP 靜態檔案（如 `.sql`、`.ps1`）在 PHP 內建開發伺服器 `-t .` 下仍為靜態可讀；列為 PR 2／正式部署階段的伺服器規則待辦，不於 PR 1 引入額外伺服器架構。
+- 動態菜單相容性修正（`fix/phase2-database-regression-tests`）：原先 `tb_original_menu()` 直接從 `index.html` 解析靜態 `<article>`，在 B 改為 API 動態菜單後會出現 `No original menu data found.`。已自 Phase I 原始版本 `75cbb4ce30980d46fe683310f953879d528d07df:index.html`（Git blob `d288ae3d620f62e522a20c86e29e99e058b90960`）建立獨立 fixture `database/seed-fixture.php`（含 CLI-only 404 防護），保留 59 項檢查與原有嚴格度，且不從 SQL／API／資料庫反向產生預期答案。
+- 備註：`database/`、`config/`、`docs/` 中不含密碼的非 PHP 靜態檔案（如 `.sql`、`.ps1`）在 PHP 內建開發伺服器 `-t .` 下仍為靜態可讀；PR 2 的 `router.php` 與 `.htaccess` 已對 `database/` 進行封鎖。
 
 **目前沒有尚未解決的已執行測試失敗項目。**
 
@@ -87,7 +88,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\database\manage.ps1 -A
 
 只在自己的終端隱藏輸入 root 密碼，不傳到聊天；測試使用隨機獨立資料庫並自動清除。
 結果應為 PASS，59 個 checks 都 PASS，cleanup 無 CLEANUP_FAILED。
-執行時需可讀原 index.html、圖片及 SQL；不要修改靜態餐點再期待原 seed 比對仍通過。
+執行時需可讀 `database/seed-fixture.php`、圖片及 SQL；不再依賴 `index.html` 的靜態餐點卡片。未來擴充至 20 道正式餐點時，須由 A/C 依核定菜單規格分別更新 `database/tidebites.sql` 與 `database/seed-fixture.php`（以及管理員端測試中的預期筆數），切勿直接從 SQL 或資料庫傾印覆蓋 fixture。
 
 **PR 1：READY FOR REVIEW。** 實作及本次必要資料庫測試已完成；本機正式安裝需使用者安全輸入密碼。
 **尚不符合直接合併條件**：仍需使用者審查及 A/B 確認候選資料合約。沒有 commit、push、PR 或 merge。
