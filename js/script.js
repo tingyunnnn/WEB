@@ -49,9 +49,9 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
 });
 
 // ========== Menu Filtering + Pagination + Shopping Cart ==========
-(function () {
+(async function () {
   const ITEMS_PER_PAGE = 6;
-  const articles = Array.from(document.querySelectorAll('#menu-grid article'));
+  const grid = document.getElementById('menu-grid');
   const bar = document.getElementById('pagination-bar');
   const filterButtons = document.querySelectorAll('.filter-button');
   const dialogs = ['dish-dialog', 'cart-dialog', 'review-dialog', 'complete-dialog'];
@@ -62,47 +62,106 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
   const quantityInput = document.getElementById('dish-quantity');
   const cartBadge = document.getElementById('cart-badge');
   const storageKey = 'tidebites_demo_cart_v1';
-  if (!articles.length || !bar || !dishDialog || !cartDialog || !reviewDialog) return;
+  if (!grid || !bar || !dishDialog || !cartDialog || !reviewDialog) return;
 
-  // Use the existing article content as the single source of truth for the menu.
-  const menu = articles.map(function (article) {
-    const meta = article.querySelector('.card-meta').textContent;
-    const priceMatch = meta.match(/NT\$\s*(\d+)/i);
-    return {
-      id: article.dataset.id,
-      name: article.querySelector('.card-title').textContent.trim(),
-      category: article.dataset.category,
-      price: priceMatch ? Number(priceMatch[1]) : 0,
-      description: article.querySelector('.card-desc').textContent.trim(),
-      image: article.querySelector('img').getAttribute('src'),
-      alt: article.querySelector('img').alt
-    };
+  // ── Safe HTML escaping for dynamic rendering ──
+  function escHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  // ── Phase I seed data — used as fallback when the PHP backend is not yet available ──
+
+  let menu = [];
+  try {
+    const res = await fetch('api/foods/list.php');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    if (!Array.isArray(data)) throw new Error('Invalid response');
+    menu = data;
+  } catch (err) {
+    console.error('Menu API failed:', err);
+    grid.textContent = 'Unable to load menu. Please try again later.';
+    return;
+  }
+
+  // Remove the loading placeholder once menu data (live or seed) is ready.
+  const loadingEl = document.getElementById('menu-loading');
+  if (loadingEl) loadingEl.remove();
+
+  // ── Render article cards into #menu-grid ──
+  grid.replaceChildren();
+  menu.forEach(function (item) {
+    const article = document.createElement('article');
+    article.dataset.id = String(item.id);
+    article.dataset.category = item.category;
+    article.tabIndex = 0;
+    article.setAttribute('role', 'button');
+    article.setAttribute('aria-label', 'View dish details');
+    const categoryLabel = item.category === 'meals' ? 'Meals' : 'Desserts';
+    article.innerHTML =
+      '<img src="' + escHtml(item.image_path) + '" alt="' + escHtml(item.image_alt) + '" class="w3-hover-opacity" style="width:100%">' +
+      '<div class="w3-container w3-white">' +
+      '<p class="card-title">' + escHtml(item.name) + '</p>' +
+      '<p class="card-meta">' + categoryLabel + ' · NT$' + Math.round(item.price) + '</p>' +
+      '<p class="card-desc">' + escHtml(item.description) + '</p>' +
+      '</div>';
+    grid.appendChild(article);
   });
-  const byId = new Map(menu.map(item => [item.id, item]));
+
+  if (menu.length === 0) {
+    const message = document.createElement('p');
+    message.textContent = 'No dishes are currently available.';
+    grid.appendChild(message);
+  }
+
+  const articles = Array.from(grid.querySelectorAll('article'));
+
+  // byId uses String keys to match localStorage (which also stores string keys).
+  const byId = new Map(menu.map(function (item) {
+    return [String(item.id), {
+      id: String(item.id), name: item.name, category: item.category,
+      price: item.price, description: item.description,
+      image: item.image_path, alt: item.image_alt
+    }];
+  }));
+
   let category = 'all';
   let currentPage = 1;
   let selectedDishId = null;
   let cart = {};
+  let removedFromCart = false;
+  let reviewedItems = [];
+
+  // Load saved cart; silently drop items that are no longer active in the DB.
   try {
     const saved = JSON.parse(localStorage.getItem(storageKey) || '{}');
     if (saved && typeof saved === 'object' && !Array.isArray(saved)) {
-      Object.entries(saved).forEach(([id, qty]) => {
-        if (byId.has(id) && Number.isInteger(qty) && qty > 0 && qty <= 99) cart[id] = qty;
+      Object.entries(saved).forEach(function ([id, qty]) {
+        if (byId.has(id) && Number.isInteger(qty) && qty > 0 && qty <= 99) {
+          cart[id] = qty;
+        } else if (Number.isInteger(qty) && qty > 0) {
+          removedFromCart = true; // item was removed or deactivated
+        }
       });
     }
   } catch (error) { cart = {}; }
 
-  const money = n => 'NT$' + n.toLocaleString('en-US');
-  const clampQty = value => Math.min(99, Math.max(1, Number.parseInt(value, 10) || 1));
-  const cartSubtotal = () => Object.entries(cart).reduce((sum, [id, qty]) => sum + byId.get(id).price * qty, 0);
+  const money = function (n) { return 'NT$' + n.toLocaleString('en-US'); };
+  const clampQty = function (v) { return Math.min(99, Math.max(1, Number.parseInt(v, 10) || 1)); };
+  const cartSubtotal = function () {
+    return Object.entries(cart).reduce(function (sum, pair) { return sum + byId.get(pair[0]).price * pair[1]; }, 0);
+  };
   function cartAmounts() {
     const subtotal = cartSubtotal();
     const discount = Math.round(subtotal * 0.1);
-    return { subtotal, discount, total: subtotal - discount };
+    return { subtotal: subtotal, discount: discount, total: subtotal - discount };
   }
-  const cartQuantity = () => Object.values(cart).reduce((sum, qty) => sum + qty, 0);
+  const cartQuantity = function () { return Object.values(cart).reduce(function (s, q) { return s + q; }, 0); };
+
   function saveCart() {
-    try { localStorage.setItem(storageKey, JSON.stringify(cart)); } catch (error) { /* storage may be blocked */ }
+    try { localStorage.setItem(storageKey, JSON.stringify(cart)); } catch (e) { }
     const count = cartQuantity();
     cartBadge.textContent = count;
     cartBadge.hidden = count === 0;
@@ -112,82 +171,61 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
     toast.textContent = message;
     toast.hidden = false;
     clearTimeout(notify.timeout);
-    notify.timeout = setTimeout(() => { toast.hidden = true; }, 2500);
+    notify.timeout = setTimeout(function () { toast.hidden = true; }, 2500);
   }
   function openDialog(dialog) {
     if (typeof dialog.showModal === 'function') dialog.showModal();
     else dialog.setAttribute('open', '');
   }
   function closeDialog(dialog) { dialog.close ? dialog.close() : dialog.removeAttribute('open'); }
-  dialogs.forEach(id => {
+
+  dialogs.forEach(function (id) {
     const dialog = document.getElementById(id);
-    dialog.addEventListener('click', event => { if (event.target === dialog) closeDialog(dialog); });
+    dialog.addEventListener('click', function (event) { if (event.target === dialog) closeDialog(dialog); });
   });
-  document.querySelectorAll('[data-close-dialog]').forEach(btn => btn.addEventListener('click', () => closeDialog(document.getElementById(btn.dataset.closeDialog))));
-
-
+  document.querySelectorAll('[data-close-dialog]').forEach(function (btn) {
+    btn.addEventListener('click', function () { closeDialog(document.getElementById(btn.dataset.closeDialog)); });
+  });
 
   // ===== 餐點圖片放大功能 =====
-  const zoomButton = document.getElementById("enlarge-dish-photo");
-  const lightbox = document.getElementById("image-lightbox");
-  const lightboxImage = document.getElementById("lightbox-image");
-  const closeZoomButton = document.getElementById("close-lightbox");
+  const zoomButton = document.getElementById('enlarge-dish-photo');
+  const lightbox = document.getElementById('image-lightbox');
+  const lightboxImage = document.getElementById('lightbox-image');
+  const closeZoomButton = document.getElementById('close-lightbox');
 
   if (zoomButton && lightbox && lightboxImage && closeZoomButton) {
-
-    zoomButton.addEventListener("click", function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-
-      const originalImage = document.getElementById("dish-dialog-image");
-
+    zoomButton.addEventListener('click', function (event) {
+      event.preventDefault(); event.stopPropagation();
+      const originalImage = document.getElementById('dish-dialog-image');
       if (!originalImage || !originalImage.src) return;
-
       lightboxImage.src = originalImage.currentSrc || originalImage.src;
       lightboxImage.alt = originalImage.alt;
-
-      if (!lightbox.open) {
-        lightbox.showModal();
-      }
+      if (!lightbox.open) lightbox.showModal();
     });
-
-    // 點擊 X 關閉放大圖片
-    closeZoomButton.addEventListener("click", function () {
-      lightbox.close();
-    });
-
-    // 點擊圖片外側關閉
-    lightbox.addEventListener("click", function (event) {
+    closeZoomButton.addEventListener('click', function () { lightbox.close(); });
+    lightbox.addEventListener('click', function (event) {
       if (event.target === lightbox) {
         const rect = lightboxImage.getBoundingClientRect();
-
-        const clickedInside =
-          event.clientX >= rect.left &&
-          event.clientX <= rect.right &&
-          event.clientY >= rect.top &&
-          event.clientY <= rect.bottom;
-
-        if (!clickedInside) {
-          lightbox.close();
-        }
+        const inside = event.clientX >= rect.left && event.clientX <= rect.right &&
+          event.clientY >= rect.top && event.clientY <= rect.bottom;
+        if (!inside) lightbox.close();
       }
     });
   }
 
-  // Filtering and pagination must share the SAME visible subset.
+  // ── Filtering & Pagination ──
   function showMenu() {
-    const filtered = articles.filter(article => category === 'all' || article.dataset.category === category);
+    const filtered = articles.filter(function (a) { return category === 'all' || a.dataset.category === category; });
     const totalPages = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
     currentPage = Math.min(currentPage, totalPages);
-    articles.forEach(article => { article.hidden = true; article.style.display = 'none'; });
-    filtered.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE).forEach(article => {
-      article.hidden = false; article.style.display = '';
-    });
+    articles.forEach(function (a) { a.hidden = true; a.style.display = 'none'; });
+    filtered.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE)
+      .forEach(function (a) { a.hidden = false; a.style.display = ''; });
     bar.replaceChildren();
     bar.parentElement.style.display = totalPages <= 1 ? 'none' : '';
     if (totalPages > 1) {
       addPageButton('«', currentPage - 1, currentPage === 1, false);
-      for (let page = 1; page <= totalPages; page++) addPageButton(String(page), page, false, page === currentPage);
+      for (let p = 1; p <= totalPages; p++) addPageButton(String(p), p, false, p === currentPage);
       addPageButton('»', currentPage + 1, currentPage === totalPages, false);
     }
   }
@@ -198,23 +236,24 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
     button.textContent = label;
     button.disabled = disabled;
     if (active) button.setAttribute('aria-current', 'page');
-    button.addEventListener('click', () => {
-      currentPage = page;
-      showMenu();
-      document.getElementById('portfolio').scrollIntoView({behavior:'smooth'});
+    button.addEventListener('click', function () {
+      currentPage = page; showMenu();
+      document.getElementById('portfolio').scrollIntoView({ behavior: 'smooth' });
     });
     bar.appendChild(button);
   }
-  filterButtons.forEach(button => button.addEventListener('click', function () {
-    category = button.dataset.category;
-    currentPage = 1;
-    filterButtons.forEach(btn => {
-      btn.classList.toggle('w3-black', btn === button);
-      btn.classList.toggle('w3-white', btn !== button);
+  filterButtons.forEach(function (button) {
+    button.addEventListener('click', function () {
+      category = button.dataset.category; currentPage = 1;
+      filterButtons.forEach(function (btn) {
+        btn.classList.toggle('w3-black', btn === button);
+        btn.classList.toggle('w3-white', btn !== button);
+      });
+      showMenu();
     });
-    showMenu();
-  }));
+  });
 
+  // ── Dish dialog ──
   function updateDishSubtotal() {
     const dish = byId.get(selectedDishId);
     if (!dish) return;
@@ -224,37 +263,42 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
   }
   function openDish(id) {
     const dish = byId.get(id);
-    if (!dish) return;
+    if (!dish) {
+      notify('This dish is no longer available.');
+      return;}
     selectedDishId = id;
     const photo = document.getElementById('dish-dialog-image');
-    photo.src = dish.image;
-    photo.alt = dish.alt;
+    photo.src = dish.image; photo.alt = dish.alt;
     document.getElementById('dish-dialog-title').textContent = dish.name;
-    document.getElementById('dish-dialog-meta').textContent = (dish.category === 'meals' ? 'Meals' : 'Desserts') + ' · ' + money(dish.price);
+    document.getElementById('dish-dialog-meta').textContent =
+      (dish.category === 'meals' ? 'Meals' : 'Desserts') + ' · ' + money(dish.price);
     document.getElementById('dish-dialog-desc').textContent = dish.description;
     quantityInput.value = 1;
     updateDishSubtotal();
     openDialog(dishDialog);
   }
-  articles.forEach(article => {
-    article.addEventListener('click', () => openDish(article.dataset.id));
-    article.addEventListener('keydown', event => {
+  articles.forEach(function (article) {
+    article.addEventListener('click', function () { openDish(article.dataset.id); });
+    article.addEventListener('keydown', function (event) {
       if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openDish(article.dataset.id); }
     });
   });
-  document.getElementById('dish-minus').addEventListener('click', () => { quantityInput.value = Math.max(1, clampQty(quantityInput.value) - 1); updateDishSubtotal(); });
-  document.getElementById('dish-plus').addEventListener('click', () => { quantityInput.value = Math.min(99, clampQty(quantityInput.value) + 1); updateDishSubtotal(); });
+  document.getElementById('dish-minus').addEventListener('click', function () {
+    quantityInput.value = Math.max(1, clampQty(quantityInput.value) - 1); updateDishSubtotal();
+  });
+  document.getElementById('dish-plus').addEventListener('click', function () {
+    quantityInput.value = Math.min(99, clampQty(quantityInput.value) + 1); updateDishSubtotal();
+  });
   quantityInput.addEventListener('change', updateDishSubtotal);
-  quantityInput.addEventListener('input', () => { if (quantityInput.value !== '') updateDishSubtotal(); });
-  document.getElementById('add-to-cart').addEventListener('click', () => {
+  quantityInput.addEventListener('input', function () { if (quantityInput.value !== '') updateDishSubtotal(); });
+  document.getElementById('add-to-cart').addEventListener('click', function () {
     if (!selectedDishId) return;
     const qty = clampQty(quantityInput.value);
     cart[selectedDishId] = Math.min(99, (cart[selectedDishId] || 0) + qty);
-    saveCart();
-    closeDialog(dishDialog);
-    notify('Added to cart!');
+    saveCart(); closeDialog(dishDialog); notify('Added to cart!');
   });
 
+  // ── Cart dialog ──
   function renderCart() {
     const container = document.getElementById('cart-items');
     container.replaceChildren();
@@ -266,24 +310,23 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
       empty.textContent = 'Your cart is empty. Choose a dish to get started!';
       container.appendChild(empty);
     }
-    entries.forEach(([id, qty]) => {
+    entries.forEach(function ([id, qty]) {
       const item = byId.get(id);
-      const row = document.createElement('div');
-      row.className = 'tb-cart-row';
-      const img = document.createElement('img');
-      img.src = item.image; img.alt = item.alt;
+      const row = document.createElement('div'); row.className = 'tb-cart-row';
+      const img = document.createElement('img'); img.src = item.image; img.alt = item.alt;
       const info = document.createElement('div');
       const name = document.createElement('strong'); name.textContent = item.name;
-      const price = document.createElement('p'); price.textContent = money(item.price) + ' × ' + qty + ' = ' + money(item.price * qty);
+      const price = document.createElement('p');
+      price.textContent = money(item.price) + ' × ' + qty + ' = ' + money(item.price * qty);
       const controls = document.createElement('div'); controls.className = 'tb-cart-controls';
       function addControl(label, action, ariaLabel) {
         const b = document.createElement('button'); b.type = 'button'; b.textContent = label;
         b.setAttribute('aria-label', ariaLabel); b.addEventListener('click', action); controls.appendChild(b);
       }
-      addControl('−', () => changeCartQty(id, -1), 'Decrease ' + item.name);
+      addControl('−', function () { changeCartQty(id, -1); }, 'Decrease ' + item.name);
       const number = document.createElement('span'); number.textContent = String(qty); controls.appendChild(number);
-      addControl('+', () => changeCartQty(id, 1), 'Increase ' + item.name);
-      addControl('Remove', () => { delete cart[id]; saveCart(); renderCart(); }, 'Remove ' + item.name);
+      addControl('+', function () { changeCartQty(id, 1); }, 'Increase ' + item.name);
+      addControl('Remove', function () { delete cart[id]; saveCart(); renderCart(); }, 'Remove ' + item.name);
       info.append(name, price, controls); row.append(img, info); container.appendChild(row);
     });
     const amounts = cartAmounts();
@@ -296,49 +339,158 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
     if (newQty <= 0) delete cart[id]; else cart[id] = Math.min(99, newQty);
     saveCart(); renderCart();
   }
-  document.getElementById('open-cart').addEventListener('click', () => {
+  document.getElementById('open-cart').addEventListener('click', function () {
     if (window.innerWidth <= 992) w3_close();
     renderCart(); openDialog(cartDialog);
   });
-  document.getElementById('review-order').addEventListener('click', () => {
+
+  // ── Review Order: validate fields and build summary ──
+  document.getElementById('review-order').addEventListener('click', function () {
     if (cartQuantity() === 0) return;
+
+    const nameInput = document.getElementById('customer-name');
+    const phoneInput = document.getElementById('customer-phone');
     const pickup = document.getElementById('pickup-location');
+
+    if (!nameInput.value.trim()) { nameInput.reportValidity(); nameInput.focus(); return; }
+    if (!phoneInput.value.trim()) { phoneInput.reportValidity(); phoneInput.focus(); return; }
     if (!pickup.value) { pickup.reportValidity(); pickup.focus(); return; }
+    if (!phoneInput.checkValidity()) { phoneInput.reportValidity(); phoneInput.focus(); return; }
+
+    reviewedItems = Object.entries(cart).map(function ([id, qty]) {
+    return { id: parseInt(id, 10), quantity: qty, expected_price: byId.get(id).price};});
+
     const summary = document.getElementById('review-details');
     summary.replaceChildren();
-    Object.entries(cart).forEach(([id, qty]) => {
+    Object.entries(cart).forEach(function ([id, qty]) {
       const line = document.createElement('p');
       line.textContent = byId.get(id).name + ' × ' + qty + ' — ' + money(qty * byId.get(id).price);
       summary.appendChild(line);
     });
     const note = document.getElementById('cart-note').value.trim();
     const amounts = cartAmounts();
-    [['Subtotal', money(amounts.subtotal)], ['Campus Discount (10%)', '-' + money(amounts.discount)], ['Total', money(amounts.total)], ['Campus Pickup Location', pickup.value], ['Notes', note || '(None)']].forEach(([label, value]) => {
+    [
+      ['Customer Name', nameInput.value.trim()],
+      ['Phone', phoneInput.value.trim()],
+      ['Subtotal', money(amounts.subtotal)],
+      ['Campus Discount (10%)', '-' + money(amounts.discount)],
+      ['Total', money(amounts.total)],
+      ['Campus Pickup Location', pickup.value],
+      ['Notes', note || '(None)']
+    ].forEach(function ([label, value]) {
       const row = document.createElement('p');
       const strong = document.createElement('strong'); strong.textContent = label + ': ';
-      row.append(strong, document.createTextNode(value)); summary.appendChild(row);
+      row.append(strong, document.createTextNode(value));
+      summary.appendChild(row);
     });
     closeDialog(cartDialog); openDialog(reviewDialog);
   });
-  document.getElementById('back-to-cart').addEventListener('click', () => {
+
+  document.getElementById('back-to-cart').addEventListener('click', function () {
     closeDialog(reviewDialog); renderCart(); openDialog(cartDialog);
   });
-  document.getElementById('place-order').addEventListener('click', () => {
+
+  // ── Place Order: POST to API (B: api/orders/place.php) ──
+  document.getElementById('place-order').addEventListener('click', async function () {
     if (!reviewDialog.open || cartQuantity() === 0) return;
-    // Keep a text-only snapshot before clearing the confirmed local cart.
-    const summary = document.getElementById('review-details');
-    document.getElementById('complete-details').replaceChildren(
-      ...Array.from(summary.children, row => row.cloneNode(true))
-    );
-    closeDialog(reviewDialog);
-    openDialog(completeDialog);
-    // No network request, payment, or real order is created.
-    cart = {};
-    saveCart();
-    document.getElementById('cart-note').value = '';
-    document.getElementById('pickup-location').value = '';
-    renderCart();
+
+    const btn = document.getElementById('place-order');
+    btn.disabled = true;
+    btn.textContent = 'Placing order…';
+    const items = reviewedItems;
+
+    try {
+      const res = await fetch('api/orders/place.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          customer_name: document.getElementById('customer-name').value.trim(),
+          phone: document.getElementById('customer-phone').value.trim(),
+          delivery_location: document.getElementById('pickup-location').value,
+          notes: document.getElementById('cart-note').value.trim(),
+          items: items
+        })
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        if (res.status === 409 && data.code === 'PRICE_CHANGED') {
+            const changes = data.price_changes.map(function (item) { return item.name + ': ' + money(item.old_price) + ' → ' + money(item.new_price);});
+            alert( 'Menu prices have changed:\n\n' + changes.join('\n') + '\n\nPlease review your order again.');
+            saveCart();
+            window.location.reload();
+            return;
+        }
+        alert(data.error || 'Order could not be placed. Please try again.'); 
+        return;
+      }
+
+      // Show order ID in complete dialog.
+      const orderIdEl = document.getElementById('complete-order-id');
+      if (orderIdEl) orderIdEl.textContent = '#' + data.order_id;
+
+      // Copy review summary to complete dialog.
+      const completeDetails = document.getElementById('complete-details');
+      completeDetails.replaceChildren();
+
+      // Display actual ordered items returned by PHP.
+      data.items.forEach(function (item) {
+          const line = document.createElement('p');
+          line.textContent = item.name + ' × ' + item.quantity + ' — ' + money(item.unit_price * item.quantity);
+          completeDetails.appendChild(line);});
+
+      // Display actual order information returned by PHP.
+      [
+          ['Customer Name', data.customer_name],
+          ['Phone', data.phone],
+          ['Subtotal', money(data.subtotal)],
+          ['Campus Discount (10%)', '-' + money(data.discount_amount)],
+          ['Total', money(data.total_amount)],
+          ['Campus Pickup Location', data.delivery_location],
+          ['Notes', data.notes || '(None)']
+
+      ].forEach(function ([label, value]) {
+          const row = document.createElement('p');
+          const strong = document.createElement('strong');
+
+          strong.textContent = label + ': ';
+
+          row.append(
+              strong,
+              document.createTextNode(String(value))
+          );
+
+          completeDetails.appendChild(row);
+      });
+
+      closeDialog(reviewDialog);
+      openDialog(completeDialog);
+
+      // Clear state only after successful order.
+      cart = {};
+      saveCart();
+      document.getElementById('cart-note').value = '';
+      document.getElementById('pickup-location').value = '';
+      document.getElementById('customer-name').value = '';
+      document.getElementById('customer-phone').value = '';
+      renderCart();
+    } catch (err) {
+      alert('Network error. Please check your connection and try again.');
+      btn.disabled = false;
+      btn.textContent = 'Place Order';
+    } finally {
+        btn.disabled = false;
+        btn.textContent = 'Place Order';
+    }
   });
+
+  // Notify user if saved cart items were removed (deactivated by admin).
+  if (removedFromCart) {
+    setTimeout(function () {
+      notify('Some items in your saved cart are no longer available and have been removed.');
+    }, 1200);
+  }
+
   saveCart();
   showMenu();
 })();
@@ -346,34 +498,34 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
 // ========== Click Bubble Animation ==========
 (function () {
   var bubbleSound = new Audio('assets/audio/bubble.mp3');
-  bubbleSound.volume = 0.4; 
-  var USE_IMAGE = false; 
+  bubbleSound.volume = 0.4;
+  var USE_IMAGE = false;
 
   function spawnBubbles(x, y) {
     var s = bubbleSound.cloneNode();
     s.volume = 0.4;
-    s.play().catch(function () {}); 
-    var count = Math.floor(Math.random() * 3) + 4; 
+    s.play().catch(function () { });
+    var count = Math.floor(Math.random() * 3) + 4;
 
     for (var i = 0; i < count; i++) {
-      var size     = Math.random() * 25 + 8;              
-      var spreadX  = (Math.random() - 0.5) * 60;            
-      var floatDur = (Math.random() * 1.0 + 1.0).toFixed(2); 
-      var swayDur  = (Math.random() * 0.7 + 0.4).toFixed(2); 
-      var delay    = (Math.random() * 0.6).toFixed(2);      
+      var size = Math.random() * 25 + 8;
+      var spreadX = (Math.random() - 0.5) * 60;
+      var floatDur = (Math.random() * 1.0 + 1.0).toFixed(2);
+      var swayDur = (Math.random() * 0.7 + 0.4).toFixed(2);
+      var delay = (Math.random() * 0.6).toFixed(2);
       var swayAmount = (Math.random() > 0.5 ? 1 : -1) * (Math.random() * 10 + 35);
       var wrapper = document.createElement('div');
       wrapper.className = 'bubble-wrapper';
-      wrapper.style.width     = size + 'px';
-      wrapper.style.height    = size + 'px';
-      wrapper.style.left      = (x + spreadX - size / 2) + 'px';
-      wrapper.style.top       = (y - size / 2) + 'px';
+      wrapper.style.width = size + 'px';
+      wrapper.style.height = size + 'px';
+      wrapper.style.left = (x + spreadX - size / 2) + 'px';
+      wrapper.style.top = (y - size / 2) + 'px';
       wrapper.style.animation = 'bubbleFloatUp ' + floatDur + 's ease-in ' + delay + 's forwards';
 
       var el = document.createElement('div');
       el.className = 'click-bubble' + (USE_IMAGE ? ' use-image' : '');
-      el.style.width     = size + 'px';
-      el.style.height    = size + 'px';
+      el.style.width = size + 'px';
+      el.style.height = size + 'px';
       el.style.setProperty('--sway-amount', swayAmount + 'px');
       el.style.animation = 'bubbleSway ' + swayDur + 's ease-in-out ' + delay + 's infinite alternate';
 
@@ -410,7 +562,7 @@ let inertiaInterval = null;
 window.addEventListener('scroll', function () {
   const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
   const currentTime = Date.now();
-  
+
   const deltaY = Math.abs(currentScrollTop - lastScrollTop);
   const deltaTime = currentTime - lastScrollTime;
 
@@ -441,7 +593,7 @@ window.addEventListener('scroll', function () {
   window.scrollStopTimer = setTimeout(() => {
     let startTime = Date.now();
     let startRate = currentPlaybackRate;
-    let duration = 2000; 
+    let duration = 2000;
 
     inertiaInterval = setInterval(() => {
       let elapsed = Date.now() - startTime;
@@ -462,7 +614,7 @@ window.addEventListener('scroll', function () {
           seaweed.style.animationPlayState = 'paused';
         });
       }
-    }, 30); 
+    }, 30);
   }, 100);
 });
 
@@ -611,8 +763,8 @@ spawnBackgroundFish();
 spawnBackgroundFish();
 
 // ========== Treasure ==========//
-document.getElementById('treasureImg').addEventListener('click', function() {
-  const wrapper = document.getElementById('treasureWrapper');  
+document.getElementById('treasureImg').addEventListener('click', function () {
+  const wrapper = document.getElementById('treasureWrapper');
 
   for (let i = 0; i < 5; i++) {
     const spark = document.createElement('img');
@@ -621,20 +773,20 @@ document.getElementById('treasureImg').addEventListener('click', function() {
 
     const isSmallScreen = window.innerWidth <= 390;
 
-    const size = isSmallScreen 
-      ? Math.floor(Math.random() * 13) + 10   
-      : Math.floor(Math.random() * 26) + 20;  
+    const size = isSmallScreen
+      ? Math.floor(Math.random() * 13) + 10
+      : Math.floor(Math.random() * 26) + 20;
 
     spark.style.width = `${size}px`;
     spark.style.height = 'auto';
 
-    const offsetX = isSmallScreen 
-      ? Math.floor(Math.random() * 140) - 20   
-      : Math.floor(Math.random() * 240) - 80;  
+    const offsetX = isSmallScreen
+      ? Math.floor(Math.random() * 140) - 20
+      : Math.floor(Math.random() * 240) - 80;
 
-    const offsetY = isSmallScreen 
-      ? Math.floor(Math.random() * 100) - 30    
-      : Math.floor(Math.random() * 180) - 80;  
+    const offsetY = isSmallScreen
+      ? Math.floor(Math.random() * 100) - 30
+      : Math.floor(Math.random() * 180) - 80;
 
     spark.style.left = `${offsetX}px`;
     spark.style.top = `${offsetY}px`;
@@ -656,7 +808,7 @@ const footer = document.querySelector('.tb-footer');
 function moveCrab() {
   const footerWidth = footer.clientWidth;
   const crabWidth = crab.clientWidth;
-  
+
   const minX = 10;
   const maxX = footerWidth - crabWidth - 10;
   const targetX = Math.floor(Math.random() * (maxX - minX + 1)) + minX;
@@ -681,7 +833,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function spawnFish() {
     const isLeftToRight = Math.random() < 0.5;
     const fishSrcs = isLeftToRight ? leftToRightFish : rightToLeftFish;
-    
+
     const chosenSrc = fishSrcs[Math.floor(Math.random() * fishSrcs.length)];
 
     const fish = document.createElement("img");
@@ -691,7 +843,7 @@ document.addEventListener("DOMContentLoaded", function () {
       fish.classList.add("fish-flip");
     }
 
-    const randomWidth = Math.floor(Math.random() * 25) + 35; 
+    const randomWidth = Math.floor(Math.random() * 25) + 35;
     fish.style.width = `${randomWidth}px`;
 
     const containerHeight = container.clientHeight || 400;
@@ -718,7 +870,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function scheduleNextFish() {
     if (!document.hidden) spawnFish();
-    const nextTime = Math.random() * 2500 + 2500; 
+    const nextTime = Math.random() * 2500 + 2500;
     setTimeout(scheduleNextFish, nextTime);
   }
 
