@@ -6,3 +6,9 @@ Desktop.ini
 /config/database.local.php
 /.env
 /.env.*
+
+# Admin uploads are local data; explicitly add reviewed final images when packaging.
+/uploads/foods/*
+!/uploads/foods/.gitkeep
+!/uploads/foods/.htaccess
+/tests/artifacts/

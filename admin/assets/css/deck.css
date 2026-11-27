@@ -1,0 +1,148 @@
+/* Control Deck theme: isolated from the customer stylesheet. */
+:root { --blue:#087da6; --deep:#12516d; --navy:#103e58; --coral:#ffb2a3; --sun:#ffdd82; --mint:#c6ecdb; --radius:20px; }
+body { font-family:'Lato','Segoe UI',sans-serif; background:linear-gradient(135deg,#edfaff,#f4fbf8 65%,#fff7eb); }
+h1,h2,h3,.button,.site-header nav { font-family:'Raleway','Segoe UI',sans-serif; }
+h1 { letter-spacing:-.035em; }
+.site-header { background:#f9feff; height:100px; border-bottom:0; }
+.brand span { color:var(--deep); font-weight:700; line-height:1.6; }
+.site-header nav { gap:20px; }
+.site-header nav>a { padding:9px 13px; border-radius:24px; }
+.site-header nav>a[aria-current] { background:#d5f1f6; color:#075c7e; }
+.site-header nav>a:hover { background:#fff0cc; }
+.button { border-radius:14px; transition:transform .16s ease,background .16s ease; }
+.button:hover { transform:translateY(-2px); }
+.button.primary { background:linear-gradient(110deg,#087da6,#087b8c); border-color:#087da6; box-shadow:0 5px 0 #d1e9ed; }
+.button.danger { box-shadow:0 4px 0 #f7d5d1; }
+.button.quiet { background:#fff0df; border-color:#eacda7; }
+.deck-banner { position:relative; overflow:hidden; min-height:174px; padding:27px max(32px,calc((100vw - 1254px)/2)); background:linear-gradient(115deg,#b8eaf2,#d4f3e6 62%,#fff0c8); border-bottom:5px solid white; border-radius:0 0 45% 5% / 0 0 28px 12px; }
+.deck-banner>div { position:relative; z-index:1; }
+.deck-banner .eyebrow { color:#21566d; margin:0 0 4px; }
+.deck-slogan { font:42px/1.25 'Alex Brush',Georgia,serif; color:#12516d; }
+.deck-banner>div>p:last-child { font-size:12px; color:#3b6472; margin-top:6px; }
+.deck-banner>img { position:absolute; width:135px; height:135px; object-fit:contain; right:max(70px,calc((100vw - 1090px)/2)); bottom:10px; animation:deck-float 6s ease-in-out infinite; }
+.deck-bubble { position:absolute; border:2px solid #fff9; border-radius:50%; pointer-events:none; }
+.bubble-one { width:54px; height:54px; right:24%; top:22px; }
+.bubble-two { width:22px; height:22px; right:9%; top:28px; }
+.main-shell { padding-top:32px; }
+.eyebrow { letter-spacing:.14em; }
+.stats { border:0; background:none; gap:18px; border-radius:0; }
+.stats>div { border:1px solid #c9e7ef; border-top:5px solid #79cbd9; background:#e6f7fb; border-radius:18px; }
+.stats>div:nth-child(2) { border:1px solid #c9e6d6; border-top:5px solid #78cba8; background:#e9f7ed; }
+.stats>div:nth-child(3) { border:1px solid #ecdfb7; border-top:5px solid #f0c861; background:#fff5d8; }
+.stats strong { font-family:'Raleway',sans-serif; }
+.menu-panel,.panel { border-color:#c9e2e9; box-shadow:0 7px 22px #13557309; }
+.filters { background:#fafeff; }
+.table-labels { background:#dff2f8; color:#24556d; }
+.food-info img { border-radius:13px; border:2px solid #fff; box-shadow:0 2px 8px #16485c14; }
+.food-row:nth-child(even) { background:#fbfdf9; }
+.food-row:hover { background:#fff9ec; }
+.food-info h2 { color:#12516d; }
+.badge { border-radius:20px; padding:5px 10px; }
+.badge.is-active { background:#d8f0e3; }
+.field input:not([type=checkbox]),.field textarea,.field select,.file-control { border-radius:10px; }
+.field input:focus,.field textarea:focus,.field select:focus { background:#f8fdff; }
+.panel-heading { border-bottom:1px dashed #c9dfe6; padding-bottom:20px; }
+.section-number { border-radius:11px; background:#d7eff8; font-weight:700; width:38px; height:38px; }
+.details-panel { border-top:5px solid #7bcddd; }
+.image-panel { border-top:5px solid #ffb4a2; }
+.image-panel .section-number { background:#ffe4dc; color:#8b4232; }
+.availability-panel { border-top:5px solid #95d6b6; }
+.availability-panel .section-number { background:#dcf1e5; color:#27644f; }
+.image-preview { border-radius:14px; background:linear-gradient(135deg,#ddf2f6,#fff2d4); }
+.image-preview span { border-radius:12px; }
+.delete-panel { border-top:6px solid #ffad9f; }
+.delete-alternative { background:#e1f3ed; border-radius:14px; }
+.notice { border-radius:13px; }
+.site-footer { background:#12516d; color:#d7f2f6; border-top:5px solid #91d1d7; }
+.login-layout { padding:30px; gap:0; background:linear-gradient(140deg,#8bd3df,#c5eee4 60%,#fff0d0); }
+.login-brand { border-radius:28px 0 0 28px; background:linear-gradient(160deg,#166d8c,#12516d 72%); padding:60px clamp(34px,5vw,80px); }
+.login-brand h1 { font-family:'Raleway',sans-serif; font-size:clamp(34px,4.2vw,58px); position:relative; z-index:2; }
+.login-brand .eyebrow { color:#ffdf99; position:relative; z-index:2; }
+.login-brand>p { position:relative; z-index:2; }
+.login-logo { width:150px; background:#f5fcff; border-radius:50%; padding:6px; margin-bottom:40px; }
+.login-brand .brand-caption { font:32px/1.3 'Alex Brush',Georgia,serif; color:#ffdf99; margin-top:70px; }
+.login-dolphin { position:absolute; width:130px; height:130px; object-fit:contain; right:24px; bottom:30px; opacity:.85; animation:deck-float 6s ease-in-out infinite; }
+.login-seaweed { position:absolute; width:95px; height:150px; object-fit:contain; left:-22px; bottom:-20px; opacity:.55; pointer-events:none; }
+.login-form-wrap { border-radius:0 28px 28px 0; background:#fffcf6; }
+.login-form-inner .eyebrow { color:#97603c; }
+.login-form-inner h2 { font-size:38px; }
+.login-form .button { border-radius:24px; background:#087da6; }
+.deck-chip { border:1px solid #dfc388; background:#fff1c9; border-radius:30px; padding:9px 16px; color:#6c531d; font-size:12px; white-space:nowrap; }
+.order-search { display:flex; align-items:end; gap:18px; padding:24px; background:#fafeff; }
+.order-search .field { flex:1; margin:0; }
+.order-search>a { padding:11px 0; }
+.order-list { padding:24px; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px; }
+.order-card { border:1px solid #d4e6eb; border-top:5px solid #88cfdc; border-radius:16px; padding:22px; min-width:0; background:white; }
+.order-card:nth-child(3n+2) { border-top-color:#ffb4a2; }
+.order-card:nth-child(3n) { border-top-color:#a6d9bc; }
+.order-card-heading { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
+.order-card-heading h2 { font-size:20px; }
+.order-amount { color:#17654c; font-size:18px; font-weight:700; }
+.order-facts { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:22px 0; }
+dt { font-size:12px; color:#526b77; margin-bottom:5px; }
+dd { margin:0; overflow-wrap:anywhere; }
+.order-facts dd { font-size:14px; }
+.order-pagination { display:flex; justify-content:center; align-items:center; gap:20px; padding:12px 20px 28px; font-size:13px; }
+.ocean-empty { padding:45px 24px 60px; background:linear-gradient(#fff,#eaf8fa); }
+.ocean-empty img { width:140px; height:100px; object-fit:contain; margin:0 auto 18px; }
+.ocean-empty h2 { font-size:28px; }
+.order-detail-grid { display:grid; grid-template-columns:minmax(0,.85fr) minmax(0,1.4fr); gap:24px; align-items:start; }
+.order-detail-grid>.panel:first-child { border-top:5px solid #ffb4a2; }
+.order-detail-grid>.panel:last-child { border-top:5px solid #8bd2c1; }
+.delivery-facts { margin:0; display:grid; gap:22px; }
+.order-notes { white-space:pre-wrap; }
+.order-line { display:flex; align-items:start; justify-content:space-between; gap:18px; padding:18px 0; border-bottom:1px solid #e0e9ee; }
+.order-line h3 { margin:0 0 8px; font-size:16px; overflow-wrap:anywhere; }
+.order-line>div { min-width:0; }
+.order-line p { font-size:13px; color:#526b77; }
+.order-line>strong { white-space:nowrap; font-size:14px; }
+.order-totals { margin:24px 0 0; }
+.order-totals>div { display:flex; justify-content:space-between; gap:16px; margin:14px 0; }
+.order-totals dt { font-size:14px; }
+.order-totals .grand-total { padding:18px; margin-top:22px; border-radius:13px; background:#def2e9; font-weight:700; color:#144e40; }
+.grand-total dt { font-size:18px; color:inherit; margin:0; }
+@keyframes deck-float { 0%,100% { transform:translateY(0) rotate(-3deg); } 50% { transform:translateY(-9px) rotate(3deg); } }
+@media(max-width:1100px) { .site-header nav { gap:6px; } .site-header nav>a { padding:9px; font-size:12px; } .brand { gap:12px; } .brand span { padding-left:12px; } .login-brand { padding:40px; } .login-dolphin { width:100px; right:4px; bottom:12px; } }
+@media(max-width:760px) {
+  .site-header { height:auto; min-height:86px; }
+  .site-header nav { gap:8px; }
+  .site-header nav>a { font-size:12px; }
+  .deck-banner { min-height:148px; padding:24px 20px; border-radius:0 0 25% 4% / 0 0 18px 10px; }
+  .deck-slogan { font-size:29px; max-width:240px; }
+  .deck-banner>img { width:72px; height:72px; right:7px; bottom:15px; opacity:.7; }
+  .deck-banner>div>p:last-child { max-width:240px; font-size:11px; }
+  .bubble-one { right:8%; width:28px; height:28px; top:13px; }
+  .bubble-two { display:none; }
+  .stats { gap:7px; }
+  .stats>div { padding:14px 8px; border-radius:13px; }
+  .stats span { font-size:9px; }
+  .food-row { margin:12px; border:1px solid #d7e7ec; border-radius:16px; padding:16px 12px; }
+  .food-info img { width:76px; }
+  .food-status { gap:5px; }
+  .badge { font-size:10px; padding:5px 7px; }
+  .food-actions .button { padding:8px; }
+  .login-layout { padding:12px; }
+  .login-brand { padding:28px; border-radius:22px 22px 0 0; }
+  .login-logo { width:100px; margin-bottom:24px; }
+  .login-brand h1 { font-size:30px; }
+  .login-brand>p:not(.eyebrow):not(.brand-caption) { max-width:230px; }
+  .login-dolphin { width:90px; height:90px; right:8px; bottom:14px; opacity:.6; }
+  .login-seaweed { display:none; }
+  .login-form-wrap { border-radius:0 0 22px 22px; padding:32px 24px; }
+  .login-form-inner h2 { font-size:30px; }
+  .login-form-inner .eyebrow { font-size:9px; }
+  .order-search { flex-wrap:wrap; padding:18px; gap:12px; }
+  .order-search .field { flex-basis:100%; }
+  .order-search .button { flex:1; }
+  .order-search>a { min-width:70px; text-align:center; }
+  .order-list { grid-template-columns:1fr; padding:14px; gap:14px; }
+  .order-card { padding:18px; }
+  .order-card-heading h2 { font-size:18px; }
+  .order-facts { grid-template-columns:1fr; gap:14px; }
+  .order-detail-grid { grid-template-columns:1fr; gap:20px; }
+  .order-line { gap:10px; }
+  .order-line>strong { font-size:12px; }
+  .order-totals .grand-total { padding:14px; }
+  .deck-chip { font-size:11px; }
+}
+@media(prefers-reduced-motion:reduce) { .login-dolphin,.deck-banner>img { animation:none; } .button { transition:none; } .button:hover { transform:none; } }
