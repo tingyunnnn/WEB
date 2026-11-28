@@ -1,3 +1,14 @@
 .DS_Store
 Thumbs.db
 Desktop.ini
+
+# Defense in depth: real settings belong outside the web/document root.
+/config/database.local.php
+/.env
+/.env.*
+
+# Admin uploads are local data; explicitly add reviewed final images when packaging.
+/uploads/foods/*
+!/uploads/foods/.gitkeep
+!/uploads/foods/.htaccess
+/tests/artifacts/
