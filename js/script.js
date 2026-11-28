@@ -71,7 +71,6 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
       .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
-  // ── Phase I seed data — used as fallback when the PHP backend is not yet available ──
 
   let menu = [];
   try {
@@ -86,7 +85,7 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
     return;
   }
 
-  // Remove the loading placeholder once menu data (live or seed) is ready.
+  // Remove the loading placeholder once menu data is ready.
   const loadingEl = document.getElementById('menu-loading');
   if (loadingEl) loadingEl.remove();
 
@@ -133,8 +132,9 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
   let cart = {};
   let removedFromCart = false;
   let reviewedItems = [];
+  let isPlacingOrder = false;
 
-  // Load saved cart; silently drop items that are no longer active in the DB.
+  // Load saved cart; drop items that are no longer active in the DB.
   try {
     const saved = JSON.parse(localStorage.getItem(storageKey) || '{}');
     if (saved && typeof saved === 'object' && !Array.isArray(saved)) {
@@ -178,13 +178,34 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
     else dialog.setAttribute('open', '');
   }
   function closeDialog(dialog) { dialog.close ? dialog.close() : dialog.removeAttribute('open'); }
+  function setOrderLoading(loading) {
+    isPlacingOrder = loading;
+    const placeButton = document.getElementById('place-order');
+    const backButton = document.getElementById('back-to-cart');
+    const closeButton = reviewDialog.querySelector('.tb-close');
+    placeButton.disabled = loading;
+    backButton.disabled = loading;
+    closeButton.disabled = loading;
+    placeButton.textContent = loading
+        ? 'Placing order…'
+        : 'Place Order';
+}
 
   dialogs.forEach(function (id) {
     const dialog = document.getElementById(id);
-    dialog.addEventListener('click', function (event) { if (event.target === dialog) closeDialog(dialog); });
+    dialog.addEventListener('click', function (event) {
+        if (dialog === reviewDialog && isPlacingOrder) { return; }
+        if (event.target === dialog) { closeDialog(dialog);}});
+  });
+  reviewDialog.addEventListener('cancel', function (event) {
+    if (isPlacingOrder) {event.preventDefault();}
   });
   document.querySelectorAll('[data-close-dialog]').forEach(function (btn) {
-    btn.addEventListener('click', function () { closeDialog(document.getElementById(btn.dataset.closeDialog)); });
+    btn.addEventListener('click', function () { 
+      const dialog = document.getElementById(btn.dataset.closeDialog);
+      if (dialog === reviewDialog && isPlacingOrder) return;
+
+      closeDialog(dialog);; });
   });
 
   // ===== 餐點圖片放大功能 =====
@@ -387,19 +408,16 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
   });
 
   document.getElementById('back-to-cart').addEventListener('click', function () {
-    closeDialog(reviewDialog); renderCart(); openDialog(cartDialog);
+    if (isPlacingOrder) return; closeDialog(reviewDialog); renderCart(); openDialog(cartDialog);
   });
 
   // ── Place Order: POST to API (B: api/orders/place.php) ──
   document.getElementById('place-order').addEventListener('click', async function () {
-    if (!reviewDialog.open || cartQuantity() === 0) return;
-
-    const btn = document.getElementById('place-order');
-    btn.disabled = true;
-    btn.textContent = 'Placing order…';
-    const items = reviewedItems;
-
+    if ( isPlacingOrder || !reviewDialog.open || cartQuantity() === 0) return;
+    setOrderLoading(true);
+    
     try {
+      const items = reviewedItems;
       const res = await fetch('api/orders/place.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -429,7 +447,7 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
       const orderIdEl = document.getElementById('complete-order-id');
       if (orderIdEl) orderIdEl.textContent = '#' + data.order_id;
 
-      // Copy review summary to complete dialog.
+      // Render the actual order details returned by the server.
       const completeDetails = document.getElementById('complete-details');
       completeDetails.replaceChildren();
 
@@ -476,11 +494,8 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
       renderCart();
     } catch (err) {
       alert('Network error. Please check your connection and try again.');
-      btn.disabled = false;
-      btn.textContent = 'Place Order';
     } finally {
-        btn.disabled = false;
-        btn.textContent = 'Place Order';
+        setOrderLoading(false);
     }
   });
 
