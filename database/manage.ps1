@@ -1,5 +1,5 @@
 param(
-    [Parameter(Mandatory=$true)][ValidateSet('Install','Check','CreateAdmin','Test')][string]$Action,
+    [Parameter(Mandatory=$true)][ValidateSet('Install','Check','CreateAdmin','Migrate','Test')][string]$Action,
     [string]$DbHost='127.0.0.1', [int]$Port=3306,
     [string]$Database='tidebites', [string]$AppUser='tidebites_app',
     [string]$ConfigPath='', [string]$Php='php'
@@ -18,7 +18,7 @@ $process=$null
 $bytes=$null
 $exitCode=1
 try {
-    if($Action -in 'Install','Test') {
+    if($Action -in 'Install','Migrate','Test') {
         $payload.root_password=Read-LocalSecret 'Existing MySQL root password (hidden, local input only)'
     }
     if($Action -eq 'Install') {

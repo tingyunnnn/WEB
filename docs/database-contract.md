@@ -62,12 +62,13 @@ PR 2 才實作 `password_verify()`、session、登入／登出、路由授權、
 | phone | VARCHAR(32) NULL | 字串保留 `+` 與前導零；是否必填、格式待 B 確認 |
 | delivery_location | VARCHAR(255) | 必填、不可空白；對應原 pickup-location |
 | notes | VARCHAR(500) NULL | 選填，對應原 cart-note 的 maxlength=500 |
+| pickup_time | DATETIME NULL | 預約取餐時間（UTC；介面以 Asia/Taipei 顯示）。新訂單由 API 必填並依 `config/order-options.php` 時段規則驗證；NULL 只代表加入此欄位前的舊訂單。既有資料庫以 `manage.ps1 -Action Migrate` 新增 |
 | subtotal | DECIMAL(10,2) | 必填、非負、原價小計快照 |
 | discount_amount | DECIMAL(10,2) | 必填、0 ≤ 折扣 ≤ 小計 |
 | total_amount | DECIMAL(10,2) | 必填、CHECK 等於 subtotal - discount_amount |
 | created_at | DATETIME，CURRENT_TIMESTAMP | UTC |
 
-索引：`idx_orders_created (created_at, id)`。沒有會員、付款、地址簿、配送追蹤或狀態表。
+索引：`idx_orders_created (created_at, id)`、`idx_orders_pickup (pickup_time)`。沒有會員、付款、地址簿、配送追蹤或狀態表。
 姓名與電話允許 NULL，確保既有無會員流程可表達；**這不代表最終外送資料已足夠**。
 
 ### order_items
@@ -145,7 +146,8 @@ try {
 
 原流程只收備註與三個選項：`Campus Main Gate`、`Student Center`、`Library Entrance`。
 原程式：小計為價格 × 數量加總；Campus Discount 自動適用全部餐點；`Math.round(subtotal * 0.1)`，總額為小計減折扣，整數 NT$。
-SQL 的 DECIMAL(10,2) 可準確存放金額，但**沒有**實作價格計算或強制 10% 折扣。
+**目前規則（已取代上一行）**：改為自選的 Student Discount。顧客在購物車勾選「取餐時出示學生證」才打九折，`api/orders/place.php` 收到 `student_discount: true` 時以 `intdiv(subtotal + 5, 10)` 計算折扣（與前端 `Math.round(subtotal * 0.1)` 結果相同）；未勾選則 `discount_amount = 0`。不新增欄位：`discount_amount > 0` 即表示該訂單使用學生折扣，後台明細據此提醒核對學生證。若未來出現其他折扣種類，需由 A/B 討論新增明確欄位並提供遷移。
+SQL 的 DECIMAL(10,2) 可準確存放金額，但**沒有**實作價格計算或強制 10% 折扣；金額由 `place.php` 伺服器端重算。
 候選政策是先保留整元菜單與既有取整規則。若未來允許角／分，必須先確認折扣取整單位，不能直接沿用浮點運算。
 
 B 的訂單提交應在一個資料庫交易內：驗證可訂購餐點與數量、從資料庫讀取並鎖定所需餐點、用十進位／整數最小貨幣單位重算價格、寫 orders、寫 order_items 快照、全成功才 commit；任何失敗 rollback。

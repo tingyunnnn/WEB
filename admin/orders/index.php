@@ -21,7 +21,7 @@ $count->execute($params);
 $total = (int)$count->fetchColumn();
 $pages = max(1, (int)ceil($total / 20));
 $page = min($page, $pages);
-$query = $pdo->prepare('SELECT id,customer_name,phone,delivery_location,total_amount,created_at FROM orders' . $where . ' ORDER BY created_at DESC,id DESC LIMIT 20 OFFSET ' . (($page - 1) * 20));
+$query = $pdo->prepare('SELECT id,customer_name,phone,delivery_location,pickup_time,total_amount,created_at FROM orders' . $where . ' ORDER BY created_at DESC,id DESC LIMIT 20 OFFSET ' . (($page - 1) * 20));
 $query->execute($params);
 $orders = $query->fetchAll();
 $pageTitle = 'Orders';
@@ -36,7 +36,7 @@ require dirname(__DIR__) . '/includes/header.php';
 <?php else: ?>
 <div class="order-list">
 <?php foreach ($orders as $order): ?>
-<article class="order-card" data-order-id="<?= e($order['id']) ?>"><div class="order-card-heading"><h2>Order #<?= e($order['id']) ?></h2><span class="order-amount"><?= e(admin_money(admin_cents($order['total_amount']))) ?></span></div><dl class="order-facts"><div><dt>Customer</dt><dd><?= e(admin_optional($order['customer_name'])) ?></dd></div><div><dt>Phone</dt><dd><?= e(admin_optional($order['phone'])) ?></dd></div><div><dt>Delivery Location</dt><dd><?= e($order['delivery_location']) ?></dd></div><div><dt>Order Date · Taipei</dt><dd><?= e(admin_order_time($order['created_at'])) ?></dd></div></dl><a class="button" href="<?= e(admin_url('orders/detail.php?id=' . $order['id'])) ?>" aria-label="View details for order <?= e($order['id']) ?>">View Details <span aria-hidden="true">→</span></a></article>
+<article class="order-card" data-order-id="<?= e($order['id']) ?>"><div class="order-card-heading"><h2>Order #<?= e($order['id']) ?></h2><span class="order-amount"><?= e(admin_money(admin_cents($order['total_amount']))) ?></span></div><dl class="order-facts"><div><dt>Customer</dt><dd><?= e(admin_optional($order['customer_name'])) ?></dd></div><div><dt>Phone</dt><dd><?= e(admin_optional($order['phone'])) ?></dd></div><div><dt>Delivery Location</dt><dd><?= e($order['delivery_location']) ?></dd></div><div><dt>Pickup Time · Taipei</dt><dd><?= e(admin_pickup_time($order['pickup_time'])) ?></dd></div><div><dt>Order Date · Taipei</dt><dd><?= e(admin_order_time($order['created_at'])) ?></dd></div></dl><a class="button" href="<?= e(admin_url('orders/detail.php?id=' . $order['id'])) ?>" aria-label="View details for order <?= e($order['id']) ?>">View Details <span aria-hidden="true">→</span></a></article>
 <?php endforeach; ?>
 </div>
 <nav class="order-pagination" aria-label="Order pages"><?php if ($page > 1): ?><a class="button" href="?<?= e(http_build_query(['q' => $search, 'page' => $page - 1])) ?>">← Previous</a><?php endif; ?><span>Page <?= $page ?> of <?= $pages ?></span><?php if ($page < $pages): ?><a class="button" href="?<?= e(http_build_query(['q' => $search, 'page' => $page + 1])) ?>">Next →</a><?php endif; ?></nav>

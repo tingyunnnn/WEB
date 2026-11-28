@@ -1,9 +1,8 @@
 /* ==TideBites — Base Typography== */
-body, p, td, span, label {font-family: 'Lato', sans-serif;}
-h1, h2, h4, h5 {font-family: 'Alex Brush', serif;}
-h3 {font-family: 'Playfair Display', serif; letter-spacing: 0.01em;}
-button, a, .w3-bar-item {font-family: 'Raleway', sans-serif;}
-h1 {font-size: 3.3rem; margin: 0.5rem 0rem 0rem 0rem;}
+/* One typeface for the whole site (overrides w3.css defaults too). */
+html, body, h1, h2, h3, h4, h5, h6, p, td, th, span, label, a, button,
+input, select, textarea, .w3-bar-item, .w3-button {font-family: 'Lato', 'Segoe UI', Arial, sans-serif;}
+h1 {font-size: 2.8rem; margin: 0.5rem 0rem 0rem 0rem;}
 h4 {font-size: 1.3rem; font-weight: 700; line-height: 1.4;}
 p {font-size: 1rem; line-height: 1.8;}
 
@@ -88,7 +87,6 @@ header p{
   margin: 0 0 4px;
   word-break: break-word;   
   color: #6b4949;
-  font-family: 'Playfair Display', serif;
   font-size: 1.4rem;
   font-weight: 700;
 }
@@ -96,7 +94,6 @@ header p{
 /* 類別 · 價格 */
 .menu-grid article .card-meta {
   margin: 0 0 4px;
-  font-family: 'Lato', sans-serif;
   font-size: 1rem;
   letter-spacing: 0.05em;
   color: #15955c;
@@ -105,10 +102,9 @@ header p{
 /* 說明文字 */
 .menu-grid article .card-desc {
   word-break: break-word;
-  font-family: 'Lato', sans-serif;
   font-size: 0.92rem;
   line-height: 1.75;
-  font-weight: 600;
+  font-weight: 700;
   color: #38271f;
 }
 
@@ -138,7 +134,6 @@ header p{
 .pagination-wrap .w3-bar-item {
   min-width: 40px;
   text-align: center;
-  font-family: "Raleway", sans-serif;
   font-size: 0.95rem;
 }
 
@@ -449,138 +444,6 @@ hr {
 @keyframes bubbleSway {
   from { transform: translateX(0px); }
   to   { transform: translateX(var(--sway-amount, 15px)); }
-}
-
-/* == 開場 == */
-.welcome-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(54, 69, 79, 0.85); 
-  z-index: 99999;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  transition: opacity 0.8s ease;
-  cursor: pointer;
-}
-.welcome-content {
-  text-align: center;
-  position: relative;
-  z-index: 2;
-  max-width: 800px;
-  padding: 0 20px;
-  transform: translateY(55px);
-}
-.welcome-icon {
-  width: 230px;
-  height: auto;
-  margin-bottom: 0px;
-  object-fit: contain;
-}
-
-@keyframes iconPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.06); }
-}
-
-.typewriter-text {
-  font-family: 'Playfair Display', serif;
-  font-size: 3.6rem;
-  font-weight: 700;
-  color: #ffffff;
-  text-shadow: 0 3px 12px rgba(0,0,0,0.5);
-  min-height: 4.5rem;
-  white-space: nowrap;
-  border-right: none; 
-  width: 0;
-  margin: 0 auto;
-  overflow: hidden;
-}
-.welcome-hint {
-  font-family: 'Raleway', sans-serif;
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: #90e0ef;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.4);
-  margin-top: 28px;
-  opacity: 0;
-  transform: scale(0.98);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-.welcome-hint.show {
-  opacity: 1;
-  animation: hintBlink 1.2s infinite ease-in-out;
-}
-
-@keyframes hintBlink {
-  0%, 100% { opacity: 0.3; transform: scale(0.98); }
-  50% { opacity: 1; transform: scale(1); }
-}
-
-.welcome-dolphin {
-  position: absolute;
-  width: 180px;
-  height: auto;
-  display: none;
-  z-index: 3;
-  pointer-events: none;
-}
-
-@keyframes dolphinJumpArc {
-  0% {
-    transform: translate(220px, 100px) rotate(20deg);
-    opacity: 0;
-  }
-  15% {
-    opacity: 1;
-  }
-  50% {
-    transform: translate(0px, -200px) rotate(-40deg);
-  }
-  85% {
-    opacity: 1;
-  }
-  100% {
-    transform: translate(-220px, 100px) rotate(-85deg);
-    opacity: 0;
-  }
-}
-.animate-dolphin {
-  display: block !important;
-  animation: dolphinJumpArc 1.5s cubic-bezier(0.15, 0.46, 0.55, 0.94) forwards;
-}
-@media screen and (max-width: 390px) {
-  .welcome-dolphin {
-    width: 110px; 
-  }
-
-  @keyframes dolphinJumpArcSmall {
-    0% {
-      transform: translate(110px, 50px) rotate(20deg);
-      opacity: 0;
-    }
-    15% {
-      opacity: 1;
-    }
-    50% {
-      transform: translate(0px, -70px) rotate(-40deg); 
-    }
-    85% {
-      opacity: 1;
-    }
-    100% {
-      transform: translate(-120px, 60px) rotate(-85deg); 
-      opacity: 0;
-    }
-  }
-
-  .animate-dolphin {
-    animation: dolphinJumpArcSmall 1.5s cubic-bezier(0.15, 0.46, 0.55, 0.94) forwards;
-  }
 }
 
 @keyframes fishFloat {
@@ -896,6 +759,10 @@ hr {
 .tb-cart-controls {flex-wrap:wrap;}
 .tb-cart-controls button:last-child {margin-left:auto;color:#a43737;}
 .tb-field {display:block;margin:20px 0 14px;font-weight:700;}
+.tb-check {display:flex;align-items:flex-start;gap:10px;margin:20px 0 8px;font-weight:700;cursor:pointer;}
+.tb-check input {flex:0 0 auto;width:18px;height:18px;margin:3px 0 0;accent-color:#12516d;cursor:pointer;}
+.tb-reminder {margin:8px 0 16px;padding:10px 12px;border-left:4px solid #e0a100;border-radius:8px;background:#fff6dc;color:#5c4400;font-size:.92rem;font-weight:700;line-height:1.5;}
+.tb-reminder[hidden] {display:none;}
 .tb-field textarea,.tb-field select {display:block;margin-top:8px;width:100%;border:1px solid #bacbd1;border-radius:8px;padding:10px;font:inherit;}
 .tb-toast {position:fixed;z-index:100001;bottom:22px;left:50%;transform:translateX(-50%);background:#174c6b;color:#fff;padding:12px 18px;border-radius:9px;text-align:center;max-width:90vw;}
 @media (max-width:600px) {.tb-dish-image{height:190px}.tb-dialog-body{padding:18px}.tb-cart-row img{width:72px;height:72px}}
@@ -1129,7 +996,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid #ff9a66; outline-offs
 .tb-close {
   width: 42px; height: 42px; top: 12px; right: 12px;
   display: flex; align-items: center; justify-content: center;
-  padding: 0 !important; margin: 0; line-height: 1; font-family: Arial,sans-serif;
+  padding: 0 !important; margin: 0; line-height: 1; font-family: 'Lato', 'Segoe UI', Arial, sans-serif;
   font-size: 27px; font-weight: 400; text-align: center;
   border-radius: 50%; background: rgba(255,255,255,.96);
   box-shadow: 0 2px 12px rgba(18,73,91,.16);
@@ -1406,7 +1273,7 @@ header .nav-title {
     justify-content: center;
     border: none;
     border-radius: 50%;
-    font: 28px/1 Arial, sans-serif;
+    font: 28px/1 'Lato', 'Segoe UI', Arial, sans-serif;
     background: rgba(255,255,255,.95);
     color: #174c6b;
     box-shadow: 0 2px 12px rgba(0,0,0,.2);
@@ -1742,11 +1609,6 @@ header #header-title{
   #mySidebar.is-open { display: flex !important; }
 }
 @media (max-width: 660px) {
-  .welcome-overlay { min-height: 100dvh; height: 100dvh; overflow-y: auto; }
-  .welcome-content { width: 100%; max-width: 100%; box-sizing: border-box; padding: 20px 18px; transform: none; }
-  .welcome-icon { width: min(45vw, 180px); max-height: 28dvh; }
-  .typewriter-text { box-sizing: border-box; width: 100% !important; max-width: 100%; min-height: 0; font-size: clamp(1.35rem, 6vw, 2.3rem); line-height: 1.3; white-space: normal; overflow-wrap: break-word; overflow: visible; }
-  .welcome-hint { font-size: 1.05rem; margin-top: 18px; }
   #portfolio #header-title { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; margin: 0px 0px 20px 0px; }
   #portfolio #header-title > img { width: min(34vw, 120px) !important; max-width: 100%; height: auto; margin: 0 !important; flex: 0 0 auto; }
   #portfolio #header-title > div { min-width: 0; width: 100%; }

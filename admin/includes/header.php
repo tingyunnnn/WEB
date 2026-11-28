@@ -10,7 +10,7 @@ $publicPage = $publicPage ?? false;
   <title><?= e($pageTitle ?? 'Admin') ?> | TideBites</title>
   <link rel="icon" href="<?= e(admin_base()) ?>assets/images/icon.png">
   <link rel="stylesheet" href="<?= e(admin_url('assets/css/admin.css')) ?>">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alex+Brush&amp;family=Lato:wght@400;700&amp;family=Raleway:wght@400;600;700&amp;display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&amp;display=swap">
   <link rel="stylesheet" href="<?= e(admin_url('assets/css/deck.css')) ?>">
   <script src="<?= e(admin_url('assets/js/admin.js')) ?>" defer></script>
 </head>

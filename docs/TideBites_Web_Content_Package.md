@@ -29,7 +29,7 @@ Names and prices must match the menu cards. Details and cart calculations read t
 - Never claim an order was sent, payment was taken, or food is being prepared.
 - The website does not submit orders or process payments; this is stated in the FAQ, checkout confirmation, and completion screen.
 - Use Campus Pickup Location consistently. Existing campus choices are summary selections, not confirmed service coverage.
-- Apply the 10% Campus Discount automatically to all ten meals and desserts. No identity check, account, code, or opt-in is needed. Use `Math.round(subtotal * 0.1)` for the discount and subtract it from the full food subtotal. Require a campus pickup location before review. Show Subtotal, Campus Discount (10%), and Total consistently.
+- The 10% Student Discount is opt-in: a checkbox in the cart ("I'll show my student ID at pickup for 10% off"). When it is ticked, use `Math.round(subtotal * 0.1)` and subtract it from the full food subtotal; when unticked, the discount is 0. When it is ticked, remind the customer to bring the orderer's student ID (in the cart, the order summary, and the confirmation). Require a campus pickup location before review. Show Subtotal, Student Discount, and Total consistently.
 - Existing delivery-hour values are unchanged. The footer states that the website does not book deliveries.
 - Preserve 14 footer tags in the original styling: Food, Desserts, Rice Bowls, Noodles, Snow Ice, Tang Yuan, Comfort Food, Student Deals, Lunch, Dinner, Campus Life, Takeaway, Sweet Treats, Ocean Vibes.
 
@@ -42,4 +42,4 @@ Names and prices must match the menu cards. Details and cart calculations read t
 
 ## Technical notes
 
-Preserve the existing ocean design, animation behavior, responsive rules, audio, and dialog structure. The legacy local-storage key remains unchanged to retain existing carts. See README for resources and local Chrome instructions.
+Preserve the existing ocean design, sea-life animations, responsive rules, and dialog structure. The opening screen, background music, and click sounds have been removed, and the whole site uses a single typeface (Lato). The legacy local-storage key remains unchanged to retain existing carts. See README for resources and local Chrome instructions.

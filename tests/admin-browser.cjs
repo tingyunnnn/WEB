@@ -49,7 +49,7 @@ const assert = require('node:assert/strict');
       await screenshot('orders');
       await page.goto(input.base + '/admin/orders/detail.php?id=' + input.orderId);
       check('order snapshot visible', await page.getByRole('heading', {name: 'Ocean Bowl (ordered)', exact: true}).count() === 1);
-      check('order total visible', await page.locator('.grand-total').textContent().then(text => text.includes('322.00')));
+      check('order total visible', await page.locator('.grand-total').textContent().then(text => text.includes('NT$322')));
       await screenshot('order-detail');
       await page.goto(input.base + '/admin/foods/index.php');
       if (width === 375) {

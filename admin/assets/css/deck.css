@@ -1,7 +1,7 @@
 /* Control Deck theme: isolated from the customer stylesheet. */
 :root { --blue:#087da6; --deep:#12516d; --navy:#103e58; --coral:#ffb2a3; --sun:#ffdd82; --mint:#c6ecdb; --radius:20px; }
 body { font-family:'Lato','Segoe UI',sans-serif; background:linear-gradient(135deg,#edfaff,#f4fbf8 65%,#fff7eb); }
-h1,h2,h3,.button,.site-header nav { font-family:'Raleway','Segoe UI',sans-serif; }
+h1,h2,h3,.button,.site-header nav { font-family:'Lato','Segoe UI',sans-serif; }
 h1 { letter-spacing:-.035em; }
 .site-header { background:#f9feff; height:100px; border-bottom:0; }
 .brand span { color:var(--deep); font-weight:700; line-height:1.6; }
@@ -17,7 +17,7 @@ h1 { letter-spacing:-.035em; }
 .deck-banner { position:relative; overflow:hidden; min-height:174px; padding:27px max(32px,calc((100vw - 1254px)/2)); background:linear-gradient(115deg,#b8eaf2,#d4f3e6 62%,#fff0c8); border-bottom:5px solid white; border-radius:0 0 45% 5% / 0 0 28px 12px; }
 .deck-banner>div { position:relative; z-index:1; }
 .deck-banner .eyebrow { color:#21566d; margin:0 0 4px; }
-.deck-slogan { font:42px/1.25 'Alex Brush',Georgia,serif; color:#12516d; }
+.deck-slogan { font:700 30px/1.25 'Lato','Segoe UI',sans-serif; color:#12516d; }
 .deck-banner>div>p:last-child { font-size:12px; color:#3b6472; margin-top:6px; }
 .deck-banner>img { position:absolute; width:135px; height:135px; object-fit:contain; right:max(70px,calc((100vw - 1090px)/2)); bottom:10px; animation:deck-float 6s ease-in-out infinite; }
 .deck-bubble { position:absolute; border:2px solid #fff9; border-radius:50%; pointer-events:none; }
@@ -29,7 +29,7 @@ h1 { letter-spacing:-.035em; }
 .stats>div { border:1px solid #c9e7ef; border-top:5px solid #79cbd9; background:#e6f7fb; border-radius:18px; }
 .stats>div:nth-child(2) { border:1px solid #c9e6d6; border-top:5px solid #78cba8; background:#e9f7ed; }
 .stats>div:nth-child(3) { border:1px solid #ecdfb7; border-top:5px solid #f0c861; background:#fff5d8; }
-.stats strong { font-family:'Raleway',sans-serif; }
+.stats strong { font-family:'Lato','Segoe UI',sans-serif; }
 .menu-panel,.panel { border-color:#c9e2e9; box-shadow:0 7px 22px #13557309; }
 .filters { background:#fafeff; }
 .table-labels { background:#dff2f8; color:#24556d; }
@@ -56,11 +56,11 @@ h1 { letter-spacing:-.035em; }
 .site-footer { background:#12516d; color:#d7f2f6; border-top:5px solid #91d1d7; }
 .login-layout { padding:30px; gap:0; background:linear-gradient(140deg,#8bd3df,#c5eee4 60%,#fff0d0); }
 .login-brand { border-radius:28px 0 0 28px; background:linear-gradient(160deg,#166d8c,#12516d 72%); padding:60px clamp(34px,5vw,80px); }
-.login-brand h1 { font-family:'Raleway',sans-serif; font-size:clamp(34px,4.2vw,58px); position:relative; z-index:2; }
+.login-brand h1 { font-family:'Lato','Segoe UI',sans-serif; font-size:clamp(34px,4.2vw,58px); position:relative; z-index:2; }
 .login-brand .eyebrow { color:#ffdf99; position:relative; z-index:2; }
 .login-brand>p { position:relative; z-index:2; }
 .login-logo { width:150px; background:#f5fcff; border-radius:50%; padding:6px; margin-bottom:40px; }
-.login-brand .brand-caption { font:32px/1.3 'Alex Brush',Georgia,serif; color:#ffdf99; margin-top:70px; }
+.login-brand .brand-caption { font:700 24px/1.3 'Lato','Segoe UI',sans-serif; color:#ffdf99; margin-top:70px; }
 .login-dolphin { position:absolute; width:130px; height:130px; object-fit:contain; right:24px; bottom:30px; opacity:.85; animation:deck-float 6s ease-in-out infinite; }
 .login-seaweed { position:absolute; width:95px; height:150px; object-fit:contain; left:-22px; bottom:-20px; opacity:.55; pointer-events:none; }
 .login-form-wrap { border-radius:0 28px 28px 0; background:#fffcf6; }
@@ -108,7 +108,7 @@ dd { margin:0; overflow-wrap:anywhere; }
   .site-header nav { gap:8px; }
   .site-header nav>a { font-size:12px; }
   .deck-banner { min-height:148px; padding:24px 20px; border-radius:0 0 25% 4% / 0 0 18px 10px; }
-  .deck-slogan { font-size:29px; max-width:240px; }
+  .deck-slogan { font-size:22px; max-width:240px; }
   .deck-banner>img { width:72px; height:72px; right:7px; bottom:15px; opacity:.7; }
   .deck-banner>div>p:last-child { max-width:240px; font-size:11px; }
   .bubble-one { right:8%; width:28px; height:28px; top:13px; }
