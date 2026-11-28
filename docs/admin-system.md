@@ -12,7 +12,7 @@ PR #66 已在 2026-11-26 合併；其提交 `e6599a300be64dfb1ba30857aa3ae1c44d9
 - 新增、編輯、上下架與真正刪除餐點。
 - JPG/JPEG、PNG、WebP 圖片上傳、預覽、更換及保守清理。
 - 唯讀 Orders：搜尋、每頁 20 筆、訂單詳情、歷史餐點名稱／價格快照與台北時間。
-- 獨立後台 CSS/JS，以 TideBites Control Deck 呈現海洋藍、珊瑚橘、黃色及薄荷綠；重用海浪 Logo、海豚、海草、潛水艇。延續原網站的 Lato、Raleway、Alex Brush，Google Fonts 無法連線時使用系統 fallback；介面為英文。
+- 獨立後台 CSS/JS，以 TideBites Control Deck 呈現海洋藍、珊瑚橘、黃色及薄荷綠；重用海浪 Logo、海豚、海草、潛水艇。前台與後台統一只用 Lato 一種字體（已移除 Raleway、Alex Brush 手寫體），Google Fonts 無法連線時使用系統 fallback（Segoe UI／Arial）；介面為英文。
 - 375、1024、1366px 響應式介面、鍵盤焦點與 label、無 JavaScript 時可使用基本表單及導覽。
 
 不含註冊、忘記密碼、角色、顧客會員、訂單修改／刪除／狀態、付款或營收分析。依本次授權，`index.html` 只在 Footer 的 EXPLORE 區新增 Admin Login 相對連結；Popular Tags 與原內容保留。未修改顧客端 `css/`、`js/`、`assets/`、README 或 B 的分支，未增刪正式餐點。
@@ -93,7 +93,8 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\database\manage.ps1 -A
 
 - 僅允許已登入管理員透過 GET 讀取，沿用同一 Session、授權與 `tidebites_pdo()`；POST 回 405，沒有修改訂單端點。
 - 列表依 `created_at DESC,id DESC`，每頁 20 筆，可用編號、姓名、電話或外送地點綜合搜尋。同一數字也可能命中電話／姓名，編號搜尋不是獨立的精確篩選。
-- View Details 顯示顧客資料、備註、餐點名稱、單價、數量、行小計、Subtotal、Campus Discount、Total。金額以整數分計算行小計，訂單總額直接讀取已保存值，沒有重新套用折扣政策。
+- View Details 顯示顧客資料、取餐時間（台北時間）、備註、餐點名稱、單價、數量、行小計、Subtotal、Student Discount、Total。金額以整數分計算行小計，訂單總額直接讀取已保存值，沒有重新套用折扣政策。
+- 學生折扣為顧客自選：`discount_amount > 0` 即代表顧客勾選「取餐時出示學生證」，明細的 Student ID 欄會提醒店家取餐時核對訂購人學生證；折扣為 0 則顯示不需核對。未新增資料表欄位。
 - 餐點名稱與單價只取 `order_items.food_name/unit_price`，不 join 當前 `food_items`；餐點改價或刪除不改歷史畫面。
 - 將資料庫 UTC 明確轉為 Asia/Taipei（UTC+08:00）。姓名／電話為 NULL 或空白時顯示 Not provided；空備註顯示 No notes provided。
 - 無訂單顯示潛水艇主題 No orders yet；無搜尋結果顯示 No matching orders；非法或不存在 ID 回 404。
@@ -204,7 +205,7 @@ docs/admin-system.md / admin-testing.md
 3. B 的動態菜單繼續 `WHERE is_active=1 ORDER BY sort_order,id`；詳情及送單要重新驗證餐點存在、上架與價格。改名／改價不更新既有訂單。
 4. `image_path` 同時可能是 `assets/images/...` 或 `uploads/foods/...`，一律相對專案根，勿相對 API 的子目錄解析。管理員不提供外部圖片 URL。
 5. **需要 B 調整的啟動命令**：使用 `start.bat` 或 `php ... -t . router.php`。這是新增的 HTTP 保護方式，不是資料合約變更。B 的新 API 不應放在被封鎖的內部目錄。
-6. `index.html` 仍是 Phase I 靜態入口，管理員改動 MySQL 不會自動改寫 HTML 菜單。顧客端即時反映管理結果須等 B 完成動態讀取；本次不接管 B 的工作。
+6. ~~`index.html` 仍是 Phase I 靜態入口~~ 已完成：B 的 `api/foods/list.php` 動態讀取菜單，管理員上下架／改價後重新整理首頁即反映；下單由 `api/orders/place.php` 寫入，後台 Orders 可看到。
 7. B 尚未回覆的候選事項（整元／折扣、ID 處理、姓名電話、送單鎖定等）仍以 `database-contract.md` 的未確認清單為準。本次沒有將它們改成已確認。
 8. **本次唯一顧客端修改**：`index.html` Footer 的 EXPLORE 區加入 `<p><a href="admin/login.php">Admin Login</a></p>`。B 後續整合首頁時需保留這一行，避免覆蓋入口；Popular Tags、菜單、音樂及動畫程式完全不變。
 9. B 完成真實送單後，需共同驗證寫入快照、NULL 顧客欄位、UTC 與總額在 Orders 的呈現。本次只用隔離 fixture，不能視為 B 送單整合已通過。

@@ -9,6 +9,7 @@ $id = admin_id($_GET['id'] ?? null);
 $food = admin_get_food($id);
 $editing = true;
 $values = $food;
+$values['price'] = preg_replace('/\.00\z/', '', (string)$food['price']); // show "129", not "129.00"
 $errors = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     admin_check_csrf();

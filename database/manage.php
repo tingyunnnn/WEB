@@ -7,7 +7,11 @@ require_once __DIR__ . '/tools.php';
 $result = ['result' => 'FAIL'];
 try {
     // PowerShell/macOS/Linux wrappers pipe UTF-8 JSON; no credentials in arguments.
-    $input = json_decode(stream_get_contents(STDIN) ?: '{}', true, 32, JSON_THROW_ON_ERROR);
+    // Windows PowerShell may prepend a UTF-8 BOM to piped stdin; strip it before decoding.
+    $stdin = (string) stream_get_contents(STDIN);
+    if (str_starts_with($stdin, "\xEF\xBB\xBF")) $stdin = substr($stdin, 3);
+    $input = json_decode(trim($stdin) ?: '{}', true, 32, JSON_THROW_ON_ERROR);
+    unset($stdin);
     $action = strtolower($argv[1] ?? '');
     if ($action === 'check') {
         $pdo = tidebites_pdo();
@@ -41,11 +45,14 @@ try {
         }
         $result = ['result' => 'PASS', 'database' => $database, 'account' => $username . '@localhost',
             'food_count' => $count, 'configuration' => $configPath, 'message' => 'Fresh installation complete.'];
+    } elseif ($action === 'migrate') {
+        $database = tb_database_name((string)($input['database'] ?? 'tidebites'));
+        $result = ['result' => 'PASS', 'database' => $database, 'changes' => tb_migrate(tb_admin_connection($input), $database)];
     } elseif ($action === 'test') {
         require_once __DIR__ . '/tests.php';
         $result = tb_run_tests($input);
     } else {
-        throw new InvalidArgumentException('Use install, check, createadmin, or test. See docs/database-setup.md.');
+        throw new InvalidArgumentException('Use install, check, createadmin, migrate, or test. See docs/database-setup.md.');
     }
 } catch (PDOException $e) {
     $result['error'] = 'Database operation failed (SQLSTATE ' . $e->getCode() . '). No credentials or SQL are logged.';

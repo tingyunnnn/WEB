@@ -81,6 +81,14 @@ function tidebites_db_config(): array
     }
 }
 
+// PHP 8.4+ provides Pdo\Mysql::ATTR_MULTI_STATEMENTS; the PDO::MYSQL_ATTR_* form is deprecated since 8.5.
+function tidebites_mysql_multi_statements_attr(): int
+{
+    return defined('Pdo\Mysql::ATTR_MULTI_STATEMENTS')
+        ? constant('Pdo\Mysql::ATTR_MULTI_STATEMENTS')
+        : constant('PDO::MYSQL_ATTR_MULTI_STATEMENTS');
+}
+
 function tidebites_connect(#[SensitiveParameter] array $config): PDO
 {
     try {
@@ -102,7 +110,7 @@ function tidebites_connect(#[SensitiveParameter] array $config): PDO
             $config['username'], $config['password'],
             [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_EMULATE_PREPARES => false,
              PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_TIMEOUT => 5,
-             PDO::MYSQL_ATTR_MULTI_STATEMENTS => false]
+             tidebites_mysql_multi_statements_attr() => false]
         );
         // Consistent DATETIME storage across A/B's machines; display in Asia/Taipei in the UI.
         $pdo->exec("SET time_zone = '+00:00'");

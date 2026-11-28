@@ -6,23 +6,12 @@
   <meta name="description" content="Catch a Wave of Flavor! Explore comforting meals and cool treats for your next campus study break.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/6/w3.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Lato:wght@400;600;700&family=Raleway:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body class="w3-light-grey w3-content" style="max-width:1600px">
-
-  <!-- Opening -->
-  <div id="welcome-overlay" class="welcome-overlay">
-    <div class="welcome-content">
-      <img src="assets/images/icon.png" alt="TideBites Icon" id="welcome-icon" class="welcome-icon">
-      <div id="typewriter-container" class="typewriter-text"></div>
-      <p id="welcome-hint" class="welcome-hint">Tap to Continue</p>
-    </div>
-    <img src="assets/images/dolphin.png" alt="Dolphin" id="welcome-dolphin" class="welcome-dolphin">
-  </div>
-  <audio id="bg-music" src="assets/audio/backgroundmusic.mp3" preload="none" loop></audio>
 
   <!-- Sidebar navigation -->
   <nav class="w3-sidebar w3-collapse w3-animate-left" style="z-index:3;width:300px" id="mySidebar">
@@ -192,13 +181,13 @@
       <div class="w3-grid w3-margin-top" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">
         <div class="w3-center w3-padding-24 w3-teal w3-text-white">
           <i class="fa fa-percent w3-xxlarge"></i>
-          <h4><b>10% Campus Discount</b></h4>
-          <p>Enjoy 10% off every campus order. No student ID or promo code needed!</p>
+          <h4><b>10% Student Discount</b></h4>
+          <p>Students get 10% off every order. No account or promo code needed, just your student ID.</p>
         </div>
         <div class="w3-center w3-padding-24 w3-dark-grey w3-text-white">
           <i class="fa fa-id-card-o w3-xxlarge"></i>
           <h4><b>How It Works</b></h4>
-          <p>Your 10% campus discount is applied automatically to the food subtotal. Just choose your campus pickup location.</p>
+          <p>At checkout, tick "I'll show my student ID at pickup". The 10% comes off your food subtotal; just bring the orderer's student ID when you collect your order.</p>
         </div>
         <div class="w3-center w3-padding-24 w3-teal w3-text-white">
           <i class="fa fa-calendar-check-o w3-xxlarge"></i>
@@ -253,7 +242,7 @@
             <span class="faq-arrow-wrap" aria-hidden="true"><i class="fa fa-chevron-down"></i></span>
           </div>
           <div class="faq-answer">
-          <p class="w3-text-grey">Every campus order automatically gets 10% off all meals and desserts. No student ID, account, or promo code is needed. The discount is calculated on the full food subtotal and rounded to the nearest NT dollar.</p>
+          <p class="w3-text-grey">Tick the student discount box at checkout to get 10% off all meals and desserts, then show the orderer's student ID when you pick up. The discount is calculated on the full food subtotal and rounded to the nearest NT dollar. Leave it unticked to pay the regular price.</p>
           </div>
           <img src="assets/images/coral3.png" alt="coral" style="position: absolute; left: 10px; bottom: 2px; width: 55px; opacity: 0.5; pointer-events: none;">
         </div>
@@ -300,7 +289,7 @@
       </div>
       <div class="w3-container">
         <h3>DELIVERY HOURS</h3>
-        <p>Order online anytime and we'll arrange delivery to your chosen campus location.</p>
+        <p>Book an hourly pickup time at your chosen campus location. Before 10:00 you can book any time today; from 10:00, at least one hour ahead. Orders pause 20:00–21:00, and from 21:00 you can book for tomorrow.</p>
         <table class="w3-table">
           <tr>
             <td><i class="fa fa-clock-o w3-margin-right"></i>Monday – Friday</td>
@@ -356,7 +345,7 @@
       <span id="cart-badge" class="cart-badge" hidden>0</span>
   </button>
 
-  <!-- Client-side cart and summary; no orders or payments are submitted -->
+  <!-- Dish, cart, review and confirmation dialogs; orders are submitted to api/orders/place.php -->
   <dialog id="dish-dialog" class="tb-dialog" aria-labelledby="dish-dialog-title">
     <button type="button" class="tb-close" data-close-dialog="dish-dialog" aria-label="Close">×</button>
     <div class="tb-dish-photo-wrap">
@@ -386,29 +375,38 @@
     <button type="button" class="tb-close" data-close-dialog="cart-dialog" aria-label="Close">×</button>
     <div class="tb-dialog-body">
       <h2 id="cart-title">Your Cart</h2>
-      <p class="tb-muted">Enjoy an automatic 10% campus discount on all meals and desserts.</p>
+      <p class="tb-muted">Students get 10% off all meals and desserts. Tick the box at checkout and show your student ID at pickup.</p>
       <div id="cart-items" aria-live="polite"></div>
       <div id="cart-checkout">
         <label class="tb-field" for="customer-name">Customer Name
           <input type="text" id="customer-name" maxlength="100" placeholder="Your full name" required>
         </label>
         <label class="tb-field" for="customer-phone">Phone Number
-          <input type="tel" id="customer-phone" maxlength="32" placeholder="e.g. 0912-345-678" required>
+          <input type="tel" id="customer-phone" maxlength="32" placeholder="e.g. 0912-345-678" autocomplete="tel" required aria-describedby="customer-phone-hint">
         </label>
+        <p id="customer-phone-hint" class="tb-muted">8–15 digits. Spaces, hyphens, parentheses and a leading + are allowed.</p>
         <label class="tb-field" for="cart-note">Order Notes
           <textarea id="cart-note" rows="3" maxlength="500" placeholder="e.g., less spicy, no peanuts..."></textarea>
         </label>
         <label class="tb-field" for="pickup-location">Campus Pickup Location
           <select id="pickup-location" required>
-            <option value="">Choose a campus pickup location</option>
-            <option value="Campus Main Gate">Campus Main Gate</option>
-            <option value="Student Center">Student Center</option>
-            <option value="Library Entrance">Library Entrance</option>
+            <option value="">Loading pickup locations…</option>
           </select>
         </label>
         <p class="tb-muted">Choose where you would meet your campus delivery.</p>
+        <label class="tb-field" for="pickup-time">Pickup Time
+          <select id="pickup-time" required aria-describedby="pickup-time-note">
+            <option value="">Loading pickup times…</option>
+          </select>
+        </label>
+        <p id="pickup-time-note" class="tb-muted">Hourly pickup times. Before 10:00 you can book any time today; from 10:00, at least one hour ahead. Orders pause 20:00–21:00; after 21:00 you can book for tomorrow.</p>
+        <label class="tb-check" for="student-discount">
+          <input type="checkbox" id="student-discount">
+          <span>I'll show my student ID at pickup for 10% off</span>
+        </label>
+        <p id="student-id-reminder" class="tb-reminder" hidden>Remember to bring the orderer's student ID when you pick up your order.</p>
         <div class="tb-total-line"><span>Subtotal</span><span id="cart-subtotal">NT$0</span></div>
-        <div class="tb-total-line"><span>Campus Discount (10%)</span><span id="cart-discount">NT$0</span></div>
+        <div class="tb-total-line"><span>Student Discount (10%)</span><span id="cart-discount">NT$0</span></div>
         <div class="tb-total-line"><strong>Total</strong><strong id="cart-total">NT$0</strong></div>
         <button type="button" id="review-order" class="tb-primary">Review Order</button>
       </div>
@@ -422,6 +420,7 @@
       <h2 id="review-title">Order Summary</h2>
       <p id="checkout-notice" class="tb-muted">Please review your order carefully. Once confirmed, your order will be submitted to our kitchen.</p>
       <div id="review-details"></div>
+      <p id="review-student-reminder" class="tb-reminder" hidden>Remember to bring the orderer's student ID when you pick up your order. Without it, the 10% student discount cannot be honored.</p>
       <button type="button" id="place-order" class="tb-primary" aria-describedby="checkout-notice">Place Order</button>
       <button type="button" id="back-to-cart" class="tb-secondary">Back to Cart</button>
     </div>
@@ -438,6 +437,7 @@
       <p class="tb-muted">Order <strong id="complete-order-id"></strong></p>
       <h3>Your Selections</h3>
       <div id="complete-details"></div>
+      <p id="complete-student-reminder" class="tb-reminder" hidden>Remember to bring the orderer's student ID when you pick up your order.</p>
       <button type="button" data-close-dialog="complete-dialog" class="tb-primary">Continue Shopping</button>
     </div>
   </dialog>

@@ -1,6 +1,7 @@
 """Isolated Windows/MySQL + real HTTP + headless Chrome tests. No production writes.
 
-Requires Python 3 with Pillow, PHP, MySQL 8.4 client/server, Node and Playwright.
+Requires Python 3 with Pillow, PHP 8.4+, MySQL 8.4+ client/server, Node and Playwright.
+Verified with PHP 8.4.28 + MySQL 8.4.9 and with PHP 8.6.0 + MySQL 26.10.0.
 All temporary credentials travel through stdin or an external temporary config.
 """
 import argparse
@@ -83,6 +84,38 @@ class Client:
         except urllib.error.HTTPError as error:
             response = error
         return response.code, response.headers, response.read()
+
+    def oversized_post_status(self, path, size):
+        """Status for a POST declaring `size` bytes. The PHP server can answer 413 and close
+        while a client is still uploading; on Windows the reset then discards the reply
+        (WinError 10053). Like curl, send `Expect: 100-continue` and upload only if asked."""
+        parsed = urllib.parse.urlsplit(self.base)
+        cookies = '; '.join(f'{c.name}={c.value}' for c in self.jar)
+        head = (f'POST {path} HTTP/1.1\r\nHost: {parsed.netloc}\r\n'
+                f'Content-Type: application/octet-stream\r\nContent-Length: {size}\r\n'
+                'Expect: 100-continue\r\nConnection: close\r\n'
+                + (f'Cookie: {cookies}\r\n' if cookies else '') + '\r\n')
+        with socket.create_connection((parsed.hostname, parsed.port), timeout=15) as sock:
+            sock.sendall(head.encode())
+            status = self._read_status(sock)
+            if status == 100:
+                try:
+                    sock.sendall(b'x' * size)
+                except (ConnectionAbortedError, ConnectionResetError, BrokenPipeError):
+                    return 0
+                status = self._read_status(sock)
+            return status
+
+    @staticmethod
+    def _read_status(sock):
+        data = b''
+        while b'\r\n\r\n' not in data:
+            chunk = sock.recv(4096)
+            if not chunk:
+                break
+            data += chunk
+        match = re.match(rb'HTTP/1\.[01] (\d{3})', data)
+        return int(match.group(1)) if match else 0
 
     def sid(self):
         return next((c.value for c in self.jar if c.name == 'TIDEBITES_ADMIN'), '')
@@ -278,7 +311,7 @@ def main():
         for bad_file in bad_files:
             response = admin.request('/admin/foods/create.php', values, bad_file)
             check('upload_rejected_' + bad_file[0], response[0] == 422)
-        check('post_limit_rejected', admin.request('/admin/foods/create.php', method='POST', body=b'x' * 8500000, headers={'Content-Type': 'application/octet-stream'})[0] == 413)
+        check('post_limit_rejected', admin.oversized_post_status('/admin/foods/create.php', 8500000) == 413)
         check('invalid_requests_no_db_changes', fixture('snapshot') == before)
         fixture('fault', {'enabled': True, 'kind': 'insert'})
         files_before = set((ROOT / 'uploads/foods').glob('tb-*'))
@@ -390,8 +423,9 @@ def main():
         check('orders_newest_id_first', re.findall(rb'data-order-id="(\d+)"', order_list[2])[0] == str(order_ids[-1]).encode())
         detail = order_client.request('/admin/orders/detail.php?id=' + str(order_ids[0]))
         check('orders_null_fields', detail[0] == 200 and detail[2].count(b'Not provided') == 2 and b'No notes provided.' in detail[2])
-        check('orders_snapshot_after_price_change_delete', b'Ocean Bowl (ordered)' in detail[2] and b'129.50' in detail[2] and b'259.00' in detail[2] and b'999.00' not in detail[2])
-        check('orders_stored_totals', all(x in detail[2] for x in [b'358.00', b'36.00', b'322.00', b'99.00']))
+        check('orders_snapshot_after_price_change_delete', b'Ocean Bowl (ordered)' in detail[2] and b'NT$130' in detail[2] and b'NT$259' in detail[2] and b'NT$999' not in detail[2])
+        check('orders_stored_totals', all(x in detail[2] for x in [b'NT$358', b'NT$36', b'NT$322', b'NT$99']) and b'.00' not in detail[2])
+        check('orders_pickup_time_null', b'Not scheduled' in detail[2])
         check('orders_taipei_time', b'08:30' in detail[2] and b'Asia/Taipei' in detail[2])
         attack_detail = order_client.request('/admin/orders/detail.php?id=' + str(order_ids[1]))[2]
         check('orders_xss_escaped', b'&lt;script&gt;alert(1)&lt;/script&gt;' in attack_detail and b'<script>alert(1)' not in attack_detail)
