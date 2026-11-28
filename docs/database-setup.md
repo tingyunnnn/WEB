@@ -2,7 +2,7 @@
 
 ## 範圍與前提
 
-PHP 8.4、MySQL 8.4 LTS。網站連線需 PDO、pdo_mysql；資料庫測試的 UTF-8 DOM 檢查需 PHP DOM，種子比對則使用獨立 fixture `database/seed-fixture.php`；PR 2 後續使用 fileinfo、mbstring、session。
+PHP 8.4 以上、MySQL 8.4 LTS 以上（不可用 MariaDB／XAMPP 內建資料庫，因為使用 MySQL 8 的 `utf8mb4_0900_*` 排序規則；已另在 PHP 8.6.0 + MySQL 26.10.0 驗證）。網站連線需 PDO、pdo_mysql；資料庫測試的 UTF-8 DOM 檢查需 PHP DOM，種子比對則使用獨立 fixture `database/seed-fixture.php`；PR 2 後續使用 fileinfo、mbstring、session。
 不需要 Composer、框架、Docker 或 Workbench。既有 Phase 0 環境不用重裝或重跑。
 完整候選欄位與權限見 [database-contract.md](database-contract.md)，測試紀錄見 [database-testing.md](database-testing.md)。
 

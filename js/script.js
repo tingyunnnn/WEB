@@ -72,6 +72,64 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
   }
 
 
+  // ── Pickup locations and times come from the server (single source: config/order-options.php) ──
+  // Times are computed on the server in Asia/Taipei, so the customer's device clock does not matter.
+  const pickupSelect = document.getElementById('pickup-location');
+  const pickupTimeSelect = document.getElementById('pickup-time');
+  let pickupStatus = 'loading'; // 'loading' | 'ready' | 'failed'
+  let pickupSchedule = null;    // { accepting, day, date, slots, message }
+
+  function pickupTimeLabel(value) {
+    // value: "YYYY-MM-DD HH:MM" (Asia/Taipei)
+    if (!value) return '';
+    const parts = value.split(' ');
+    const day = pickupSchedule && pickupSchedule.date === parts[0]
+      ? (pickupSchedule.day === 'tomorrow' ? 'Tomorrow' : 'Today') + ' · '
+      : '';
+    return day + parts[0] + ' ' + parts[1];
+  }
+  function renderPickupTimes(schedule) {
+    pickupSchedule = schedule;
+    const previous = pickupTimeSelect.value;
+    if (!schedule || !schedule.accepting || !Array.isArray(schedule.slots) || schedule.slots.length === 0) {
+      pickupTimeSelect.replaceChildren(new Option((schedule && schedule.message) || 'No pickup times available', ''));
+      return;
+    }
+    const options = schedule.slots.map(function (slot) {
+      const value = schedule.date + ' ' + slot;
+      return new Option(pickupTimeLabel(value), value);
+    });
+    pickupTimeSelect.replaceChildren(new Option('Choose a pickup time', ''), ...options);
+    if (options.some(function (o) { return o.value === previous; })) pickupTimeSelect.value = previous;
+  }
+  async function loadOrderOptions() {
+    try {
+      const res = await fetch('api/orders/options.php');
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      const list = data && Array.isArray(data.pickup_locations)
+        ? data.pickup_locations.filter(function (v) { return typeof v === 'string' && v !== ''; })
+        : [];
+      if (list.length === 0 || !data.pickup_schedule) throw new Error('Invalid order options');
+      const previous = pickupSelect.value;
+      pickupSelect.replaceChildren(
+        new Option('Choose a campus pickup location', ''),
+        ...list.map(function (v) { return new Option(v, v); })
+      );
+      if (list.includes(previous)) pickupSelect.value = previous;
+      renderPickupTimes(data.pickup_schedule);
+      pickupStatus = 'ready';
+    } catch (err) {
+      console.error('Order options API failed:', err);
+      if (pickupStatus !== 'ready') {
+        pickupSelect.replaceChildren(new Option('Pickup locations unavailable — please reload the page', ''));
+        pickupTimeSelect.replaceChildren(new Option('Pickup times unavailable — please reload the page', ''));
+        pickupStatus = 'failed';
+      }
+    }
+  }
+  loadOrderOptions();
+
   let menu = [];
   try {
     const res = await fetch('api/foods/list.php');
@@ -81,8 +139,29 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
     menu = data;
   } catch (err) {
     console.error('Menu API failed:', err);
-    grid.textContent = 'Unable to load menu. Please try again later.';
+    showMenuUnavailable();
     return;
+  }
+
+  // Menu could not load: explain it, offer a retry, and keep the cart button responsive.
+  function showMenuUnavailable() {
+    const box = document.createElement('div');
+    box.className = 'tb-muted';
+    box.style.cssText = 'grid-column:1/-1;padding:2rem;text-align:center';
+    const message = document.createElement('p');
+    message.textContent = 'Unable to load the menu right now. Ordering is paused until the menu is available.';
+    const retry = document.createElement('button');
+    retry.type = 'button';
+    retry.className = 'w3-button w3-black';
+    retry.textContent = 'Try Again';
+    retry.addEventListener('click', function () { window.location.reload(); });
+    box.append(message, retry);
+    grid.replaceChildren(box);
+    bar.parentElement.style.display = 'none';
+    document.getElementById('open-cart').addEventListener('click', function () {
+      if (window.innerWidth <= 992) w3_close();
+      notify('The menu is unavailable right now, so ordering is paused. Please try again later.');
+    });
   }
 
   // Remove the loading placeholder once menu data is ready.
@@ -132,6 +211,7 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
   let cart = {};
   let removedFromCart = false;
   let reviewedItems = [];
+  let reviewedStudentDiscount = false;
   let isPlacingOrder = false;
 
   // Load saved cart; drop items that are no longer active in the DB.
@@ -153,9 +233,16 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
   const cartSubtotal = function () {
     return Object.entries(cart).reduce(function (sum, pair) { return sum + byId.get(pair[0]).price * pair[1]; }, 0);
   };
+  // Student discount: 10 % only when the customer promises to show a student ID at pickup.
+  const studentDiscountBox = document.getElementById('student-discount');
+  function wantsStudentDiscount() { return !!(studentDiscountBox && studentDiscountBox.checked); }
+  function setReminder(id, show) {
+    const el = document.getElementById(id);
+    if (el) el.hidden = !show;
+  }
   function cartAmounts() {
     const subtotal = cartSubtotal();
-    const discount = Math.round(subtotal * 0.1);
+    const discount = wantsStudentDiscount() ? Math.round(subtotal * 0.1) : 0;
     return { subtotal: subtotal, discount: discount, total: subtotal - discount };
   }
   const cartQuantity = function () { return Object.values(cart).reduce(function (s, q) { return s + q; }, 0); };
@@ -354,7 +441,9 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
     document.getElementById('cart-subtotal').textContent = money(amounts.subtotal);
     document.getElementById('cart-discount').textContent = (amounts.discount ? '-' : '') + money(amounts.discount);
     document.getElementById('cart-total').textContent = money(amounts.total);
+    setReminder('student-id-reminder', wantsStudentDiscount());
   }
+  if (studentDiscountBox) studentDiscountBox.addEventListener('change', renderCart);
   function changeCartQty(id, delta) {
     const newQty = cart[id] + delta;
     if (newQty <= 0) delete cart[id]; else cart[id] = Math.min(99, newQty);
@@ -362,20 +451,44 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
   }
   document.getElementById('open-cart').addEventListener('click', function () {
     if (window.innerWidth <= 992) w3_close();
+    loadOrderOptions(); // pickup times depend on the current time; refresh them each time
     renderCart(); openDialog(cartDialog);
   });
+
+  // ── Phone validation (same rule as api/orders/place.php) ──
+  const phoneField = document.getElementById('customer-phone');
+  function phoneError(value) {
+    if (!/^\+?[0-9 ()-]+$/.test(value)) return 'Use digits, spaces, hyphens, parentheses and an optional leading +.';
+    const digits = value.replace(/\D/g, '').length;
+    if (digits < 8 || digits > 15) return 'Enter a phone number with 8–15 digits.';
+    return '';
+  }
+  phoneField.addEventListener('input', function () { phoneField.setCustomValidity(''); });
 
   // ── Review Order: validate fields and build summary ──
   document.getElementById('review-order').addEventListener('click', function () {
     if (cartQuantity() === 0) return;
 
     const nameInput = document.getElementById('customer-name');
-    const phoneInput = document.getElementById('customer-phone');
-    const pickup = document.getElementById('pickup-location');
+    const phoneInput = phoneField;
+    const pickup = pickupSelect;
 
+    if (pickupStatus !== 'ready') {
+      alert(pickupStatus === 'loading'
+        ? 'Pickup locations are still loading. Please try again in a moment.'
+        : 'Pickup locations are unavailable. Please reload the page.');
+      return;
+    }
     if (!nameInput.value.trim()) { nameInput.reportValidity(); nameInput.focus(); return; }
+    phoneInput.setCustomValidity('');
     if (!phoneInput.value.trim()) { phoneInput.reportValidity(); phoneInput.focus(); return; }
     if (!pickup.value) { pickup.reportValidity(); pickup.focus(); return; }
+    if (!pickupSchedule || !pickupSchedule.accepting) {
+      alert((pickupSchedule && pickupSchedule.message) || 'No pickup times are available right now.');
+      return;
+    }
+    if (!pickupTimeSelect.value) { pickupTimeSelect.reportValidity(); pickupTimeSelect.focus(); return; }
+    phoneInput.setCustomValidity(phoneError(phoneInput.value.trim()));
     if (!phoneInput.checkValidity()) { phoneInput.reportValidity(); phoneInput.focus(); return; }
 
     reviewedItems = Object.entries(cart).map(function ([id, qty]) {
@@ -394,9 +507,12 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
       ['Customer Name', nameInput.value.trim()],
       ['Phone', phoneInput.value.trim()],
       ['Subtotal', money(amounts.subtotal)],
-      ['Campus Discount (10%)', '-' + money(amounts.discount)],
+      wantsStudentDiscount()
+        ? ['Student Discount (10%)', '-' + money(amounts.discount)]
+        : ['Student Discount', 'Not applied'],
       ['Total', money(amounts.total)],
       ['Campus Pickup Location', pickup.value],
+      ['Pickup Time', pickupTimeLabel(pickupTimeSelect.value)],
       ['Notes', note || '(None)']
     ].forEach(function ([label, value]) {
       const row = document.createElement('p');
@@ -404,6 +520,8 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
       row.append(strong, document.createTextNode(value));
       summary.appendChild(row);
     });
+    reviewedStudentDiscount = wantsStudentDiscount();
+    setReminder('review-student-reminder', reviewedStudentDiscount);
     closeDialog(cartDialog); openDialog(reviewDialog);
   });
 
@@ -418,30 +536,77 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
     
     try {
       const items = reviewedItems;
-      const res = await fetch('api/orders/place.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          customer_name: document.getElementById('customer-name').value.trim(),
-          phone: document.getElementById('customer-phone').value.trim(),
-          delivery_location: document.getElementById('pickup-location').value,
-          notes: document.getElementById('cart-note').value.trim(),
-          items: items
-        })
-      });
-      const data = await res.json();
+      let res;
+      try {
+        res = await fetch('api/orders/place.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            customer_name: document.getElementById('customer-name').value.trim(),
+            phone: document.getElementById('customer-phone').value.trim(),
+            delivery_location: document.getElementById('pickup-location').value,
+            notes: document.getElementById('cart-note').value.trim(),
+            pickup_time: pickupTimeSelect.value,
+            student_discount: reviewedStudentDiscount,
+            items: items
+          })
+        });
+      } catch (networkError) {
+        // fetch() only rejects when the request never reached the server.
+        alert('Network error. Please check your connection and try again.');
+        return;
+      }
+
+      // The server may answer with a non-JSON page (e.g. a PHP fatal error).
+      let data = null;
+      try { data = await res.json(); } catch (parseError) { data = null; }
 
       if (!res.ok) {
-        if (res.status === 409 && data.code === 'PRICE_CHANGED') {
+        if (res.status === 409 && data && data.code === 'PRICE_CHANGED' && Array.isArray(data.price_changes)) {
             const changes = data.price_changes.map(function (item) { return item.name + ': ' + money(item.old_price) + ' → ' + money(item.new_price);});
             alert( 'Menu prices have changed:\n\n' + changes.join('\n') + '\n\nPlease review your order again.');
             saveCart();
             window.location.reload();
             return;
         }
-        alert(data.error || 'Order could not be placed. Please try again.'); 
+        if (res.status === 422 && data && data.code === 'ITEM_UNAVAILABLE') {
+            // Reloading re-fetches the menu; the saved cart drops inactive items and shows a notice.
+            const names = (Array.isArray(data.unavailable_ids) ? data.unavailable_ids : [])
+              .map(function (id) { const dish = byId.get(String(id)); return dish ? dish.name : null; })
+              .filter(Boolean);
+            alert('Some items in your cart are no longer available' + (names.length ? ':\n\n' + names.join('\n') : '.') +
+              '\n\nThe page will reload so you can update your cart.');
+            saveCart();
+            window.location.reload();
+            return;
+        }
+        if (res.status === 422 && data && data.code === 'PICKUP_TIME_UNAVAILABLE') {
+            // The chosen slot expired while the customer was reviewing; show fresh times in the cart.
+            if (data.pickup_schedule) renderPickupTimes(data.pickup_schedule);
+            alert(data.error || 'The selected pickup time is no longer available. Please choose another pickup time.');
+            closeDialog(reviewDialog); renderCart(); openDialog(cartDialog);
+            return;
+        }
+        alert((data && data.error) || 'The server could not process your order (HTTP ' + res.status + '). Please try again later.');
         return;
       }
+
+      if (!data || !Number.isInteger(data.order_id) || !Array.isArray(data.items)) {
+        // Status was OK, so the order may have been saved; avoid encouraging a duplicate.
+        alert('Your order may have been received, but the confirmation could not be read. Please do not place it again right away; contact TideBites to check your order.');
+        return;
+      }
+
+      // Clear state as soon as the order is confirmed, before rendering the summary.
+      cart = {};
+      saveCart();
+      document.getElementById('cart-note').value = '';
+      document.getElementById('pickup-location').value = '';
+      pickupTimeSelect.value = '';
+      document.getElementById('customer-name').value = '';
+      document.getElementById('customer-phone').value = '';
+      if (studentDiscountBox) studentDiscountBox.checked = false;
+      renderCart();
 
       // Show order ID in complete dialog.
       const orderIdEl = document.getElementById('complete-order-id');
@@ -462,9 +627,12 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
           ['Customer Name', data.customer_name],
           ['Phone', data.phone],
           ['Subtotal', money(data.subtotal)],
-          ['Campus Discount (10%)', '-' + money(data.discount_amount)],
+          data.student_discount === true
+            ? ['Student Discount (10%)', '-' + money(data.discount_amount)]
+            : ['Student Discount', 'Not applied'],
           ['Total', money(data.total_amount)],
           ['Campus Pickup Location', data.delivery_location],
+          ['Pickup Time', pickupTimeLabel(data.pickup_time)],
           ['Notes', data.notes || '(None)']
 
       ].forEach(function ([label, value]) {
@@ -480,20 +648,13 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
 
           completeDetails.appendChild(row);
       });
+      setReminder('complete-student-reminder', data.student_discount === true);
 
       closeDialog(reviewDialog);
       openDialog(completeDialog);
-
-      // Clear state only after successful order.
-      cart = {};
-      saveCart();
-      document.getElementById('cart-note').value = '';
-      document.getElementById('pickup-location').value = '';
-      document.getElementById('customer-name').value = '';
-      document.getElementById('customer-phone').value = '';
-      renderCart();
     } catch (err) {
-      alert('Network error. Please check your connection and try again.');
+      console.error('Order confirmation failed:', err);
+      alert('Something went wrong while showing your order confirmation. Please reload the page before ordering again.');
     } finally {
         setOrderLoading(false);
     }
@@ -510,16 +671,11 @@ document.querySelectorAll('.faq-card').forEach(function (card) {
   showMenu();
 })();
 
-// ========== Click Bubble Animation ==========
+// ========== Click Bubble Animation (visual only, no sound) ==========
 (function () {
-  var bubbleSound = new Audio('assets/audio/bubble.mp3');
-  bubbleSound.volume = 0.4;
   var USE_IMAGE = false;
 
   function spawnBubbles(x, y) {
-    var s = bubbleSound.cloneNode();
-    s.volume = 0.4;
-    s.play().catch(function () { });
     var count = Math.floor(Math.random() * 3) + 4;
 
     for (var i = 0; i < count; i++) {
@@ -632,63 +788,6 @@ window.addEventListener('scroll', function () {
     }, 30);
   }, 100);
 });
-
-// ========== Welcome Overlay ==========//
-// script 在 </body> 之前，DOM 已解析完畢，直接執行即可，不需 DOMContentLoaded。
-(function () {
-  const welcomeOverlay = document.getElementById("welcome-overlay");
-  const typewriterEl = document.getElementById("typewriter-container");
-  const hintEl = document.getElementById("welcome-hint");
-  const dolphinEl = document.getElementById("welcome-dolphin");
-  const bgMusic = document.getElementById("bg-music");
-
-  const sloganText = "Catch a Wave of Flavor!";
-  let charIndex = 0;
-
-  function typeWriter() {
-    if (charIndex < sloganText.length) {
-      typewriterEl.textContent += sloganText.charAt(charIndex);
-      // The text is already revealed character by character; avoid clipping its container.
-      typewriterEl.style.width = "auto";
-      charIndex++;
-      setTimeout(typeWriter, 70);
-    } else {
-      triggerDolphinJump();
-    }
-  }
-  setTimeout(typeWriter, 400);
-
-  function triggerDolphinJump() {
-    const iconEl = document.getElementById("welcome-icon");
-    const iconRect = iconEl.getBoundingClientRect();
-
-    dolphinEl.style.top = (iconRect.top + iconRect.height / 2 - 80) + "px";
-    dolphinEl.style.left = (iconRect.left + iconRect.width / 2 - 90) + "px";
-    dolphinEl.classList.add("animate-dolphin");
-
-    setTimeout(() => {
-      hintEl.classList.add("show");
-    }, 0);
-  }
-
-  let hasEntered = false;
-  welcomeOverlay.addEventListener("click", function () {
-    if (hasEntered) return;
-    hasEntered = true;
-
-    if (bgMusic) {
-      bgMusic.volume = 0.5;
-      bgMusic.play().catch(error => {
-        console.log("自動播放被瀏覽器阻擋：", error);
-      });
-    }
-
-    welcomeOverlay.style.opacity = "0";
-    setTimeout(() => {
-      welcomeOverlay.style.display = "none";
-    }, 800);
-  });
-})();
 
 // ========== Pufferfish ==========//
 function togglePufferfish() {

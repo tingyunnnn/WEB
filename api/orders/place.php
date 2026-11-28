@@ -4,6 +4,7 @@ declare(strict_types=1);
 // B: Order placement endpoint.
 // Accepts a JSON POST, re-validates prices from the DB, writes orders + order_items.
 require_once dirname(__DIR__, 2) . '/config/database.php';
+require_once dirname(__DIR__, 2) . '/config/order-options.php';
 
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store');
@@ -28,6 +29,9 @@ $customerName     = trim((string) ($data['customer_name']     ?? ''));
 $phone            = trim((string) ($data['phone']             ?? ''));
 $deliveryLocation = trim((string) ($data['delivery_location'] ?? ''));
 $notes            = trim((string) ($data['notes']             ?? ''));
+$pickupTime       = is_string($data['pickup_time'] ?? null) ? trim($data['pickup_time']) : '';
+// Student discount only when the customer explicitly opts in (must show a student ID at pickup).
+$studentDiscount  = ($data['student_discount'] ?? false) === true;
 $items            = $data['items'] ?? [];
 
 $errors = [];
@@ -37,11 +41,14 @@ elseif (mb_strlen($customerName) > 100) $errors[] = 'Customer name is too long (
 
 if ($phone === '')                 $errors[] = 'Phone number is required.';
 elseif (strlen($phone) > 32)      $errors[] = 'Phone number is too long (max 32 characters).';
+elseif (!tidebites_valid_phone($phone))
+                                   $errors[] = 'Enter a valid phone number (8-15 digits; spaces, hyphens, parentheses and a leading + are allowed).';
 
-$validLocations = ['Campus Main Gate', 'Student Center', 'Library Entrance'];
 if ($deliveryLocation === '')      $errors[] = 'Delivery location is required.';
-elseif (!in_array($deliveryLocation, $validLocations, true))
+elseif (!in_array($deliveryLocation, tidebites_pickup_locations(), true))
                                    $errors[] = 'Invalid delivery location.';
+
+if ($pickupTime === '')            $errors[] = 'Pickup time is required.';
 
 if (mb_strlen($notes) > 500)      $errors[] = 'Notes are too long (max 500 characters).';
 
@@ -51,6 +58,20 @@ if (!is_array($items) || count($items) === 0)
 if ($errors) {
     http_response_code(422);
     echo json_encode(['error' => implode(' ', $errors)]);
+    exit;
+}
+
+// Pickup time must be one of the slots bookable right now (see config/order-options.php).
+$pickupTimeUtc = tidebites_pickup_time_utc($pickupTime);
+if ($pickupTimeUtc === null) {
+    $schedule = tidebites_pickup_schedule();
+    http_response_code(422);
+    echo json_encode([
+        'error' => $schedule['accepting']
+            ? 'The selected pickup time is no longer available. Please choose another pickup time.'
+            : $schedule['message'],
+        'code' => 'PICKUP_TIME_UNAVAILABLE',
+        'pickup_schedule' => $schedule]);
     exit;
 }
 
@@ -92,13 +113,18 @@ try {
     }
 
     // Verify all requested items are still active.
+    $unavailableIds = [];
     foreach ($validatedItems as $vi) {
-        if (!isset($dbItems[$vi['id']])) {
-            $pdo->rollBack();
-            http_response_code(422);
-            echo json_encode(['error' => 'One or more items are no longer available. Please refresh the page and update your cart.']);
-            exit;
-        }
+        if (!isset($dbItems[$vi['id']])) $unavailableIds[] = $vi['id'];
+    }
+    if ($unavailableIds) {
+        $pdo->rollBack();
+        http_response_code(422);
+        echo json_encode([
+            'error' => 'One or more items are no longer available. Please refresh the page and update your cart.',
+            'code' => 'ITEM_UNAVAILABLE',
+            'unavailable_ids' => $unavailableIds]);
+        exit;
     }
 
     $priceChanges = [];
@@ -119,7 +145,7 @@ try {
         exit;
     }
 
-    // Re-calculate amounts server-side (integer NT$, 10 % campus discount).
+    // Re-calculate amounts server-side (integer NT$, optional 10 % student discount).
     $orderItems = [];
     $subtotal   = 0;
     foreach ($validatedItems as $vi) {
@@ -142,21 +168,22 @@ try {
         ];
     }
 
-    $discountAmount = intdiv($subtotal + 5, 10);
+    $discountAmount = $studentDiscount ? intdiv($subtotal + 5, 10) : 0;
     $totalAmount = $subtotal - $discountAmount;
 
     // Insert order.
     $stmtOrder = $pdo->prepare(
         'INSERT INTO orders
-             (customer_name, phone, delivery_location, notes,
+             (customer_name, phone, delivery_location, notes, pickup_time,
               subtotal, discount_amount, total_amount)
-         VALUES (?, ?, ?, ?, ?, ?, ?)'
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
     );
     $stmtOrder->execute([
         $customerName,
         $phone,
         $deliveryLocation,
         $notes !== '' ? $notes : null,
+        $pickupTimeUtc,
         $subtotal,
         $discountAmount,
         $totalAmount,
@@ -187,8 +214,10 @@ try {
         'phone' => $phone,
         'delivery_location' => $deliveryLocation,
         'notes' => $notes,
+        'pickup_time' => $pickupTime, // Asia/Taipei, "YYYY-MM-DD HH:MM"
         'items' => $orderItems,
         'subtotal' => $subtotal,
+        'student_discount' => $discountAmount > 0,
         'discount_amount' => $discountAmount,
         'total_amount' => $totalAmount
     ], JSON_UNESCAPED_UNICODE);
