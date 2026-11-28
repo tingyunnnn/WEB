@@ -102,5 +102,26 @@ FROM (
     SELECT 9, 'Mango Snow Ice', 'Delicate ribbons of shaved milk ice piled high with sweet mango pieces and a fruity drizzle. Bright, tropical, and irresistible.', 109.00, 'desserts', 'assets/images/mango-snow-ice.jpg', 'A bowl of yellow shaved milk ice topped with fresh mango chunks.', 9
     UNION ALL
     SELECT 10, 'Peanut Tang Yuan', 'Soft and chewy glutinous tang yuan topped with crushed peanut powder and served in a sweet sauce. A cozy Taiwanese dessert.', 79.00, 'desserts', 'assets/images/peanut-rice-dumplings.jpg', 'White glutinous tang yuan coated with peanut powder in a dark sweet sauce.', 10
+    UNION ALL    
+    SELECT 11, 'Curry Omurice', 'Fluffy Japanese-style omelet folded over seasoned fried rice and generously smothered in rich, savory curry sauce. A satisfying classic that hits the spot.', 149.00, 'meals', 'assets/images/curry-omurice.jpg', 'Japanese omelet rice covered in rich curry sauce.', 11
+    UNION ALL    
+    SELECT 12, 'Curry Omurice', 'Al dente spaghetti tossed in a bright, slow-simmered tomato and herb sauce, finished with a sprinkle of grated cheese. Light, tangy, and always comforting.', 139.00, 'meals', 'assets/images/tomato-pasta.jpg', 'Spaghetti in tangy tomato herb sauce topped with grated cheese.', 12
+    UNION ALL    
+    SELECT 13, 'Classic Taiwanese Combo', 'Braised minced pork over steamed rice, paired with a bowl of fresh, delicate fish soup and blanched seasonal greens. An authentic taste of home-style Taiwanese comfort.', 129.00, 'meals', 'assets/images/classic-taiwanese-combo.jpg', 'Taiwanese braised pork rice served with clear fish soup and blanched greens.', 13
+    UNION ALL    
+    SELECT 14, 'Caramel Custard Pudding', 'Silky-smooth baked egg pudding infused with vanilla and crowned with a bittersweet golden caramel glaze. Melt-in-your-mouth sweetness in every spoonful.', 65.00, 'desserts', 'assets/images/caramel-custard-pudding.jpg', 'Silky baked custard pudding topped with golden caramel sauce.', 14
+    UNION ALL    
+    SELECT 15, 'Boba Shaved Ice', 'Finely shaved ice topped with chewy brown sugar tapioca pearls and a drizzle of sweet condensed milk. The ultimate cool-down treat on a warm day.', 85.00, 'desserts', 'assets/images/boba-shaved-ice.jpg', 'Shaved ice dessert topped with brown sugar tapioca pearls and condensed milk.', 15
+    UNION ALL    
+    SELECT 16, 'Fresh Fruit Soufflé', 'Airy, cloud-like Japanese soufflé pancakes layered with lightly sweetened whipped cream and vibrant seasonal fruits. Soft, jiggly, and picture-perfect.', 169.00, 'desserts', 'assets/images/fresh-fruit-souffle.jpg', 'Fluffy Japanese soufflé pancakes topped with whipped cream and fresh seasonal fruit.', 16
+    UNION ALL    
+    SELECT 17, 'Rich Chocolate Cake', 'Moist, decadent dark chocolate sponge layered with velvety chocolate ganache. Deeply cocoa-rich for true chocolate lovers.', 95.00, 'desserts', 'assets/images/rich-chocolate-cake.jpg', 'Slice of dark chocolate layer cake coated in rich chocolate ganache.', 17
+    UNION ALL    
+    SELECT 18, 'Korean Kimchi Tofu Stew', 'Spicy, tangy fermented kimchi simmered with silky soft tofu, sliced pork, and vegetables in a bubbling broth, served with steamed rice. Bold and warming.', 159.00, 'meals', 'assets/images/korean-kimchi-tofu-stew.jpg', 'Bubbling spicy Korean kimchi stew with soft tofu, pork, and a bowl of rice.', 18
+    UNION ALL    
+    SELECT 19, 'Pork Udon Noodle Soup', 'Chewy, thick udon noodles and tender pork slices in a clear, savory dashi broth, topped with crisp green onions and fish cake. Simple, warm, and deeply soothing.', 139.00, 'meals', 'assets/images/pork-udon-noodle-soup.jpg', 'Thick udon noodles and sliced pork in clear broth with green onions and fish cake.', 19 
+    UNION ALL    
+    SELECT 20, 'Seafood Pasta', 'Al dente spaghetti loaded with plump shrimp, squid rings, and clams in a savory garlic-white wine tomato sauce. Fresh coastal flavors in every bite.', 189.00, 'meals', 'assets/images/seafood-pasta.jpg', 'Spaghetti tossed with shrimp, squid, and clams in a garlic tomato sauce.', 20
+    UNION ALL    
 ) AS seed
 WHERE NOT EXISTS (SELECT 1 FROM food_items LIMIT 1);
