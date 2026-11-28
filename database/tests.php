@@ -3,27 +3,29 @@ declare(strict_types=1);
 if (PHP_SAPI !== 'cli') { http_response_code(404); exit; }
 require_once __DIR__ . '/tools.php';
 
-/** Read the existing HTML independently of SQL, without rewriting any frontend files. */
+/**
+ * Load the independent expected seed fixture (extracted from Phase I Git baseline
+ * 75cbb4c:index.html), decoupled from dynamic index.html rendering and SQL/DB.
+ */
 function tb_original_menu(): array
 {
-    $html = file_get_contents(dirname(__DIR__) . '/index.html');
-    if ($html === false) throw new RuntimeException('Cannot read original HTML.');
-    $dom = new DOMDocument('1.0', 'UTF-8');
-    $dom->loadHTML('<?xml encoding="UTF-8">' . $html, LIBXML_NOERROR | LIBXML_NOWARNING);
-    $xpath = new DOMXPath($dom);
-    $rows = [];
-    foreach ($xpath->query('//*[@id="menu-grid"]/article') as $article) {
-        $text = static function (string $class) use ($xpath, $article): string {
-            return trim($xpath->query('.//p[@class="' . $class . '"]', $article)->item(0)->textContent);
-        };
-        $image = $xpath->query('.//img', $article)->item(0);
-        preg_match('/NT\$\s*(\d+)/', $text('card-meta'), $price);
-        $rows[] = ['id' => (int)$article->getAttribute('data-id'), 'name' => $text('card-title'),
-            'description' => $text('card-desc'), 'price' => $price[1] . '.00',
-            'category' => $article->getAttribute('data-category'), 'image_path' => $image->getAttribute('src'),
-            'image_alt' => $image->getAttribute('alt'), 'sort_order' => count($rows) + 1];
+    $fixturePath = __DIR__ . '/seed-fixture.php';
+    if (!is_file($fixturePath)) throw new RuntimeException('Missing seed fixture file.');
+    $rows = require $fixturePath;
+    if (!is_array($rows) || !$rows || !array_is_list($rows)) {
+        throw new RuntimeException('Invalid seed fixture data.');
     }
-    if (!$rows) throw new RuntimeException('No original menu data found.');
+    $expectedKeys = ['id', 'name', 'description', 'price', 'category', 'image_path', 'image_alt', 'sort_order'];
+    foreach ($rows as $row) {
+        if (!is_array($row) || array_keys($row) !== $expectedKeys
+            || !is_int($row['id']) || $row['id'] < 1
+            || !is_int($row['sort_order']) || $row['sort_order'] < 0
+            || !is_string($row['name']) || !is_string($row['description'])
+            || !is_string($row['price']) || !is_string($row['category'])
+            || !is_string($row['image_path']) || !is_string($row['image_alt'])) {
+            throw new RuntimeException('Malformed seed fixture entry.');
+        }
+    }
     return $rows;
 }
 
@@ -81,7 +83,7 @@ function tb_run_tests(#[SensitiveParameter] array $input): array
         $utf8Dom = new DOMDocument('1.0', 'UTF-8');
         $utf8Dom->loadHTML('<?xml encoding="UTF-8"><p id="t">海味餐點 · 🌊</p>', LIBXML_NOERROR | LIBXML_NOWARNING);
         $check('html_utf8_parsing', $utf8Dom->getElementById('t')?->textContent === '海味餐點 · 🌊');
-        $check('seed_matches_original_html_exactly', $menu === $expected);
+        $check('seed_matches_expected_fixture_exactly', $menu === $expected);
         $report['seed_count'] = count($menu);
         $report['categories'] = array_count_values(array_column($menu, 'category'));
         $check('image_files_exist', count(array_filter($menu, static fn($row) => is_file(dirname(__DIR__) . '/' . $row['image_path']))) === count($menu));
